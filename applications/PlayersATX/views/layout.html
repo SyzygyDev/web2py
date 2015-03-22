@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}">
+<head>
+<title>{{=thisPage["title"]}}</title>
+	<meta charset="utf-8" />
+	<meta property="og:title" content="{{=request.function if not request.function=='index' else 'home'}}"/>
+	<meta property="og:site_name" content="PlayersATX"/>
+	<meta property="og:url" content="{{=URL(request.controller,request.function)}}"/>
+	<meta property="og:description" content="{{=thisPage['description']}}"/>
+	<meta property="og:image" content="..."/>
+	<!-- THIS WILL NEED TO BE SET UP ONCE THE SITE GOES LIVE
+	MIKE:TODO
+	<meta name="google-site-verification" content="" /> -->
+
+	<!-- MOBILE FIX FOR BASIC WEB2PY STYLING, NEED TO MAKE SITE FALL BACK ON MOBILE MORE ATTRACTIVELY
+	CADE:TODO -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+	<link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
+	<link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+
+
+	<script src="{{=URL('static','js/modernizr.custom.js')}}"></script>
+
+
+	<link href="{{=URL('static','css/bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{=URL('static','css/font-awesome.min.css')}}" rel="stylesheet">
+	<link href="{{=URL('static','css/business-casual.css')}}" rel="stylesheet">
+	<link href="{{=URL('static','css/cards.css')}}" rel="stylesheet">
+	<link href="{{=URL('static','css/animate.css')}}" rel="stylesheet">
+
+	<!-- REPLACE THIS WITH THE SCRIPT AND STYLE TABLE -->
+	{{if request.vars.page_id == "event":}}
+		<!-- THIS IS FOR THE DATE PICKER -->
+		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
+		<script>
+			$(function() {
+			$( "#events_expiration" ).datepicker({
+				"dateFormat":"yy-mm-dd",
+				"showAnim":"blind"
+			});
+			
+			});
+		</script>
+	{{pass}}
+
+
+
+	<noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
+
+	<style>
+		body {
+			background: url("{{=URL('default', 'download', args=thisPage['backgroundImg'])}}") no-repeat center center fixed;
+		    -webkit-background-size: cover;
+		    -moz-background-size: cover;
+		    background-size: cover;
+		    -o-background-size: cover;
+		}
+	</style>
+</head>
+
+<body>
+	{{hasCarousel = False}}
+	{{include}}
+	<div style="height:50px"></div>
+
+	<nav class="navbar navbar-default navbar-fixed-bottom" style="background:rgba(255,255,255,0.5);">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<p>{{=XML(thisPage['footer'])}}</p>
+				</div>
+			</div>
+		</div>
+	</nav>
+	<script src="{{=URL('static','js/jquery-1.11.0.js')}}"></script>
+	<script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
+	{{if globals().get('events') and hasCarousel:}}
+		<script>
+			$('.carousel').carousel({
+				interval: 5000 //changes the speed
+			})
+		</script>
+	{{pass}}
+</body>
+</html>
+

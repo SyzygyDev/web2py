@@ -1,0 +1,95 @@
+{{extend 'layout.html'}}
+{{hasCarousel = True}}
+
+
+<div class="brand">{{=XML(thisPage["heading"])}}</div>
+<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+{{include 'default/menu.html'}}
+<div class="container" id="container2">
+
+	<div class="row">
+		<div class="box">
+			<div class="col-lg-12 text-center">
+				{{if events:}}
+					<div id="players-carousel" class="carousel slide">
+						<!-- Indicators -->
+						<ol class="carousel-indicators hidden-xs">
+							{{for event in events:}}
+								<li data-target="#players-carousel" data-slide-to="{{=int(event['position'])-1}}" class="{{='active' if event['position'] == 1 else ''}}"></li>
+							{{pass}}
+						</ol>
+
+						<!-- Wrapper for slides -->
+						<div class="carousel-inner">
+							{{for event in events:}}
+								<div class="item{{=' active' if event['position'] == 1 else ''}}">
+									<img class="img-responsive img-full" src="{{=URL('default', 'download', args=event['image'])}}" alt="">  
+									{{if event["layout"] >= 2:}}
+										<div class="container">
+											<div class="carousel-caption" style="background-color:rgba(255, 0, 0, 0.5)">
+												{{if event["layout"] == 2 or event["layout"] == 4:}}
+													<h1>{{=XML(event["event_name"])}}</h1>
+												{{else:}}
+													<h1>{{=XML(event["event_heading"])}}</h1>
+												{{pass}}
+												{{if event["layout"] == 4:}}
+													<strong>{{=XML(event["event_heading"])}}</strong>
+												{{pass}}
+												{{if event["eventDate"]:}}
+													<h2>{{=event["eventDate"]}}</h2>
+												{{pass}}
+											</div>
+										</div>
+									{{pass}}
+
+								</div>
+							{{pass}}
+						</div>
+
+						<!-- Controls -->
+						<a class="left carousel-control" href="#players-carousel" data-slide="prev">
+							<span class="icon-prev"></span>
+						</a>
+						<a class="right carousel-control" href="#players-carousel" data-slide="next">
+							<span class="icon-next"></span>
+						</a>
+					</div>
+				{{pass}}
+				<h2 class="brand-before">
+					<small>Welcome to</small>
+				</h2>
+				<h1 class="brand-name">{{=XML(thisPage["subHeading"])}}</font></h1>
+				<hr class="tagline-divider">
+				<h2>
+					<small>{{=XML(thisPage["tagLine"])}}</small>
+				</h2>
+			</div>
+		</div>
+	</div>
+
+	{{if cards:}}
+		{{for card in cards:}}
+			<div class="row">
+				<div class="box">
+					<div class="col-lg-12">
+						<hr>
+						<h2 class="intro-text text-center">
+							{{=XML(card["card_heading"])}}
+						</h2>
+						<hr>
+						{{if card["left_image"]:}}
+							<img class="pull-left" src="{{=URL('default', 'download', args=card['left_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+						{{pass}}
+						{{if card["right_image"]:}}
+							<img class="pull-right" src="{{=URL('default', 'download', args=card['right_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+						{{pass}}
+						<hr class="visible-xs">
+						{{=XML(card["body_text"])}}
+					</div>
+				</div>
+			</div>
+		{{pass}}
+	{{pass}}
+
+</div>
+<!-- /.container -->

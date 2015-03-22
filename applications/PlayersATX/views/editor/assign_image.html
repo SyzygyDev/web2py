@@ -1,0 +1,52 @@
+{{extend 'layoutUser.html'}}
+<div class="container">
+	<div class="brand">{{=XML(thisPage["heading"])}}</div>
+	<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+	<div class="panel panel-default">
+		<div class="panel-heading" style="padding:0">
+			{{include 'editor/menu.html'}}
+		</div>
+		<div class="panel-body">
+			<div class="tab-pane active">
+
+
+					<h3>Assign an image</h3>
+					{{if images:}}
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										New Image
+									</div>
+									<div class="panel-body">
+										{{=form}}
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-9" style="overflow-y:auto">
+								<div class="col-sm-4 col-md-3 col-lg-2">
+									<a href="{{=URL('editor', 'assign_image', vars=dict(page_id=request.vars.page_id, element_id=request.vars.element_id, image_id='blank'))}}">
+										<img src="{{=URL('static','images/unassigned.jpeg')}}" style="width:100%">
+										<span>No image</span>
+									</a>
+								</div>
+								{{for image in images:}}
+									<div class="col-sm-4 col-md-3 col-lg-2">
+										<a href="{{=URL('editor', 'assign_image', vars=dict(page_id=request.vars.page_id, element_id=request.vars.element_id, image_id=image.id))}}">
+											<img src="{{=URL('default', 'download', args=image.thumbnail)}}" style="width:100%">
+											<span>{{=image.image_name}}</span>
+										</a>
+									</div>
+								{{pass}}
+							</div>
+						</div>
+					{{else:}}
+						<h4 class="text-muted">Upload an image</h4>
+						{{=form}}
+					{{pass}}
+
+			</div>
+
+		</div>
+	</div>
+</div>

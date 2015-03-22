@@ -1,0 +1,50 @@
+.payment-methods ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.payment-methods ul li {
+    background: url(../img/payment-methods.png) no-repeat 0 0;
+    padding: 0 0 0 58px;
+    margin: 0 0 8px;
+    position: relative;
+    display: block;
+    line-height: 29px;
+}
+
+.payment-methods ul li.amex {
+    background-position: 0 0;
+}
+
+.payment-methods ul li.maestro {
+    background-position: 0 -53px;
+}
+
+.payment-methods ul li.mastercard {
+    background-position: 0 -106px;
+}
+
+.payment-methods ul li.paypal {
+    background-position: 0 -160px;
+}
+
+.payment-methods ul li.visa {
+    background-position: 0 -213px;
+}
+
+.payment-methods ul li.discover {
+    background-position: 0 -267px;
+}
+
+.payment-methods ul li.diners {
+    background-position: 0 -320px;
+}
+
+.payment-methods.secundary ul li {
+    padding-left: 0;
+    text-indent: -9999px;
+    width: 49px;
+    margin-right: 6px;
+    display: inline-block;
+}

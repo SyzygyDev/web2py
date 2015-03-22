@@ -1,0 +1,45 @@
+{{extend 'layout.html'}}
+
+
+
+<div class="brand">{{=XML(thisPage["heading"])}}</div>
+<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+{{include 'default/menu.html'}}
+<div class="container" id="container2">
+
+    <div class="row">
+        <div class="box3" style="background: rgba(255,255,255,0.70);margin-bottom:15px;">
+            <div class="col-lg-12">
+                <hr>
+                <h1 class="intro-text text-center"><strong>Rules</strong></h1>                        
+                <hr>
+            </div>
+        </div>
+    </div>
+
+	{{if cards:}}
+		{{for card in cards:}}
+			<div class="row">
+				<div class="box">
+					<div class="col-lg-12">
+						<hr>
+						<h2 class="intro-text text-center">
+							{{=XML(card["card_heading"])}}
+						</h2>
+						<hr>
+						{{if card["left_image"]:}}
+							<img class="pull-left" src="{{=URL('default', 'download', args=card['left_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+						{{pass}}
+						{{if card["right_image"]:}}
+							<img class="pull-right" src="{{=URL('default', 'download', args=card['right_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+						{{pass}}
+						<hr class="visible-xs">
+						{{=XML(card["body_text"])}}
+					</div>
+				</div>
+			</div>
+		{{pass}}
+	{{pass}}
+
+</div>
+<!-- /.container -->

@@ -1,0 +1,69 @@
+{{extend 'layout.html'}}
+
+
+
+<div class="brand">{{=XML(thisPage["heading"])}}</div>
+<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+{{include 'default/menu.html'}}
+<div class="container" id="container2">
+
+	<div class="btn-group btn-group-justified" style="margin:15px">
+		<a href="{{=URL('default', 'membership')}}" class="btn {{='btn-primary active' if not request.vars.show_form else 'btn-default'}}" role="button">Membership Information</a>
+		<a href="{{=URL('default', 'membership', vars=dict(show_form='true'))}}" class="btn {{='btn-primary active' if request.vars.show_form else 'btn-default'}}" role="button">Membership Form</a>
+	</div>
+
+	{{if request.vars.show_form:}}
+
+        <div class="row">
+            <div class="box">
+            
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Membership
+                        <strong>Form</strong>
+                    </h2>
+                    <hr>
+                </div>
+                
+                <div>  
+                    <object data="{{=URL('static','PlayersATX_Membership_Application.pdf')}}" type="application/pdf" width="100%" height="800px">
+     
+                    <p>It appears you don't have a PDF plugin for this browser.
+                    No biggie... you can <a href="{{=URL('static','PlayersATX_Membership_Application.pdf')}}">click here to
+                    download the PDF file.</a></p>  
+                     </object>                                 
+                </div>            
+            </div>
+           
+        </div>
+
+    {{else:}}
+
+		{{if cards:}}
+			{{for card in cards:}}
+				<div class="row">
+					<div class="box">
+						<div class="col-lg-12">
+							<hr>
+							<h2 class="intro-text text-center">
+								{{=XML(card["card_heading"])}}
+							</h2>
+							<hr>
+							{{if card["left_image"]:}}
+								<img class="pull-left" src="{{=URL('default', 'download', args=card['left_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+							{{pass}}
+							{{if card["right_image"]:}}
+								<img class="pull-right" src="{{=URL('default', 'download', args=card['right_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+							{{pass}}
+							<hr class="visible-xs">
+							{{=XML(card["body_text"])}}
+						</div>
+					</div>
+				</div>
+			{{pass}}
+		{{pass}}
+
+	{{pass}}
+
+</div>
+<!-- /.container -->

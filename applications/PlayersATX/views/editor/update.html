@@ -1,0 +1,312 @@
+{{extend 'layoutUser.html'}}
+<div class="container">
+	<div class="brand">{{=XML(thisPage["heading"])}}</div>
+	<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+	<div class="panel panel-default">
+		<div class="panel-heading" style="padding:0">
+			{{include 'editor/menu.html'}}
+		</div>
+		<div class="panel-body">
+			<div class="tab-pane active">
+				{{if thisPage['pageSetting']=='advanced':}}
+					<h3>Advanced Site Settings</h3>
+					<div class="row">
+						<div class="col-sm-8">
+
+							<h4 class="text-muted">Headings and text</h4>
+
+							{{=form}}
+
+						</div>
+						<div class="col-sm-4">
+
+							<h4 class="text-muted">Background Image</h4>
+							{{if bgForm:}}
+								{{if images:}}
+									<span class="text-muted">click to change</span><br>
+									<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='basic', element_id=thisPage['siteID']))}}">
+										<img src="{{=URL('default', 'download', args=images.thumbnail)}}" style="max-width:100%">
+									</a>
+								{{else:}}
+									<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='basic', element_id=thisPage['siteID']))}}" class="btn btn-default btn-block">
+										Pick a background image
+									</a>
+
+								{{pass}}
+							{{else:}}
+								<div class="alert alert-warning">
+									<span>You can not set the background till you have created the basic settings</span>
+								</div>
+							{{pass}}
+						</div>
+					</div>
+
+
+<!-- CONTENT CARD PAGE -->
+				{{elif thisPage['pageSetting']=='content':}}
+					{{if not request.vars.element_id:}}
+						
+						<h3>Manage Content Cards</h3>
+						{{if cards:}}
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="panel panel-primary">
+										<div class="panel-heading">
+											New Content Card
+										</div>
+										<div class="panel-body">
+											{{=form}}
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											Content cards <span class="text-muted">click to edit</span>
+										</div>
+										<div class="panel-body">
+											{{for card in cards:}}
+												<a href="{{=URL('editor', 'update', vars=dict(page_id='content', element_id=card['cardID']))}}" class="btn btn-default btn-block" style="overflow:hidden">
+													<strong>{{=card["card_name"]}}</strong>: {{=XML(card["card_heading"])}}
+												</a>
+											{{pass}}
+										</div>
+									</div>
+
+								</div>
+							</div>
+						{{else:}}
+							<h4 class="text-muted">Create a Content Card</h4>
+							{{=form}}
+						{{pass}}
+					{{else:}}
+						<a href="{{=URL('editor', 'update', vars=dict(page_id='content'))}}" class="btn btn-default">
+							<i class="fa fa-chevron-left"></i> back to cards
+						</a>
+						<h3>Content Card Editor</h3>
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										Update {{=cards["card_name"]}}
+									</div>
+									<div class="panel-body">
+										{{=form}}
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-8" style="overflow-y:auto">
+								<div>
+									<div class="text-center">Last edited: {{=cards["last_edit"].strftime("%a, %b %d %Y, %I:%M %p")}}</div>
+									<div class="pull-left">
+										<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-left', element_id=cards['cardID']))}}" class="btn btn-default">{{='Add' if not cards["left_image"] else 'Edit'}} left image</a>
+									</div>
+									<div class="pull-right">
+										<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-right', element_id=cards['cardID']))}}" class="btn btn-default">{{='Add' if not cards["right_image"] else 'Edit'}} right image</a>
+									</div>
+								</div>
+								<hr>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										{{=cards["card_name"]}}
+									</div>
+									<div class="panel-body">
+										<div class="panel-body">
+											<hr>
+											<h2 class="intro-text text-center">
+												{{=XML(cards["card_heading"])}}
+											</h2>
+											<hr>
+											{{if cards["left_image"]:}}
+												<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-left', element_id=cards['cardID']))}}">
+													<img class="pull-left" src="{{=URL('default', 'download', args=cards['left_image'])}}" alt="" style="width:25%;padding:10px">
+												</a>
+											{{pass}}
+											{{if cards["right_image"]:}}
+												<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-right', element_id=cards['cardID']))}}">
+													<img class="pull-right" src="{{=URL('default', 'download', args=cards['right_image'])}}" alt="" style="width:25%;padding:10px">
+												</a>
+											{{pass}}
+											<hr class="visible-xs">
+											{{=XML(cards["body_text"])}}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{{pass}}
+
+
+<!-- EVENT PAGE -->
+				{{elif thisPage['pageSetting']=='event':}}
+					{{if not request.vars.element_id:}}
+						
+						<h3>Manage Events</h3>
+						{{if events:}}
+							<div class="row">
+								<div class="col-sm-4">
+									<div class="panel panel-primary">
+										<div class="panel-heading">
+											New Event
+										</div>
+										<div class="panel-body">
+											<label>Event Image:</label><br>
+											<span class="text-muted">Add image after you create event</span>
+											{{=form}}
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-8">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											Events <span class="text-muted">click to edit</span>
+										</div>
+										<div class="panel-body">
+											<label>Filter Events by type:</label>
+											<div class="btn-group btn-group-justified" style="margin-bottom:15px">
+												<a href="{{=URL('editor', 'update', vars=dict(page_id='event', event_type='always'))}}" class="btn btn-info" role="button">Recurring Events</a>
+												<a href="{{=URL('editor', 'update', vars=dict(page_id='event',event_type='current'))}}" class="btn btn-success" role="button">Upcoming Events</a>
+												<a href="{{=URL('editor', 'update', vars=dict(page_id='event',event_type='expired'))}}" class="btn btn-warning" role="button">Expired Events</a>
+												<a href="{{=URL('editor', 'update', vars=dict(page_id='event'))}}" class="btn btn-default" role="button">Show all</a>
+											</div>
+											{{for event in events:}}
+												{{if not request.vars.event_type or event["dateType"] == request.vars.event_type:}}
+													{{if event["dateType"] != 'always':}}
+														<a href="{{=URL('editor', 'update', vars=dict(page_id='event', element_id=event['eventID']))}}" class="btn {{='btn-warning' if event['dateType'] == 'expired' else 'btn-success'}} btn-block" style="overflow:hidden">
+													{{else:}}
+														<a href="{{=URL('editor', 'update', vars=dict(page_id='event', element_id=event['eventID']))}}" class="btn btn-info btn-block" style="overflow:hidden">
+													{{pass}}
+														<strong>{{=event["event_name"]}}</strong>: {{=XML(event["event_heading"])}}
+													</a>
+												{{pass}}
+											{{pass}}
+										</div>
+									</div>
+
+								</div>
+							</div>
+						{{else:}}
+							<h4 class="text-muted">Create an Event</h4>
+							{{=form}}
+						{{pass}}
+
+					{{else:}}
+						<a href="{{=URL('editor', 'update', vars=dict(page_id='event'))}}" class="btn btn-default">
+							<i class="fa fa-chevron-left"></i> back to events
+						</a>
+						<h3>Event Editor</h3>
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										Update {{=events["event_name"]}}
+									</div>
+									<div class="panel-body">
+										{{=form}}
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-8" style="overflow-y:auto">
+								<div>
+									<div class="text-center">Last edited: {{=events["last_edit"].strftime("%a, %b %d %Y, %I:%M %p")}}</div>
+								</div>
+								<hr>
+								<div class="panel {{='panel-info' if events['dateType'] == 'always' else ('panel-success' if events['dateType'] == 'current' else 'panel-warning')}}">
+									<div class="panel-heading">
+										{{=events["event_name"]}}
+									</div>
+									<div class="panel-body">
+										<div class="panel-body">
+											{{if events["image"]:}}
+												<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
+											{{else:}}
+												<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
+											{{pass}}
+											<h2 class="intro-text text-center">
+												{{=XML(events["event_heading"])}}
+											</h2>
+											{{if events["eventDate"]:}}
+												<h3>{{=events["eventDate"].strftime("%a, %b %d %Y")}}</h3>
+											{{pass}}
+											<hr>
+											{{=XML(events["body_text"])}}
+											<hr>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					{{pass}}
+
+<!-- IMAGE LIBRARY PAGE -->
+				{{elif thisPage['pageSetting']=='image':}}
+					{{if not request.vars.element_id:}}
+						<h3>Image Library</h3>
+						{{if images:}}
+							<div class="row">
+								<div class="col-sm-3">
+									<div class="panel panel-primary">
+										<div class="panel-heading">
+											New Image
+										</div>
+										<div class="panel-body">
+											{{=form}}
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-9">
+									{{for image in images:}}
+										<div class="col-sm-4 col-md-3 col-lg-2">
+											<a href="{{=URL('editor', 'update', vars=dict(page_id='image', element_id=image.id))}}">
+												<img src="{{=URL('default', 'download', args=image.thumbnail)}}" style="width:100%">
+												<span>{{=image.image_name}}</span>
+											</a>
+										</div>
+									{{pass}}
+								</div>
+							</div>
+						{{else:}}
+							<h4 class="text-muted">Upload an image</h4>
+							{{=form}}
+						{{pass}}
+					{{else:}}
+						<a href="{{=URL('editor', 'update', vars=dict(page_id='image'))}}" class="btn btn-default">
+							<i class="fa fa-chevron-left"></i> back to library
+						</a>
+						<h3>Image Editor</h3>
+						<div class="row">
+							<div class="col-sm-3">
+								<div class="panel panel-primary">
+									<div class="panel-heading">
+										Update {{=images.image_name}}
+									</div>
+									<div class="panel-body">
+										{{=form}}
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-9" style="overflow-y:auto">
+								<label>Thumb:</label><br>
+								<img src="{{=URL('default', 'download', args=images.thumbnail)}}" style="max-width:100%">
+								<hr>
+								<label>Banner:</label><br>
+								<img src="{{=URL('default', 'download', args=images.banner)}}" style="max-width:100%">
+								<hr>
+								<label>Full Image: <span class="text-muted">click to download</span></label><br>
+								<a href="{{=URL('default', 'download', args=images.image_file)}}" target="new">
+									<img src="{{=URL('default', 'download', args=images.image_file)}}" style="max-width:100%">
+								</a>
+							</div>
+						</div>
+					{{pass}}
+
+				{{else:}}
+					<div class="alert alert-danger">
+						<h3>{{=pageIdError}}</h3>
+					</div>
+				{{pass}}
+			</div>
+
+		</div>
+	</div>
+</div>

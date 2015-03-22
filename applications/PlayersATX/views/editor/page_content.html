@@ -1,0 +1,295 @@
+{{extend 'layoutUser.html'}}
+<div class="container">
+	<div class="brand">{{=XML(thisPage["heading"])}}</div>
+	<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+	<div class="panel panel-default">
+		<div class="panel-heading" style="padding:0">
+			{{include 'editor/menu.html'}}
+		</div>
+		<div class="panel-body">
+			<div class="tab-pane active">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="list-group">
+							{{thisPageID =request.vars.element_id if request.vars.element_id else "1"}}
+							{{for page in thisPage["pages"]:}}
+								<a href="{{=URL('editor', 'page_content', vars=dict(element_id=page['id']))}}" class="list-group-item list-group-item-danger{{=' active' if str(page['id']) == thisPageID else ''}}">
+									{{=page['pageName']}}
+								</a>
+							{{pass}}
+						</div>
+					</div>
+					<div class="col-sm-10">
+						{{if thisPageID:}}
+							{{for page in thisPage["pages"]:}}
+								{{if str(page['id']) == thisPageID:}}
+									<h3>Events and Content for the "{{=page['pageName']}}" page</h3>
+								{{pass}}
+							{{pass}}
+							{{if request.vars.action:}}
+<!-- *************** ADD CONTENT CARD ****************** -->
+								{{if request.vars.action == "add_card":}}
+									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+										<i class="fa fa-chevron-left"></i> back to page content
+									</a>
+									{{if cards:}}
+										<h4>Choose the Content Card to add:</h4>
+										{{for card in cards:}}
+											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card', data_id=card['cardID']))}}" class="btn btn-default btn-block">
+												{{=card["card_name"]}}: {{=XML(card["card_heading"])}}
+											</a>
+										{{pass}}
+									{{else:}}
+										<h3>You have no content cards to add</h3>
+										<a href="" class="btn btn-default btn-block">Add Content card</a>
+									{{pass}}
+								{{elif request.vars.action == "add_event":}}
+<!-- *************** ADD EVENT ****************** -->
+									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+										<i class="fa fa-chevron-left"></i> back to page content
+									</a>
+									{{if events:}}
+										<h4>Choose the Event to add:</h4>
+										{{for event in events:}}
+											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event', data_id=event['eventID']))}}" class="btn btn-default btn-block">
+												{{=event["event_name"]}}: {{=XML(event["event_heading"])}}
+											</a>
+										{{pass}}
+									{{else:}}
+										<h3>You have no current events to add</h3>
+										<p>Events can not be added if they have expired, make sure the dates on any event you might be looking for is AFTER the current date/time or you wont see it
+										<a href="" class="btn btn-default btn-block">Add or update event</a>
+									{{pass}}
+								{{elif request.vars.action == "add_partner":}}
+<!-- *************** ADD PARTNER ****************** -->
+									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+										<i class="fa fa-chevron-left"></i> back to page content
+									</a>
+									{{if events:}}
+										<h4>Choose the Event to add:</h4>
+										{{for event in events:}}
+											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event', data_id=event['eventID']))}}" class="btn btn-default btn-block">
+												{{=event["event_name"]}}: {{=XML(event["event_heading"])}}
+											</a>
+										{{pass}}
+									{{else:}}
+										<h3>You have no current events to add</h3>
+										<p>Events can not be added if they have expired, make sure the dates on any event you might be looking for is AFTER the current date/time or you wont see it
+										<a href="" class="btn btn-default btn-block">Add or update event</a>
+									{{pass}}
+								{{elif request.vars.action == "edit":}}
+<!-- *************** EDIT PAGE SETTING ****************** -->
+									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+										<i class="fa fa-chevron-left"></i> back to page content
+									</a>
+									{{if cards:}}
+										<h3>Adjust the image size</h3>
+										<p>By default, the content card uses the image as it was uploaded. You can choose to convert the image to an alternate banner shape.</p> 
+										{{=form}}
+										<br>
+
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												{{=cards["card_name"]}}
+											</div>
+											<div class="panel-body">
+												<div class="panel-body">
+													<hr>
+													<h2 class="intro-text text-center">
+														{{=XML(cards["card_heading"])}}
+													</h2>
+													<hr>
+													{{if cards["left_image"]:}}
+														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-left', element_id=cards['cardID']))}}">
+															<img class="pull-left" src="{{=URL('default', 'download', args=cards['left_image'])}}" alt="" style="width:{{=cards['imageSize']}};padding:10px">
+														</a>
+													{{pass}}
+													{{if cards["right_image"]:}}
+														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-right', element_id=cards['cardID']))}}">
+															<img class="pull-right" src="{{=URL('default', 'download', args=cards['right_image'])}}" alt="" style="width:{{=cards['imageSize']}};padding:10px">
+														</a>
+													{{pass}}
+													<hr class="visible-xs">
+													{{=XML(cards["body_text"])}}
+												</div>
+											</div>
+										</div>
+									{{elif events:}}
+										<h3>Adjust the Layout settings</h3>
+										<p>By default, the event uses the banner image. You can choose to use the alternate image, in the original uploaded shape.</p> 
+										{{=form}}
+										<br>
+
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												{{=events["event_name"]}}
+											</div>
+											<div class="panel-body">
+												<div class="panel-body">
+													{{if events["image"]:}}
+														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
+													{{else:}}
+														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
+													{{pass}}
+													<h2 class="intro-text text-center">
+														{{=XML(events["event_heading"])}}
+													</h2>
+													<hr>
+													<hr class="visible-xs">
+													{{=XML(events["body_text"])}}
+												</div>
+											</div>
+										</div>
+									{{elif partners:}}
+										<h3>Adjust the Layout settings</h3>
+										<p>By default, the event uses the banner image. You can choose to use the alternate image, in the original uploaded shape.</p> 
+										{{=form}}
+										<br>
+
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												{{=events["event_name"]}}
+											</div>
+											<div class="panel-body">
+												<div class="panel-body">
+													{{if events["image"]:}}
+														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
+													{{else:}}
+														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
+													{{pass}}
+													<h2 class="intro-text text-center">
+														{{=XML(events["event_heading"])}}
+													</h2>
+													<hr>
+													<hr class="visible-xs">
+													{{=XML(events["body_text"])}}
+												</div>
+											</div>
+										</div>
+									{{pass}}
+
+								{{else:}}{{redirect(URL('editor', 'page_content', vars=dict(element_id=thisPageID)))}}
+								{{pass}}
+							{{else:}}
+<!-- *************** LIST PAGE EVENTS ****************** -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										Displayed Events
+									</div>
+									<div class="panel-body">
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event'))}}" class="btn btn-default btn-block">Add event to display on this page</a><br>
+										{{if events:}}
+											<ul class="list-group">
+												{{for event in events:}}
+													<li class="list-group-item clearfix">
+														<div class="pull-left">
+															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='edit'))}}">{{=event["event_name"]}}: {{=XML(event["event_heading"])}}</a></div>
+														<div class="pull-right">
+															{{if len(events) > 1:}}
+
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(events) == event['position'] else ''}}">
+																	<i class="fa fa-chevron-down"></i>
+																</a>
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if events[0]['dataID'] == event['dataID'] else ''}}">
+																	<i class="fa fa-chevron-up"></i>
+																</a>
+															{{pass}}
+															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
+																<i class="fa fa-trash-o"></i> remove
+															</a>
+														</div>
+													</li>
+												{{pass}}
+											</ul>
+										{{else:}}
+											<div class="alert alert-warning">
+												There are no events set to display on this page
+											</div>
+										{{pass}}
+									</div>
+								</div>
+<!-- *************** LIST CONTENT CARDS ****************** -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										Displayed Content Cards
+									</div>
+									<div class="panel-body">
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card'))}}" class="btn btn-default btn-block">Add content card to display on this page</a><br>
+										{{if cards:}}
+											<ul class="list-group">
+												{{for card in cards:}}
+													<li class="list-group-item clearfix">
+														<div class="pull-left">
+															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='edit'))}}">{{=card["card_name"]}}: {{=XML(card["card_heading"])}}</a></div>
+														<div class="pull-right">
+															{{if len(cards) > 1:}}
+
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(cards) == card['position'] else ''}}">
+																	<i class="fa fa-chevron-down"></i>
+																</a>
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if cards[0]['dataID'] == card['dataID'] else ''}}">
+																	<i class="fa fa-chevron-up"></i>
+																</a>
+															{{pass}}
+															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
+																<i class="fa fa-trash-o"></i> remove
+															</a>
+														</div>
+													</li>
+												{{pass}}
+											</ul>
+										{{else:}}
+											<div class="alert alert-warning">
+												There are no content cards set to display on this page
+											</div>
+										{{pass}}
+									</div>
+								</div>
+<!-- *************** LIST PARTNERS ****************** -->
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										Displayed Partners
+									</div>
+									<div class="panel-body">
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card'))}}" class="btn btn-default btn-block">Add partners to display on this page</a><br>
+										{{if partners:}}
+											<ul class="list-group">
+												{{for partner in partners:}}
+													<li class="list-group-item clearfix">
+														<div class="pull-left">
+															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='edit'))}}">{{=card["card_name"]}}: {{=XML(card["card_heading"])}}</a></div>
+														<div class="pull-right">
+															{{if len(cards) > 1:}}
+
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(cards) == card['position'] else ''}}">
+																	<i class="fa fa-chevron-down"></i>
+																</a>
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if cards[0]['dataID'] == card['dataID'] else ''}}">
+																	<i class="fa fa-chevron-up"></i>
+																</a>
+															{{pass}}
+															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
+																<i class="fa fa-trash-o"></i> remove
+															</a>
+														</div>
+													</li>
+												{{pass}}
+											</ul>
+										{{else:}}
+											<div class="alert alert-warning">
+												There are no partners set to display on this page
+											</div>
+										{{pass}}
+									</div>
+								</div>
+<!-- *************** DONE ****************** -->
+							{{pass}}
+						{{else:}}
+							<div class="alert alert-info">Pick a page to add or remove content</div>
+						{{pass}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

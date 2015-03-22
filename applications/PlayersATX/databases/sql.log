@@ -1,0 +1,387 @@
+timestamp: 2015-03-03T22:36:33.351096
+CREATE TABLE auth_user(
+    id INT AUTO_INCREMENT NOT NULL,
+    first_name VARCHAR(128),
+    last_name VARCHAR(128),
+    email VARCHAR(512),
+    password VARCHAR(512),
+    registration_key VARCHAR(512),
+    reset_password_key VARCHAR(512),
+    registration_id VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:36:33.838474
+CREATE TABLE auth_group(
+    id INT AUTO_INCREMENT NOT NULL,
+    role VARCHAR(512),
+    description LONGTEXT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:36:33.916135
+CREATE TABLE auth_membership(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT, INDEX user_id__idx (user_id), FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INT, INDEX group_id__idx (group_id), FOREIGN KEY (group_id) REFERENCES auth_group (id) ON DELETE CASCADE,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:36:34.093681
+CREATE TABLE auth_permission(
+    id INT AUTO_INCREMENT NOT NULL,
+    group_id INT, INDEX group_id__idx (group_id), FOREIGN KEY (group_id) REFERENCES auth_group (id) ON DELETE CASCADE,
+    name VARCHAR(512),
+    table_name VARCHAR(512),
+    record_id INT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:36:34.152871
+CREATE TABLE auth_event(
+    id INT AUTO_INCREMENT NOT NULL,
+    time_stamp DATETIME,
+    client_ip VARCHAR(512),
+    user_id INT, INDEX user_id__idx (user_id), FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin VARCHAR(512),
+    description LONGTEXT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:36:34.437314
+CREATE TABLE auth_cas(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT, INDEX user_id__idx (user_id), FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on DATETIME,
+    service VARCHAR(512),
+    ticket VARCHAR(512),
+    renew CHAR(1),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.098309
+CREATE TABLE basic_site(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_title VARCHAR(512),
+    page_header VARCHAR(512),
+    page_subheader VARCHAR(512),
+    page_tagline VARCHAR(512),
+    page_desc LONGTEXT,
+    background_color VARCHAR(512),
+    background_img INT,
+    background_img_style VARCHAR(512),
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.190071
+CREATE TABLE content_card(
+    id INT AUTO_INCREMENT NOT NULL,
+    card_name VARCHAR(512),
+    card_heading VARCHAR(512),
+    left_image INT,
+    right_image INT,
+    body_text LONGTEXT,
+    created DATETIME,
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.315607
+CREATE TABLE events(
+    id INT AUTO_INCREMENT NOT NULL,
+    event_name VARCHAR(512),
+    event_heading VARCHAR(512),
+    event_image INT,
+    body_text LONGTEXT,
+    expiration DATE,
+    created DATETIME,
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.407958
+CREATE TABLE image_library(
+    id INT AUTO_INCREMENT NOT NULL,
+    image_name VARCHAR(512),
+    image_desc LONGTEXT,
+    keywords VARCHAR(512),
+    created DATETIME,
+    modified DATETIME,
+    image_file VARCHAR(512),
+    thumbnail VARCHAR(512),
+    banner VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.651575
+CREATE TABLE image_key_words(
+    id INT AUTO_INCREMENT NOT NULL,
+    image_id INT, INDEX image_id__idx (image_id), FOREIGN KEY (image_id) REFERENCES image_library (id) ON DELETE CASCADE,
+    key_word VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.768683
+CREATE TABLE page_types(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_name VARCHAR(512),
+    page_file VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.862118
+CREATE TABLE page_settings(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_type INT, INDEX page_type__idx (page_type), FOREIGN KEY (page_type) REFERENCES page_types (id) ON DELETE CASCADE,
+    data_type VARCHAR(512),
+    data_card INT,
+    data_order INT,
+    layout_style INT,
+    image_size INT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:29.937547
+CREATE TABLE script_library(
+    id INT AUTO_INCREMENT NOT NULL,
+    script_name VARCHAR(512),
+    script_desc LONGTEXT,
+    script_version VARCHAR(512),
+    created DATETIME,
+    script_file VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-03T22:59:30.004946
+CREATE TABLE style_library(
+    id INT AUTO_INCREMENT NOT NULL,
+    style_name VARCHAR(512),
+    style_desc LONGTEXT,
+    style_version VARCHAR(512),
+    created DATETIME,
+    style_file VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-05T00:00:20.023894
+ALTER TABLE page_settings ADD alt_image CHAR(1);
+success!
+success!
+timestamp: 2015-03-05T00:00:20.467290
+CREATE TABLE layout_styles(
+    id INT AUTO_INCREMENT NOT NULL,
+    layout_label VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-12T13:09:19.783883
+ALTER TABLE basic_site ADD page_footer VARCHAR(512);
+success!
+success!
+timestamp: 2015-03-12T18:10:01.862545
+CREATE TABLE partners(
+    id INT AUTO_INCREMENT NOT NULL,
+    partner_name VARCHAR(512),
+    partner_heading VARCHAR(512),
+    partner_image_link VARCHAR(512),
+    partner_image INT,
+    display_style VARCHAR(512),
+    created DATETIME,
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-15T14:18:01.897181
+ALTER TABLE partners ADD page_id INT, ADD INDEX page_id__idx (page_id), ADD FOREIGN KEY (page_id) REFERENCES page_settings (id) ON DELETE CASCADE;
+success!
+success!
+timestamp: 2015-03-21T20:44:07.069000
+CREATE TABLE auth_user(
+    id INT AUTO_INCREMENT NOT NULL,
+    first_name VARCHAR(128),
+    last_name VARCHAR(128),
+    email VARCHAR(512),
+    password VARCHAR(512),
+    registration_key VARCHAR(512),
+    reset_password_key VARCHAR(512),
+    registration_id VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.372000
+CREATE TABLE auth_group(
+    id INT AUTO_INCREMENT NOT NULL,
+    role VARCHAR(512),
+    description LONGTEXT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.437000
+CREATE TABLE auth_membership(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT, INDEX user_id__idx (user_id), FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INT, INDEX group_id__idx (group_id), FOREIGN KEY (group_id) REFERENCES auth_group (id) ON DELETE CASCADE,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.509000
+CREATE TABLE auth_permission(
+    id INT AUTO_INCREMENT NOT NULL,
+    group_id INT, INDEX group_id__idx (group_id), FOREIGN KEY (group_id) REFERENCES auth_group (id) ON DELETE CASCADE,
+    name VARCHAR(512),
+    table_name VARCHAR(512),
+    record_id INT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.578000
+CREATE TABLE auth_event(
+    id INT AUTO_INCREMENT NOT NULL,
+    time_stamp DATETIME,
+    client_ip VARCHAR(512),
+    user_id INT, INDEX user_id__idx (user_id), FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin VARCHAR(512),
+    description LONGTEXT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.673000
+CREATE TABLE auth_cas(
+    id INT AUTO_INCREMENT NOT NULL,
+    user_id INT, INDEX user_id__idx (user_id), FOREIGN KEY (user_id) REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on DATETIME,
+    service VARCHAR(512),
+    ticket VARCHAR(512),
+    renew CHAR(1),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.778000
+CREATE TABLE basic_site(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_title VARCHAR(512),
+    page_header VARCHAR(512),
+    page_footer VARCHAR(512),
+    page_subheader VARCHAR(512),
+    page_tagline VARCHAR(512),
+    page_desc LONGTEXT,
+    background_color VARCHAR(512),
+    background_img INT,
+    background_img_style VARCHAR(512),
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.860000
+CREATE TABLE page_types(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_name VARCHAR(512),
+    page_file VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.914000
+CREATE TABLE layout_styles(
+    id INT AUTO_INCREMENT NOT NULL,
+    layout_label VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:07.974000
+CREATE TABLE page_settings(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_type INT, INDEX page_type__idx (page_type), FOREIGN KEY (page_type) REFERENCES page_types (id) ON DELETE CASCADE,
+    data_type VARCHAR(512),
+    data_card INT,
+    data_order INT,
+    alt_image CHAR(1),
+    layout_style INT,
+    image_size INT,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.041000
+CREATE TABLE content_card(
+    id INT AUTO_INCREMENT NOT NULL,
+    card_name VARCHAR(512),
+    card_heading VARCHAR(512),
+    left_image INT,
+    right_image INT,
+    body_text LONGTEXT,
+    created DATETIME,
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.112000
+CREATE TABLE events(
+    id INT AUTO_INCREMENT NOT NULL,
+    event_name VARCHAR(512),
+    event_heading VARCHAR(512),
+    event_image INT,
+    body_text LONGTEXT,
+    expiration DATE,
+    created DATETIME,
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.172000
+CREATE TABLE partners(
+    id INT AUTO_INCREMENT NOT NULL,
+    page_id INT, INDEX page_id__idx (page_id), FOREIGN KEY (page_id) REFERENCES page_settings (id) ON DELETE CASCADE,
+    partner_name VARCHAR(512),
+    partner_heading VARCHAR(512),
+    partner_image_link VARCHAR(512),
+    partner_image INT,
+    display_style VARCHAR(512),
+    created DATETIME,
+    modified DATETIME,
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.252000
+CREATE TABLE image_library(
+    id INT AUTO_INCREMENT NOT NULL,
+    image_name VARCHAR(512),
+    image_desc LONGTEXT,
+    keywords VARCHAR(512),
+    created DATETIME,
+    modified DATETIME,
+    image_file VARCHAR(512),
+    thumbnail VARCHAR(512),
+    banner VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.352000
+CREATE TABLE image_key_words(
+    id INT AUTO_INCREMENT NOT NULL,
+    image_id INT, INDEX image_id__idx (image_id), FOREIGN KEY (image_id) REFERENCES image_library (id) ON DELETE CASCADE,
+    key_word VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.409000
+CREATE TABLE script_library(
+    id INT AUTO_INCREMENT NOT NULL,
+    script_name VARCHAR(512),
+    script_desc LONGTEXT,
+    script_version VARCHAR(512),
+    created DATETIME,
+    script_file VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!
+timestamp: 2015-03-21T20:44:08.463000
+CREATE TABLE style_library(
+    id INT AUTO_INCREMENT NOT NULL,
+    style_name VARCHAR(512),
+    style_desc LONGTEXT,
+    style_version VARCHAR(512),
+    created DATETIME,
+    style_file VARCHAR(512),
+    PRIMARY KEY (id)
+) ENGINE=InnoDB CHARACTER SET utf8;
+success!

@@ -1,0 +1,50 @@
+{{extend 'layoutUser.html'}}
+<div class="container">
+	<div class="brand">{{=XML(thisPage["heading"])}}</div>
+	<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+
+	<div style="background-color:rgba(0, 0, 0, 0.5)">
+
+		<h2 style="color:white;text-align:center">Admin Login</h2>
+		<div class="row">
+			<div class="col-sm-3"></div>
+			<div class="col-sm-6" style="padding:15px">
+				<div id="web2py_user_form">
+					{{
+					if request.args(0)=='login':
+					    if not 'register' in auth.settings.actions_disabled:
+					        form.add_button(T('Register'),URL(args='register', vars={'_next': request.vars._next} if request.vars._next else None),_class='btn')
+					    pass
+					    if not 'request_reset_password' in auth.settings.actions_disabled:
+					        form.add_button(T('Lost Password'),URL(args='request_reset_password'),_class='btn')
+					    pass
+					pass
+					=form.custom.begin
+					}}
+						<div class="form-group">
+							<label for="auth_user_email" style="color:white">Email address:</label>
+							<input type="email" class="form-control" id="auth_user_email" name="email" placeholder="Enter email">
+						</div>
+						<div class="form-group">
+							<label for="auth_user_password" style="color:white">Password</label>
+							<input type="password" class="form-control" id="auth_user_password" name="password">
+						</div>
+						<hr>
+						<button type="submit" class="btn btn-danger btn-block">Login</button>
+						<a href="{{=URL(args='request_reset_password')}}" class="btn btn-default btn-block">Lost Password</a>
+					{{=form.custom.end}}
+				</div>
+				<script language="javascript"><!--
+				jQuery("#web2py_user_form input:visible:enabled:first").focus();
+				{{if request.args(0)=='register':}}
+				    web2py_validate_entropy(jQuery('#auth_user_password'),100);
+				{{elif request.args(0)=='change_password':}}
+				    web2py_validate_entropy(jQuery('#no_table_new_password'),100);
+				{{pass}}
+				</script>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
+	</div>
+</div>
+
