@@ -45,3 +45,5 @@ Temporary Items
 #web2py specific
 databases
 errors
+sessions
+environment.txt
