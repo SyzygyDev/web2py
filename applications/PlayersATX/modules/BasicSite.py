@@ -133,9 +133,12 @@ class ContentCards:
 				cards = []
 				for result in results:
 					thisCard = self.get_content_cards(result.data_card, altImage=result.alt_image)
-					thisCard["imageSize"] = str(result.image_size or 25) + "%"
-					thisCard["position"] = result.data_order
-					cards.append(thisCard)
+					if thisCard:
+						thisCard["imageSize"] = str(result.image_size or 25) + "%"
+						thisCard["position"] = result.data_order
+						cards.append(thisCard)
+					else:
+						result.delete_record()
 
 		return cards
 
@@ -148,9 +151,12 @@ class ContentCards:
 				cards = []
 				for result in results:
 					thisCard = self.get_content_cards(result.data_card)
-					thisCard["position"] = result.data_order
-					thisCard["dataID"] = result.id
-					cards.append(thisCard)
+					if thisCard:
+						thisCard["position"] = result.data_order
+						thisCard["dataID"] = result.id
+						cards.append(thisCard)
+					else:
+						result.delete_record()
 		return cards
 
 	def get_new_card_position(self, pageID):
@@ -225,7 +231,11 @@ class Events:
 				events = []
 				for result in results:
 					process = True
+					purgeMe = False
 					thisEvent = self.get_events(result.data_card, altImage=result.alt_image)
+					if not thisEvent:
+						process = False
+						purgeMe = True
 					if typeOfEvent:
 						if typeOfEvent == "always":
 							if not thisEvent["dateType"] == "always":
@@ -238,6 +248,8 @@ class Events:
 						thisEvent["layout"] = result.layout_style or 1
 						thisEvent["position"] = result.data_order
 						events.append(thisEvent)
+					elif purgeMe:
+						result.delete_record()
 
 		return events
 
@@ -250,10 +262,13 @@ class Events:
 				events = []
 				for result in results:
 					thisEvent = self.get_events(result.data_card)
-					thisEvent["layout"] = result.layout_style or 1
-					thisEvent["position"] = result.data_order
-					thisEvent["dataID"] = result.id
-					events.append(thisEvent)
+					if thisEvent:
+						thisEvent["layout"] = result.layout_style or 1
+						thisEvent["position"] = result.data_order
+						thisEvent["dataID"] = result.id
+						events.append(thisEvent)
+					else:
+						result.delete_record()
 		return events
 
 	def get_new_event_position(self, pageID):

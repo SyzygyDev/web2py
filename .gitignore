@@ -43,7 +43,9 @@ Temporary Items
 .apdisk
 
 #web2py specific
-databases
+/*.py
 errors
 sessions
+cache
+databases
 environment.txt
