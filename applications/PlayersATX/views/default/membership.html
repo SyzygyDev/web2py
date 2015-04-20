@@ -8,8 +8,8 @@
 <div class="container" id="container2">
 
 	<div class="btn-group btn-group-justified" style="margin:15px">
-		<a href="{{=URL('default', 'membership')}}" class="btn {{='btn-primary active' if not request.vars.show_form else 'btn-default'}}" role="button">Membership Information</a>
-		<a href="{{=URL('default', 'membership', vars=dict(show_form='true'))}}" class="btn {{='btn-primary active' if request.vars.show_form else 'btn-default'}}" role="button">Membership Form</a>
+		<a href="{{=URL('default', 'membership')}}" class="btn {{='btn-danger active' if not request.vars.show_form else 'btn-default'}}" role="button">Membership Information</a>
+		<a href="{{=URL('default', 'membership', vars=dict(show_form='true'))}}" class="btn {{='btn-danger active' if request.vars.show_form else 'btn-default'}}" role="button">Membership Form</a>
 	</div>
 
 	{{if request.vars.show_form:}}

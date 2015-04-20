@@ -9,7 +9,7 @@
 <div class="container">
 	<div class="btn-group btn-group-justified" style="margin-bottom:15px">
 		<a href="{{=URL('default', 'events')}}" class="btn {{='btn-danger active' if not request.vars.event_type else 'btn-default'}}" role="button">Recurring Events</a>
-		<a href="{{=URL('default', 'events', vars=dict(event_type='once'))}}" class="btn {{='btn-danger active' if request.vars.event_type == 'once' else 'btn-default'}}" role="button">Special Events</a>
+		<a href="{{=URL('default', 'events', vars=dict(event_type='once'))}}" class="btn {{='btn-danger active' if request.vars.event_type == 'once' else 'btn-default'}}" role="button">Upcoming Events</a>
 	</div>
 
 	<div class="row">

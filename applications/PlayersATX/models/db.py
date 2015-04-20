@@ -40,12 +40,12 @@ auth.define_tables(username=False, signature=False)
 
 ## configure email
 mail = auth.settings.mailer
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'
-mail.settings.sender = 'you@gmail.com'
-mail.settings.login = 'username:password'
+mail.settings.server = 'smtp.gmail.com:587'
+mail.settings.sender = 'syzygywebbed@gmail.com'
+mail.settings.login = 'syzygywebbed@gmail.com:Mesha2Paige'
 
 ## configure auth policy
-auth.settings.actions_disabled.append('register')
+# auth.settings.actions_disabled.append('register')
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
