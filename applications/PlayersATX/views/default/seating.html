@@ -1,0 +1,86 @@
+{{extend 'layout.html'}}<div class="brand">{{=XML(thisPage["heading"])}}</div>
+<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+{{include 'default/menu.html'}}
+
+<div class="container">
+
+    <div class="row" style="padding:15px">
+        <hr>
+        <h2 class="intro-text text-center">Seating
+            <strong>Reservations</strong>
+        </h2>
+        <hr>
+        <h3 class="intro-text text-center">All reservations are "First Come - First Served"
+        </h3>
+        <div class="col-sm-6">
+            <h3 class="intro-text text-center">Phone <span style="color:red">reservations</span>
+            </h3>
+            <p>Club Number (512) 670-2051<br>Please leave a message...</p><hr>
+            <p>Below is the layout of the club. The tables are numbered for easy reservations. When making a reservation by phone, please start by listing the names in your party (it is helpful if you say the number in your party as well), table number (or desired area), Member ID (off your membership card) and date you are coming.</p><br>
+            <h4>Example:</h4>
+            <p><i>"Mickey, Minnie, Donald, and Daisy...Party of 4, Right Side Dance Floor, Table 3 if Available, Member # A92299, Wed dec 31, 2014"</i></p>
+
+        </div>
+        <div class="col-sm-6">
+            <h3 class="intro-text text-center">Email <span style="color:red">reservations</span>
+            </h3>
+            <p>Please fill out the form below<br><strong>NOTE:</strong>Email reservations can only be made 1 week in advance</p>
+            <p>The form must be filled out completely. Incomplete reservation submissions will be moved to the back of the list.</p>
+            {{=form.custom.begin}}
+                <div class="row">
+                        <div class="form-group">
+                            <label>Names</label>
+                            <textarea id="no_table_name" name="name" class="form-control" rows="2" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Member ID</label>
+                            <input id="no_table_member_id" name="member_id" type="text" class="form-control" required>
+                            <span class="text-danger">You can NOT make reservations without a Membership</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input id="no_table_email" name="email" type="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input id="no_table_Phone_Number" name="Phone_Number" type="tel" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Table Number</label>
+                            <select id="no_table_table_id" name="table_id" class="form-control" required>
+                                <option value="">--Select A table--</option>
+                                {{for index, reserved in enumerate(reservables):}}
+                                    <option value={{=index}}>{{=reserved["label"]}}</option>
+                                {{pass}}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Date for Reservation</label>
+                            <input id="party_date" name="party_date" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default" value="Submit">
+                        </div>
+                </div>
+            {{=form.custom.end}}
+        </div>
+    </div>
+    {{if emailSuccess:}}
+        <div class="alert alert-success">
+            <p>Email confirmation of your reservation request has been sent, Thank you.</p>
+        </div>
+    {{pass}}
+    <div style="width:100%;padding:25px">
+        <a href="{{=URL('static','images/clublayout1.jpg')}}" target="_new"><img src="{{=URL('static','images/clublayout1.jpg')}}" style="width:100%"></a><br>
+        <h4>General Areas</h4>
+        <ul>
+            <li>Executive VIP Lounge Area</li>
+            <li>Executive VIP Right side Dance Floor</li>
+            <li>Left Side Dance Floor <small>Table 1-9</small></li>
+            <li>Round Dance Floor <small>Table 10-11</small></li>
+            <li>Front Bar Area <small>Table 12-24</small></li>
+            <li>Rear Bar Area <small>Table 25-29</small></li>
+        <ul>
+    </div>
+
+</div>

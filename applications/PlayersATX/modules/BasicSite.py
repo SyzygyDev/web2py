@@ -11,6 +11,8 @@ class MainPage:
 	def get_my_page(self):
 		pageSettings = {}
 		results = self.db(self.db.basic_site.id > 0).select().first()
+
+		pageSettings["pages"] = []
 		if results:
 			pageSettings["siteID"] = results.id or None
 			pageSettings["title"] = results.page_title or "PlayersATX"
@@ -27,14 +29,6 @@ class MainPage:
 				imageData = self.db.image_library(results.background_img)
 				pageSettings["backgroundImg"] = imageData.image_file
 
-			else:
-				thisPage = {
-					"id":1,
-					"pageName":"Home",
-					"pageFile":"index"
-				}
-				pageSettings["pages"].append(thisPage)
-
 		else:
 			pageSettings["siteID"] = None
 			pageSettings["title"] = "PlayersATX"
@@ -47,8 +41,6 @@ class MainPage:
 			pageSettings["backgroundColor"] = None
 			pageSettings["backgroundStyle"] = None
 			pageSettings["backgroundImg"] = None
-
-		pageSettings["pages"] = []
 		query = self.db.page_types.id > 0
 		rawPages = self.db(query).select()
 		if rawPages:

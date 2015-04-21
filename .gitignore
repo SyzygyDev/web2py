@@ -44,8 +44,10 @@ Temporary Items
 
 #web2py specific
 /*.py
+*.pyc
 errors
 sessions
 cache
 databases
 environment.txt
+uploads

@@ -56,7 +56,7 @@ def update():
 		else:
 			form = SQLFORM(db.basic_site,
 				submit_button='Create',
-				fields=['page_title','page_header','page_subheader','page_tagline','page_desc'],
+				fields=['page_title','page_header','page_footer','page_subheader','page_tagline','page_desc'],
 				formstyle="bootstrap")
 			for input in form.elements('input'):
 				input['_style']='width:100%'
