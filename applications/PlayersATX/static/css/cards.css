@@ -5,7 +5,7 @@
 }
 
 .payment-methods ul li {
-    background: url(../img/payment-methods.png) no-repeat 0 0;
+    background: url(payment-methods.png) no-repeat 0 0;
     padding: 0 0 0 58px;
     margin: 0 0 8px;
     position: relative;

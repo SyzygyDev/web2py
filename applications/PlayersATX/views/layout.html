@@ -31,17 +31,23 @@
 	<link href="{{=URL('static','css/animate.css')}}" rel="stylesheet">
 
 	<!-- REPLACE THIS WITH THE SCRIPT AND STYLE TABLE -->
-	{{if request.vars.page_id == "event":}}
+	{{if request.function == "seating":}}
 		<!-- THIS IS FOR THE DATE PICKER -->
 		<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 		<script src="//code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="//code.jquery.com/ui/1.11.3/jquery-ui.js"></script>
 		<script>
 			$(function() {
-			$( "#events_expiration" ).datepicker({
-				"dateFormat":"yy-mm-dd",
-				"showAnim":"blind"
-			});
+				$( "#party_date" ).datepicker({
+					"dateFormat":"yy-mm-dd",
+					"showAnim":"blind",
+					"minDate": {{=isAfterEight}},
+					"maxDate": "+8d",
+				    beforeShowDay: function(date) {
+				        var day = date.getDay();
+				        return [(day == 5 || day == 6), ''];   
+				    }
+				});
 			
 			});
 		</script>
@@ -76,7 +82,10 @@
 			</div>
 		</div>
 	</nav>
-	<script src="{{=URL('static','js/jquery-1.11.0.js')}}"></script>
+	{{if not request.function == "seating":}}
+		<!-- JQUERY LOADED BY DATE PICKER IF SEATING-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+	{{pass}}
 	<script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
 	{{if globals().get('events') and hasCarousel:}}
 		<script>
