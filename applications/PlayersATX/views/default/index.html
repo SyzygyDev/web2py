@@ -77,14 +77,18 @@
 							{{=XML(card["card_heading"])}}
 						</h2>
 						<hr>
-						{{if card["left_image"]:}}
-							<img class="pull-left" src="{{=URL('default', 'download', args=card['left_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
-						{{pass}}
-						{{if card["right_image"]:}}
-							<img class="pull-right" src="{{=URL('default', 'download', args=card['right_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
-						{{pass}}
-						<hr class="visible-xs">
-						{{=XML(card["body_text"])}}
+						<div>
+							{{if card["left_image"]:}}
+								<img src="{{=URL('default', 'download', args=card['left_image'])}}" alt="" align="left" style="width:{{=card['imageSize']}};padding:10px">
+							{{pass}}
+							{{if card["right_image"]:}}
+								<img class="pull-right" src="{{=URL('default', 'download', args=card['right_image'])}}" alt="" style="width:{{=card['imageSize']}};padding:10px">
+							{{pass}}
+							<hr class="visible-xs">
+							<div style="padding-top:10px">
+								{{=XML(card["body_text"])}}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
