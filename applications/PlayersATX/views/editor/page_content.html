@@ -177,34 +177,40 @@
 										Displayed Events
 									</div>
 									<div class="panel-body">
-										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event'))}}" class="btn btn-default btn-block">Add event to display on this page</a><br>
-										{{if events:}}
-											<ul class="list-group">
-												{{for event in events:}}
-													<li class="list-group-item clearfix">
-														<div class="pull-left">
-															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='edit'))}}">{{=event["event_name"]}}: {{=XML(event["event_heading"])}}</a></div>
-														<div class="pull-right">
-															{{if len(events) > 1:}}
-
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(events) == event['position'] else ''}}">
-																	<i class="fa fa-chevron-down"></i>
-																</a>
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if events[0]['dataID'] == event['dataID'] else ''}}">
-																	<i class="fa fa-chevron-up"></i>
-																</a>
-															{{pass}}
-															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
-																<i class="fa fa-trash-o"></i> remove
-															</a>
-														</div>
-													</li>
-												{{pass}}
-											</ul>
-										{{else:}}
-											<div class="alert alert-warning">
-												There are no events set to display on this page
+										{{if pageId == 1:}}
+											<div class="alert alert-info">
+												Home page events are set on the "Events" page
 											</div>
+										{{else:}}
+											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event'))}}" class="btn btn-default btn-block">Add event to display on this page</a><br>
+											{{if events:}}
+												<ul class="list-group">
+													{{for event in events:}}
+														<li class="list-group-item clearfix">
+															<div class="pull-left">
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='edit'))}}">{{=event["event_name"]}}: {{=XML(event["event_heading"])}}</a></div>
+															<div class="pull-right">
+																{{if len(events) > 1:}}
+
+																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(events) == event['position'] else ''}}">
+																		<i class="fa fa-chevron-down"></i>
+																	</a>
+																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if events[0]['dataID'] == event['dataID'] else ''}}">
+																		<i class="fa fa-chevron-up"></i>
+																	</a>
+																{{pass}}
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
+																	<i class="fa fa-trash-o"></i> remove
+																</a>
+															</div>
+														</li>
+													{{pass}}
+												</ul>
+											{{else:}}
+												<div class="alert alert-warning">
+													There are no events set to display on this page
+												</div>
+											{{pass}}
 										{{pass}}
 									</div>
 								</div>
@@ -246,7 +252,7 @@
 									</div>
 								</div>
 <!-- *************** LIST PARTNERS ****************** -->
-								<div class="panel panel-default">
+		<!-- 						<div class="panel panel-default">
 									<div class="panel-heading">
 										Displayed Partners
 									</div>
@@ -281,7 +287,7 @@
 											</div>
 										{{pass}}
 									</div>
-								</div>
+								</div> -->
 <!-- *************** DONE ****************** -->
 							{{pass}}
 						{{else:}}

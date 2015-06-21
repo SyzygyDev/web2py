@@ -1,0 +1,54 @@
+{{extend 'layout_site.html'}}
+    <div class="container register" id="cloud-container">
+      <div class="panel">
+      <div class="row">
+        <div class="col-md-12 rules">    
+          <h4>Heller Volleyball, Can you dig it!</h4>          
+        </div>
+        <form role="form" action="" method="post" >
+          <div class="col-lg-6 rules">            
+            <div class="form-group required">
+              <label for="InputName" class="control-label">Your Name</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="InputName" id="InputName" placeholder="Enter Name" required >
+                <span class="input-group-addon"></span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label for="InputEmail" class="control-label">Your Email</label>
+              <div class="input-group">
+                <input type="email" class="form-control" id="InputEmail" name="InputEmail" placeholder="Enter Email" required >
+                <span class="input-group-addon"></span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label for="InputMessage" class="control-label">Message</label>
+              <div class="input-group">
+                <textarea name="InputMessage" id="InputMessage" class="form-control" rows="5" required></textarea>
+                <span class="input-group-addon"></span>
+              </div>
+            </div>
+            <div class="form-group required">
+              <label for="InputReal" class="control-label">What is 4+3?</label>
+              <div class="input-group">
+                <input type="text" class="form-control" name="InputReal" id="InputReal" required>
+                <span class="input-group-addon"></span></div>
+            </div>
+            <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary btn-lg raised pull-right">
+          </div>
+        </form>
+        <hr class="featurette-divider hidden-lg">
+        <div class="col-lg-5 col-md-push-1">
+          <address>
+          <h4>Heller Volleyball</h4>
+          <p>Rich Heller<br>          
+            Email: hellervolleyball@gmail.com
+            <br>
+            Phone: 512-669-6169
+            <br>
+          </p>
+          </address>
+        </div>
+      </div> 
+      </div>
+    </div>

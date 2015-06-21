@@ -1,11 +1,10 @@
-{{extend 'layout.html'}}<div class="brand">{{=XML(thisPage["heading"])}}</div>
-<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+{{extend 'layout.html'}}
 {{include 'default/menu.html'}}
 
 <div class="container">
 
     <div class="row">
-        <div class="box">
+        <div class="box clearfix">
             <hr>
             <h2 class="intro-text text-center">Location
             </h2>
@@ -14,8 +13,10 @@
             </div>
             <div class="col-md-6">
                 <!-- Embedded Google Map using an iframe - to select your location find it on Google maps and paste the link as the iframe src. If you want to use the Google Maps API instead then have at it! -->
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3440.1594505901467!2d-97.68327850000004!3d30.431581499999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8644ce8ef318ad17%3A0xf40644a814a69ff7!2s13800+Dragline+Dr%2C+Austin%2C+TX+78728!5e0!3m2!1sen!2sus!4v1413323540878" width="100%" height="450" frameborder="0" style="border:0"></iframe>
-            </div>                
+                <a href="https://www.google.com/maps/place/13800+Dragline+Dr,+Austin,+TX+78728/@30.4315075,-97.6834955,17z/data=!3m1!4b1!4m2!3m1!1s0x8644ce8ef318ad17:0xf40644a814a69ff7" target="_new">
+                    <img src="https://maps.googleapis.com/maps/api/staticmap?center=30.431581499999997,-97.68327850000004&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7Clabel:C%7C30.431581499999997,-97.68327850000004" style="width:100%;max-height:450px">
+                </a>
+            </div>        
             <div class="col-md-4">
                     <p>Phone:
                         <strong>(512) 670-2051</strong>

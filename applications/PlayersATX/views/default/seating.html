@@ -1,5 +1,4 @@
-{{extend 'layout.html'}}<div class="brand">{{=XML(thisPage["heading"])}}</div>
-<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+{{extend 'layout.html'}}
 {{include 'default/menu.html'}}
 
 <div class="container">
@@ -25,7 +24,7 @@
             <div class="col-sm-6">
                 <h3 class="intro-text text-center">Email <span style="color:red">reservations</span>
                 </h3>
-                <p>Please fill out the form below<br><strong>NOTE:</strong>Email reservations can only be made 1 week in advance</p>
+                <p>Please fill out the form below<br><strong>NOTE:</strong> Email reservations can only be made 1 week in advance</p>
                 <p>The form must be filled out completely. Incomplete reservation submissions will be moved to the back of the list.</p>
                 {{=form.custom.begin}}
                     <div class="row">
@@ -72,17 +71,11 @@
             <p>Email confirmation of your reservation request has been sent, Thank you.</p>
         </div>
     {{pass}}
-    <div style="width:100%;padding:25px">
+    <div class="row">
         <a href="{{=URL('static','images/clublayout1.jpg')}}" target="_new"><img src="{{=URL('static','images/clublayout1.jpg')}}" style="width:100%"></a><br>
-        <h4>General Areas</h4>
-        <ul>
-            <li>Executive VIP Lounge Area</li>
-            <li>Executive VIP Right side Dance Floor</li>
-            <li>Left Side Dance Floor <small>Table 1-9</small></li>
-            <li>Round Dance Floor <small>Table 10-11</small></li>
-            <li>Front Bar Area <small>Table 12-24</small></li>
-            <li>Rear Bar Area <small>Table 25-29</small></li>
-        <ul>
+        <br>
     </div>
-
+    {{if cards:}}
+        {{include 'default/cards.tpl.html'}}
+    {{pass}}
 </div>

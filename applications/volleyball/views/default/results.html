@@ -1,0 +1,29 @@
+{{extend 'layout_site.html'}}
+<div class="container register" id="cloud-container">
+	<div class="panel">
+		<div class="row">
+			<div class="col-md-12 rules">
+				<h3>Results</h3>
+				<div class="form-group">
+					<label class="control-label">number of sample teams</label>
+			        <input type="text" ng-model="playersToGenerate">
+			        <button ng-click="generateWithRandomPlayers()">Generate</button>
+			    </div>
+			    <button class="btn btn-sm btn-primary" ng-click="showMeAdmin('switch')">
+			    	<span ng-if="!showMeAdmin()">Admin Mode</span>
+			    	<span ng-if="showMeAdmin()">Player Mode</span>
+			    </button>
+			    <div ng-show="!showMeAdmin()">
+					<h4>Sample results</h4>
+					<p>So basically the bracket will look like this. Here you see what site visitors will see, just a view of what has transpired. Click on "admin mode" above and you can enter scores. When completed, this setting will be based on your login</p>
+			    	<ngbracket bracket-data="bracketData" fixed-score="true"></ngbracket>
+		    	</div>
+
+			    <div ng-show="showMeAdmin()" style="position:absolute;top:90px;bottom:0;left:0;right:0;padding:15px">
+			    	<iframe id="frame" class="iframe-view-square" ng-src="{!getBracketUrl()!}" style="width:100%;height:800px" ng-if="playersToGenerate"  frameBorder="0"></iframe>
+		    	</div>
+		    	</div>
+			</div>          
+		</div>          
+	</div>          
+</div>

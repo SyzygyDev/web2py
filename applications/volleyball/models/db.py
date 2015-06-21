@@ -45,9 +45,14 @@ mail.settings.sender = 'you@gmail.com'
 mail.settings.login = 'username:password'
 
 ## configure auth policy
+auth.settings.create_user_groups = False
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
+auth.settings.register_next = URL('default', 'signup')
+auth.settings.login_next = URL('default', 'signup')
+auth.settings.logout_next = URL('default', 'index')
+# auth.settings.on_failed_authentication = redirect(URL('default', 'signup', vars=dict(failed="1")))
 
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.
 ## register with janrain.com, write your domain:api_key in private/janrain.key

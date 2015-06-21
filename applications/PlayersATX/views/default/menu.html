@@ -1,5 +1,5 @@
 <!-- Navigation -->
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default{{=' navbar-fixed-top' if request.user_agent()['is_mobile'] else ''}}" role="navigation">
 	<div class="container">
 		<!-- Brand and toggle get grouped for better mobile display -->
 		<div class="navbar-header">
@@ -10,19 +10,36 @@
 				<span class="icon-bar"></span>
 			</button>
 			<!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
-			<!-- <a class="navbar-brand" href="index.html">Business Casual</a> -->
+			<a class="navbar-brand" href="index.html">{{=XML(thisPage["heading"])}}</a>
+			<p class="navbar-text text-center" style="margin-top:10px">{{=PAGETYPE["pageName"]}}</p>
 		</div>
 		<!-- Collect the nav links, forms, and other content for toggling -->
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				{{for page in thisPage["pages"]:}}
-					<li>
-						<a href="{{=URL('default', page['pageFile'])}}">{{=page['pageName']}}</a>
-					</li>
+					{{if page["group"] == 0:}}
+						<li>
+							<a href="{{=URL('default', page['pageFile'])}}">{{=page['pageName']}}</a>
+						</li>
+					{{pass}}
+				{{pass}}
+				{{for group in thisPage["groups"]:}}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle " data-toggle="dropdown"><i class="fa fa-caret-down"></i> {{=group['pageName']}}</a>
+                        <ul class="dropdown-menu">
+							{{for page in thisPage["pages"]:}}
+								{{if page["group"] == group["id"]:}}
+									<li>
+										<a href="{{=URL('default', page['pageFile'])}}">{{=page['pageName']}}</a>
+									</li>
+								{{pass}}
+							{{pass}}                          
+                        </ul>
+                    </li>
 				{{pass}}
 			</ul>
 			<ul>
-				<div class="animated bounce text-center"><font color="#E00000">Get your VIP upgrade on Saturday night for only $20 per couple!</font></div>
+				<div class="animated bounce text-center"><font color="#E00000">Get your VIP upgrade for only $20 per couple!</font></div>
 			</ul>
 		</div>
 		<!-- /.navbar-collapse -->

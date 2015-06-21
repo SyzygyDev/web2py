@@ -1,22 +1,21 @@
 {{extend 'layout.html'}}
-
-
-
-<div class="brand">{{=XML(thisPage["heading"])}}</div>
-<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
 {{include 'default/menu.html'}}
 
 <div class="container">
-	<div class="btn-group btn-group-justified" style="margin-bottom:15px">
-		<a href="{{=URL('default', 'events')}}" class="btn {{='btn-danger active' if not request.vars.event_type else 'btn-default'}}" role="button">Recurring Events</a>
-		<a href="{{=URL('default', 'events', vars=dict(event_type='once'))}}" class="btn {{='btn-danger active' if request.vars.event_type == 'once' else 'btn-default'}}" role="button">Upcoming Events</a>
-	</div>
-
 	<div class="row">
+		{{if request.user_agent()['is_mobile']:}}
+			<br><br><br>
+		{{pass}}
 		<div class="box">
 			<div class="col-lg-12">
+				{{if showbuttons:}}
+					<div class="btn-group btn-group-justified">
+						<a href="{{=URL('default', 'events')}}" class="btn {{='btn-danger active' if not request.vars.event_type else 'btn-default'}}" role="button">Upcoming Events</a>
+						<a href="{{=URL('default', 'events', vars=dict(event_type='always'))}}" class="btn {{='btn-danger active' if request.vars.event_type == 'always' else 'btn-default'}}" role="button">Recurring Events</a>
+					</div>
+				{{pass}}
 				<hr>
-				<h2 class="intro-text text-center">{{='Special' if request.vars.event_type == 'once' else 'Recurring'}}
+				<h2 class="intro-text text-center">{{='Recurring' if request.vars.event_type == 'always' else 'Upcoming'}}
 					<strong>Events</strong>
 				</h2>
 				<hr>

@@ -14,7 +14,9 @@ db.define_table('basic_site',
 
 db.define_table('page_types',
 				Field('page_name', 'string', writable=True, label='Page Name'),
-				Field('page_file', 'string', writable=True, label='Page File'))
+				Field('page_file', 'string', writable=True, label='Page File'),
+				Field('is_group', 'boolean', writable=True, default=False, label='Is this a group name'),
+				Field('group', 'integer', writable=True, default=0, label='What groups is this a part of'))
 
 db.define_table('layout_styles',
 				Field('layout_label', 'string', writable=False, label='Page Name'))

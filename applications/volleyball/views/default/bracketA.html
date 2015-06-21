@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script type="text/javascript" src="{{=URL('static','hellerVolleyBall_B.js')}}"></script>
+    <script type="text/javascript" src="{{=URL('static','js/services.js')}}"></script>
+    <script type="text/javascript" src="{{=URL('static','js/bracket.js')}}"></script>
+    <script type="text/javascript" src="{{=URL('static','js/tournamentGenerator.js')}}"></script>
+    <link type="text/css" href="{{=URL('static','css/bracket.css')}}" rel="stylesheet">
+    <link type="text/css" href="{{=URL('static','css/bracket1.css')}}" rel="stylesheet">
+    <script type="text/javascript" src="{{=URL('static','ctrls/default/resultsB.js')}}"></script>
+    <script>
+        hellerVolleyBall.run(
+            [        "$rootScope",
+            function ($rootScope) {
+                $rootScope.rawData = {{=XML(response.json(angularData))}};
+        }]);
+    </script>
+</head>
+
+<body ng-app="hellerVolleyBall" ng-controller="HVBresults">
+
+    <!-- Bracket control -->
+    <ngbracket bracket-data="bracketData" fixed-score=""></ngbracket>
+
+</body>
+
+</html>

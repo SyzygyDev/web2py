@@ -1,0 +1,87 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" ng-click="modalOn('toggle')"><span>&times;</span></button>
+            <h4 class="modal-title">Create Tournament</h4>
+        </div>
+        <div class="modal-body row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Tournament Name:</label>
+                    <input class="form-control" ng-model="newTournament.name" placeholder="Summer Slammer">
+                </div>
+                <div class="form-group">
+                    <label>Tournament Type:</label>
+                    <select class="form-control" ng-options="thisType.id as thisType.name for thisType in types" ng-model="newTournament.type">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Tournament Date:</label>
+                    <datepicker date-min-limit="{!today!}" date-format="'MM/dd/yyyy ">
+                        <input class="form-control" ng-model="newTournament.date" type="text"/>
+                    </datepicker>
+                    <hr>
+                    <div class="form-group" ng-if="newTournament.date">
+                        <label>Start time:</label>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <select class="form-control" ng-model="timePicker.hour" ng-change="updateTime()">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>:</label>
+                                <select class="form-control" ng-model="timePicker.minute" ng-change="updateTime()">
+                                    <option>00</option>
+                                    <option>15</option>
+                                    <option>30</option>
+                                    <option>45</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" ng-model="timePicker.meridian" ng-change="updateTime()">
+                                    <option>AM</option>
+                                    <option>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea class="form-control" ng-model="newTournament.description"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Tournament Location:</label>
+                    <select class="form-control" ng-options="thisLocation.id as thisLocation.name for thisLocation in locations" ng-model="newTournament.location" ng-if="locations">
+                        <option value="">--Chose a location--</option>
+                    </select>
+                    <button class="btn btn-sm btn-block btn-primary" ng-if="!locations" ng-click="createNewLocation()">New location</button>
+                </div>
+                <div location-map style="width:100%;height:250px;" ng-if="newTournament.location">
+                    <div id="map-canvas" style="width:100%;height:100%"></div>
+                </div>
+                <hr>
+                <div class="form-group" ng-if="locations">
+                    <button class="btn btn-sm btn-block btn-primary" ng-if="locations" ng-click="createNewLocation()">New location</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-disabled="!formComplete()" ng-click="createTournament()"><i class="fa fa-plus-square-o"></i> Create</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="twitterSearchApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+    <title>Syzygy Angular and Web2py</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+   <!--  <link href="http://prototype.togethermobile.com/assets/css/twitter.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+
+  </head>
+
+  <body ng-controller="twitterSearchAppCtrl">
+
+    <div class="container">
+		<form class="form-signin" role="form" ng-submit="getTwitterResults()">
+			<h1>Syzygy Twitter Search</h1>
+			<input type="text" class="form-control" ng-model="searchData.keyWord" placeholder="Search Twitter" ng-keyup="$event.keyCode == 13 ? getTwitterResults() : null" required autofocus><br>
+			<h3><strong>How many to display:</strong><small> default is 20</small></h3>
+			<div class="form-group">
+				<input type="number" class="form-control" ng-model="searchData.count">
+			</div>
+			<a class="btn btn-lg btn-primary btn-block" href="" ng-click="getTwitterResults()"> Show me the pictures</a>
+		</form>
+		<br>
+		<div class="row" ng-if="tweets">
+			<div ng-repeat="tweet in tweets" class="col-sm-6 col-md-4 col-lg-3">
+				<div class="panel panel-primary" style="height:350px">
+					<div class="panel-heading">
+						<h3 class="panel-title">User: {!tweet.user_name!}</h3>
+					</div>
+					<div class="panel-body">
+						<p compile="makeHashtagLinks(tweet.caption)"></p>
+						<img src="{!tweet.imageURL!}"style="position:relative;max-width:100%;max-height:150px;" ng-click="modalOn(tweet)">
+					</div>
+				</div>
+			</div>
+		</div>
+        <div class="alert alert-warning" ng-if="message">
+            <p>{!message!}</p>
+        </div>
+
+    </div> <!-- /container -->
+	<div class="modal fade" ng-class="{'in':modalOn()}" style="display: block;" ng-if="modalOn()">
+		<div style="width:75%;padding:25px;background-color:white;margin:25px auto">
+		    <div class="media" style="overflow: visible;margin:25px">
+		        <div class="media-object pull-right">
+		            <a class="pull-right btn btn-default" href="" ng-click="modalOn('off')">
+		                <i class="fa fa-times"></i>
+		            </a>
+		        </div>
+		        <h2>Enlarged Image</h2>
+
+		    </div>
+
+		    <div style="width:100%;position:relative">
+		    	<img src="{!modalTweet.imageURL!}" style="width:100%">
+		    </div>
+
+		</div>
+	</div>
+
+	<div class="modal-backdrop fade" ng-class="{'in':modalOn()}" ng-if="modalOn()"></div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+
+		<script>
+			var twitterSearchApp = angular.module('twitterSearchApp', []);
+
+			twitterSearchApp.config(function($interpolateProvider) {
+				$interpolateProvider.startSymbol('{!');
+				$interpolateProvider.endSymbol('!}');
+			});
+
+
+			twitterSearchApp.controller('twitterSearchAppCtrl',
+				[		 '$scope', '$sce', '$http', '$timeout',
+				function ($scope,   $sce,   $http,   $timeout) {
+
+					var displayModal = false;
+					$scope.modalTweet = {};
+
+					$scope.searchData = '';
+
+					$scope.getTwitterResults = function() {
+						var count = 20;
+						if ($scope.searchData.count >= 1) {
+							count = $scope.searchData.count;
+						}
+						$http({
+							method: 'GET',
+							url: 'http://www.syzygy.works/init/api_twitter/search.json?search=' + $scope.searchData.keyWord + '&count=' + count
+						}).success(function( data ) {
+							$scope.tweets = data.tweets;
+                            if (data.message) {
+                                $scope.message = data.message;
+                            } else {
+                                $scope.message = false;
+                            }
+						});
+					};
+
+					$scope.makeHashtagLinks = function(caption) {
+						var strArray = caption.split(" "), strReturn = "";
+						angular.forEach(strArray, function(thisStr) {
+							var newStr = "", cleanStr = "";
+							if (thisStr.indexOf("#") > -1) {
+								cleanStr = angular.copy(thisStr.replace(/#/g, ''))
+								newStr = "<a href=\"#\" ng-click=\"twitterHashTagLink('" + cleanStr + "')\">" + thisStr + "</a>";
+							} else if  (thisStr.indexOf("@") > -1) {
+								cleanStr = angular.copy(thisStr.replace(/@/g, ''))
+								newStr = "<a href=\"#\" ng-click=\"twitterHashTagLink('" + cleanStr + "')\">" + thisStr + "</a>";
+							} else {
+								newStr = cleanStr;
+							}
+							strReturn += newStr + " ";
+						});
+						return strReturn;
+					}
+
+					$scope.twitterHashTagLink = function(searchString) {
+						$scope.searchData.keyWord = searchString;
+						$scope.getTwitterResults();
+					};
+
+					$scope.modalOn = function(tweetData) {
+						if (!tweetData) {
+							return displayModal;
+						} else if (tweetData == "off") {
+							displayModal = false;
+						} else {
+							$scope.modalTweet = tweetData;
+							displayModal = true;
+						}
+					};
+
+
+				}]
+			).
+			directive('compile',
+				[        '$compile',
+				function ($compile) {
+					return function(scope, element, attrs) {
+						scope.$watch(
+							function(scope) {
+								return scope.$eval(attrs.compile);
+							},
+							function(value) {
+								element.html(value);
+								$compile(element.contents())(scope);
+							}
+						)
+					};
+				}]
+			);
+		</script>
+  </body>
+</html>

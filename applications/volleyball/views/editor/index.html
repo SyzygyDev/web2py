@@ -1,0 +1,50 @@
+{{extend 'layout_admin.html'}}
+<div class="container register">
+    <div class="row" style="padding:15px">
+        <h2>Tournaments</h2>
+        <br>
+        <div class="alert alert-warning" ng-if="tournaments && !tournamentStatus('count')">
+            <span>No current tournaments</span>
+        </div>
+        <div class="panel panel-default" ng-if="tournaments && tournamentStatus('count')">
+            <div class="panel-heading">
+                <div class="pull-right" style="margin-top:5px;border: 1px solid;padding:0 5px" ng-click="tournamentStatus('switch')" ng-if="tournamentStatus('choice')">
+                    <small>Active <i class="fa fa-toggle-on" ng-class="{'fa-flip-horizontal':tournamentStatus() == 'active'}"></i> Expired</small>
+                </div>
+                <h3 class="panel-title">{!tournamentStatus()!} tournaments</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4 col-md-3" style="margin-bottom:25px">
+                        <div make-it-square class="iframe blank" ng-click="modalOn('newTournament')">
+                            <div style="background-color:blue;width:100%;height:100%"></div>
+                            <div class="iframe-details" style="color: white;">
+                                <h3 style="font-size:1.5em"><i class="fa fa-plus-square"></i> New Tournament</h3>
+                                <span>Create a new Tournament.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="tournament in tournaments[tournamentStatus()] | orderBy : 'date'" style="margin-bottom:25px">
+                        <div make-it-square class="iframe blank">
+                            <div style="background-color:{!tournament.color!};width:100%;height:100%;padding:10px">
+                                <img src="{{=URL('static','images/double.png')}}" ng-if="!tournament.image && tournament.type == 'Double Elimination'"
+                                style="width:100%;height:100%">
+                            </div>
+                            <div class="iframe-details" style="color: white;">
+                                <h3 style="font-size:1em">{!tournament.name!}</h3>
+                                <span><i class="fa fa-calendar"></i> {!tournament.day!} {!tournament.date!}</span><br>
+                                <span>@ {!tournament.location.name!}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span ng-repeat="tournament in tournaments[tournamentStatus()] | orderBy : 'date'">{!tournament!}<hr></span>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" ng-class="{'in':modalOn()}" ng-if="modalOn()" style="display: block;" ng-include="modalOn('myModal')"></div>
+<div class="modal-backdrop fade" ng-class="{'in':modalOn()}" ng-if="modalOn()"></div>
+
+

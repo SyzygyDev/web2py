@@ -1,0 +1,150 @@
+{{extend 'layout_site.html'}}
+
+
+
+<!-- Test Card Numbers
+Visa: 4111111111111111
+Discover: 6011111111111117
+MasterCard: 5111111111111118
+Maestro: 5018111111111112
+JCB: 3511111111111119
+Union Pay: 6211111111111111
+American Express: 371111111111114
+Diners Club: 38111111111119
+-->
+
+<div class="container register">
+    <div class="row">
+        <h2>Register to play</h2>
+        <p>You must register to play</p>
+        <button class="btn btn-sm btn-default" ng-click="alreadyAMember('toggle')">
+            <span ng-if="!alreadyAMember()">Already a member</span>
+            <span ng-if="alreadyAMember()">Create new membership</span>
+        </button>
+        <div ng-if="alreadyAMember()">
+            <h3>I'm already a member so suck it</h3>
+        </div>
+        <div ng-if="!alreadyAMember()">
+            <form>
+                <div class="col-sm-6 col-xs-8">    
+                <div class="form-group required">
+                <label for="Name" class="control-label">Name  </label>
+                <div class="row">
+                <div class="col-sm-6 col-xs-6">
+                <input type="text" class="form-control" placeholder="First">
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                <input type="text" class="form-control" placeholder="Last">
+                </div>
+                </div>          
+                </div>
+
+                <div class="form-group">
+                <div class="row">
+                <div class="col-sm-12 col-xs-12 form-group required">
+                <label for="inputEmail" class="control-label">Email  </label>          
+                <input type="text" class="form-control" placeholder="Enter Your Email Id Here">      
+                </div>
+                </div>
+                </div>  
+
+                <div class="form-group required">
+                <label for="PartnerName" class="control-label">Partner's Name  </label>
+                <div class="row">
+                <div class="col-sm-6 col-xs-6">
+                <input type="text" class="form-control" placeholder="First">
+                </div>
+                <div class="col-sm-6 col-xs-6">
+                <input type="text" class="form-control" placeholder="Last">
+                </div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <div class="row">
+                <div class="col-sm-12 col-xs-12 form-group required">
+                <label for="inputEmail" class="control-label">Partner Email  </label>          
+                <input type="text" class="form-control" placeholder="Enter Your Email Id Here">      
+                </div>
+                </div>
+                </div>
+    
+  
+
+      
+      <p > Please enter your Credit Card Number, Name, Exp Date, and CVV on the the credit card below.</p>
+      
+      <div class="credit-card-input no-js" id="skeuocard">
+        <p class="no-support-warning">
+          Either you have Javascript disabled, or you're using an unsupported browser, amigo! That's why you're seeing this old-school credit card input form instead of a fancy new Skeuocard. On the other hand, at least you know it gracefully degrades...
+        </p>
+        <label for="cc_type">Card Type</label>
+        <select name="cc_type">
+          <option value="">...</option>
+          <option value="visa">Visa</option>
+          <option value="discover">Discover</option>
+          <option value="mastercard">MasterCard</option>
+          <option value="maestro">Maestro</option>
+          <option value="jcb">JCB</option>
+          <option value="unionpay">China UnionPay</option>
+          <option value="amex">American Express</option>
+          <option value="dinersclubintl">Diners Club</option>
+        </select>
+        <label for="cc_number">Card Number</label>
+        <input type="text" name="cc_number" id="cc_number" placeholder="XXXX XXXX XXXX XXXX" maxlength="19" size="19">
+        <label for="cc_exp_month">Expiration Month</label>
+        <input type="text" name="cc_exp_month" id="cc_exp_month" placeholder="00">
+        <label for="cc_exp_year">Expiration Year</label>
+        <input type="text" name="cc_exp_year" id="cc_exp_year" placeholder="00">
+        <label for="cc_name">Cardholder's Name</label>
+        <input type="text" name="cc_name" id="cc_name" placeholder="John Doe">
+        <label for="cc_cvc">Card Validation Code</label>
+        <input type="text" name="cc_cvc" id="cc_cvc" placeholder="123" maxlength="3" size="3">
+      </div>
+      <p> </p>    
+
+
+    <div class="row">  
+      <div class="col-xs-12 form-group required">
+        <label class="control-label">
+            2015 WAIVER AND RELEASE OF LIABILITY, ASSUMPTION OF RISK AND INDEMNITY AGREEMENT<br />
+          <br />
+          IN CONSIDERATION of HELLER VOLLEYBALL allowing me to participate in any Heller Volleyball event (the "Event” or "Events”); I, for myself, and on behalf of my spouse, children, parents, guardians, heirs and next of kin, and any legal and personal representatives, executors, administrators, successors and assigns, hereby agree to and make the following contractual representations pursuant to this Waiver and Release of Liability, Assumption of Risk and Indemnity Agreement (the "Agreement”);<br />
+          <br />
+          1.  I hereby represent that (i) I am in good health and in proper physical condition to participate in the Event; and (ii) I am not under the influence of alcohol or any illicit or prescription drugs which would in any way impair my ability to safely participate in the Event. I agree that it is my sole responsibility to determine whether I am sufficiently fit and healthy enough to participate in the Event.<br />
+          <br />
+          2.  I understand and acknowledge the physical and mental rigors associated with the Event are inherently dangerous and represent an extreme test of a person’s physical and mental limits. I understand that participation involves risks and dangers which include, without limitation, the potential for serious bodily injury, permanent disability, paralysis and death; loss or damage to property; exposure to extreme conditions and circumstances; accidents, illness, contact or collision with other participants, spectators, or other natural or manmade objects; dangers arising from adverse weather conditions; imperfect court conditions; water, road and surface hazards; equipment failure; inadequate safety measures; participants of varying skill levels; situations beyond the immediate control of the Event Organizers; and other undefined harm or damage which may not be readily foreseeable, and other presently unknown risks and dangers ("Risks”). I understand that these Risks may be caused in whole or in part by my own actions or inactions, the actions or inactions of others participating in the Event, or the acts, inaction or negligence of the Released Parties defined below, and I hereby expressly assume all such Risks and responsibility for any damages, liabilities, losses or expenses which I incur as a result of my participation in the Event.<br />
+          <br />
+          3.   I agree to be familiar with and abide by the Rules and Regulations established for the Event, including but not limited to the Rules adopted by Heller Volleyball and the Guide to Prohibited Substances and Prohibited Methods of Doping adopted by the United States Anti-Doping Agency. I also accept sole responsibility for my own conduct and actions while participating in the Event.<br />
+          <br />
+          4.  I hereby Release, Waive and Covenant Not to Sue, and further agree to Indemnify, Defend and Hold Harmless the following parties: Heller Volleyball, the Event Organizers and Promoters, Event Directors, Sponsors, Advertisers, Host Cities, Local Organizing Committees, Venues and Property Owners upon which the Event takes place, Law Enforcement Agencies and other Public Entities providing support for the Event, and each of their respective parent, subsidiary and affiliated companies, officers, directors, partners, shareholders, members, agents, employees and volunteers (Individually and Collectively, the "Released Parties” or "Event Organizers”), with respect to any liability, claim(s), demand(s), cause(s) of action, damage(s), loss or expense (including court costs and reasonable attorneys fees) of any kind or nature ("Liability”) which may arise out of, result from, or relate to my participation in the Event, including claims for Liability caused in whole or in part by the negligence of the Released Parties. I further agree that if, despite this Agreement, I, or anyone on my behalf, makes a claim for Liability against any of the Released Parties, I will indemnify, defend and hold harmless each of the Released Parties from any such Liability which any may be incurred as the result of such claim.<br />
+          <br />
+          5.  I hereby consent to be photographed, filmed and/or otherwise recorded. My entry into the Event constitutes my consent to such photography, filming and/or recording and to any use, in any and all media throughout the universe in perpetuity, of my appearance, voice and name for any purpose whatsoever in connection with Heller Volleyball.
+          <br />
+          I hereby warrant that I have read this Agreement carefully, understand its terms and conditions, acknowledge that I will be giving up substantial legal rights by signing it (including the rights of the minor, my spouse, children, parents, guardians, heirs and next of kin, and any legal and personal representatives, executors, administrators, successors and assigns), acknowledge that I have signed this Agreement freely and voluntarily, without any inducement, assurance or guarantee, and intend for my signature to serve as confirmation of my complete and unconditional acceptance of the terms, conditions and provisions of this Agreement. This Agreement represents the complete understanding between the parties regarding these issues and no oral representations, statements or inducements have been made apart from this Agreement. If any provision of this Agreement is held to be unlawful, void, or for any reason unenforceable, then that provision shall be deemed severable from this Agreement and shall not affect the validity and enforceability of any remaining provisions.                
+        </label>
+      </div>    
+    </div>
+
+      <input type="checkbox" value="">
+      <label style="color:red; font-size:80%">I hereby warrant that I have read this Agreement carefully and understand its terms and conditions. 
+      </label>
+
+     
+    <div class="form-group required">
+      <label for="Name" class="control-label" style="font-style: italic">  Signature for WAIVER & RELEASE OF LIABILITY  </label>
+        <div class="row">
+          <div class="col-sm-6 col-xs-6">
+            <input type="text" class="form-control" placeholder="First">
+          </div>
+          <div class="col-sm-6 col-xs-6">
+            <input type="text" class="form-control" placeholder="Last">
+          </div>
+        </div>          
+    </div>
+    <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-primary btn-lg raised">    
+  </div>
+   </form>
+
+</div>
+

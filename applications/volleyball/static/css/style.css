@@ -1,0 +1,484 @@
+/*default*/
+h1.hide{display: none;}
+h1{font:normal 33px/30px 'Old Standard TT', serif; margin:0 0 10px 0;}
+h2{font:italic 60px/50px 'Old Standard TT', serif; margin:0;}
+h2.title{font:normal 50px/50px 'Old Standard TT', serif; margin:0 0 40px 0;}
+h3{font:normal 33px/33px 'Old Standard TT', serif;text-transform:uppercase; margin:0;}
+.h3x{font-size: 120%}
+h4{font:italic 25px/25px 'Old Standard TT', serif; margin:0;}
+.btn,a,a:hover{
+	text-decoration: none;
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	outline:0 ;
+}
+a{color: #333;}
+p.align{text-align: center;  margin:10px 0 0px 80px;}
+
+.btn{text-transform: uppercase;background: none;border:1px solid #fff;border-radius: 0;color: #fff;font: normal 11px/12px 'Titillium Web';padding: 5px 25px;letter-spacing: 2px;}
+.btn-default:hover{background: none;color: #fff;border:1px solid #fff;padding: 5px 40px;}
+.btn-inverse{border:1px solid #555;}
+.btn-inverse:hover{color: #ccc;border:1px solid #666;background:#333;}
+.btn-primary{border:1px solid #333;color: #000; background:none; }
+.btn-primary:hover{background:#333;border:1px solid #333; color: #fff; }
+.btn-danger{border:1px solid #ea006e; background:#ea006e;color: #fff;}
+.btn-danger:hover{border:1px solid #ea006e; background:#ea006e;color: #fff;}
+
+.btn-primary.raised {
+    box-shadow: 0 3px 0 0 #007299;
+}
+.btn-primary.raised:active, .btn-primary.raised.active {
+    background: #33a6cc;
+    box-shadow: none;
+    margin-bottom: -3px;
+    margin-top: 3px;
+}
+
+.center{text-align: center;}
+
+.height-full{height: 100% !important;}
+.height-half{
+	height: 50%;
+	display: table;	
+}
+
+.content{padding: 48px 0 38px 0;}
+.inside-page{padding: 80px 0 70px 0;}
+.breadcrumb{margin-bottom: 30px;background: none;padding: 0;}
+.breadcrumb a{color: #ea006e;}
+.breadcrumb a:hover{text-decoration: underline;}
+/*default*/
+
+
+/* Form required STAR */
+.form-group.required .control-label:after { 
+   content:"*";
+   color:red;
+}
+
+/* Carousel */
+.carousel-caption1 {
+    top: 0;
+    bottom: auto;
+}
+
+
+.title-txt-ltblue {
+    text-transform: uppercase;
+    font-size: 1.75em;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #2E7BCC;
+    text-align: center;
+  	line-height: 50px;
+}
+
+.title-txt-red {
+    text-transform: uppercase;
+    font-size: 1.75em;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color:#980000;
+    text-align: center;
+  	line-height: 50px;
+}
+
+/*rules */
+
+.intro-text {
+    text-transform: uppercase;
+    font-size: 1.25em;
+    font-weight: 400;
+    letter-spacing: 1px;
+}
+
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+#rules {
+	float:none;
+	display:inline-block;
+	text-align:center;
+	vertical-align: middle;
+}
+
+
+p.small {
+    line-height: 0.5;
+    font-size:x-small;
+}
+
+.box {
+ 	background: rgba(255,255,255,0.60);
+ 	background: #D1D1D1;
+    margin-bottom: 10px;
+    margin-top: 60px;
+    padding: 10px 10px;
+    background-size: 1200px 150x; 
+    height: 250x;   
+    color:#980000;   
+    background: rgba(255,255,255,0.70);
+}
+
+.bottombox {
+ 	background: rgba(255,255,255,0.60);
+ 	background: #D1D1D1;
+    margin-bottom: 80px;
+    margin-top: 20px;
+    padding: 10px 10px;
+    background-size: 1200px 150x; 
+    height: 250x;   
+    color:#980000;  
+    background: rgba(255,255,255,0.70); 
+}
+
+
+/*modal*/
+.modal-dialog{max-width: 800px; width: 90%;margin-top: 10%;}
+.modal-content{padding:15px;}
+.modal-content h4{margin-bottom: 20px;}
+/*modal*/
+
+
+
+/*nav*/
+.navbar-nav > li > a{text-transform: uppercase;font: normal 13px/19px 'Titillium Web'; }
+.navbar-inverse .navbar-nav>li>a {
+  color:#aaa;
+}
+.navbar-inverse{border:none;}
+.navbar-brand{background: #000 !important;padding: 6px 15px;}
+.dropdown-menu{background:#000; color: #fff; }
+.dropdown-menu > li > a{color: #fff;}
+.dropdown-menu > li > a:hover{background-color: #333;color: #fff;}
+/*nav*/
+
+
+/*footer*/
+.footer{background-color: #222;}
+.footer .links{margin-top: 9px;float: left;}
+.footer .links a{color: #888;padding: 0 10px;font: normal 13px/13px 'Titillium Web';}
+.footer .links a:hover{color: #fff;}
+.footer .social{margin-top: 5px;margin-right: 10px;}
+.footer .social a{color: #fff;font-size: 20px;margin:0 3px;}
+.footer .social a:hover{color: #999;}
+/*footer*/
+
+
+/*home page*/
+.homepage .col-md-6{padding-right: 0;padding-left: 0;}
+
+.rules h4{margin-top: 20px; padding-top: 50px; margin-bottom: 20px; padding-bottom: 50px;}
+
+#cloud-container{
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0; 
+    width: XXXpx; /*otherwise div defaults to page width*/
+    margin: 60px auto 60px auto; /*horizontally centers div*/
+}
+
+
+/*Register*/
+.register {	
+	/*background: no-repeat center center fixed;*/
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    color: #555E57;        
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-bottom: 80px;
+    margin-top: 60px;   
+    background: rgba(255,255,255,0.70);
+}
+
+/* This fixes the anchor link from cutting off the top of the panel */
+.register span#event1 { 
+  margin-top: -50px;        /* Size of fixed header */
+  padding-bottom: 50px; 
+  display: block; 
+}
+
+.register h4{
+	font:italic 33px/33px 'Old Standard TT', serif; 
+	margin:0;
+	color: #0000CD;
+}
+
+.register p{
+	font-size: 18px; 
+	font-style: bold;
+	color: #000;
+}
+
+.register .panel{
+	background: rgba(115,115,115,.10);
+	padding-bottom: 80px;
+	height: 100%;
+}
+
+panel-default {
+	font-size: 18px; 
+	font-style: bold;
+	background-color: #666;		
+	background: rgba(115,115,115,.10);
+}
+
+.register .panel-heading{
+	font-size: 18px; 
+	font-style: bold;
+	background: rgba(74,74,74,.10);
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+.register table {
+	padding: none;
+    margin-bottom: -10px;
+}
+.register table a {
+	color: #0000CD;
+}
+
+.register table a:hover{
+	color: #FFF;
+}
+
+.register th{
+	color: #0000CD;
+}
+.register .table-striped>tbody>tr>td {
+	color: #0000FF;
+}
+.register .table-striped>tbody>tr>td {
+	padding-left: 10%;
+}
+
+.register .table-striped>tbody>tr>th {
+	padding-left: 10%;
+}
+
+
+.table-striped>tbody>tr:nth-child(odd)>td, 
+.table-striped>tbody>tr:nth-child(odd)>th {
+   background: rgba(115,115,115,.10);
+ }
+
+/*.register h2{margin-top: 40px; text-align: center; margin-bottom: 40px;}
+.register .col-md-6{padding-right: 0;margin-left: 5000;} */
+
+
+.banner {background-color: #000;}
+.carousel-control i.fa{font-size: 30px;top: 50%;position: absolute;margin-top: -16px;}
+.banner .caption{position: absolute;top: 50%;text-align: center;width: 100%;margin-top: -100px;padding: 0 15%;color: #FFFFFF;}
+.banner .caption h2{margin-bottom:20px;}
+.banner .caption p{margin-bottom: 30px;font:normal 25px/30px 'Old Standard TT', serif; font-weight: bold; color: #FFFFFF;}
+.banner .caption a.btn{margin: 0 5px;}
+
+.block.women{ background-image:url(../images/VBMenSunset.jpg); }
+.block.store{ background-image:url(../images/LogoPadded.png); }
+.block.men{background-image:url(../images/Circle.jpg); }
+.block.schedule{background-image:url(../images/White.png); }
+.block.couple{ background-image:url(../images/VBNightFall.jpg); }
+.block{	background-size:105%; 
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+	position: relative;
+	background-position: center;
+	font: normal 16px 'Old Standard TT';
+	-webkit-transition: all 0.4s ease-in-out;
+	-moz-transition: all 0.4s ease-in-out;
+	-ms-transition: all 0.4s ease-in-out;
+	-o-transition: all 0.4s ease-in-out;
+	transition: all 0.4s ease-in-out; 
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+.block:hover{background-size:125%;}
+.block .info{background:rgba(146,199,4,0.9);border-radius: 50%;height: 150px;width: 150px;color: #fff;display: none;text-align: center;}
+.block .info h3{ margin:50px 0 5px 0;}
+.block .txt{ color: #000066 }
+.block:hover .info{display: inline-block;}
+.block .overlay{background: rgba(234,0,110,0.9);position: absolute;top: 0;right: 0;bottom: 0;left: 0;color: #fff;padding: 20px;}
+.block .overlay .store-info{display: table; vertical-align: middle;height: 100%;width: 100%;}
+.block .overlay .store-info .desc{display: table-cell; vertical-align: middle;}
+.block .overlay h4{margin:0 0 10px 0;border-bottom: 1px solid #ccc;display: inline-block;padding-bottom: 10px;}
+.block .overlay p{margin-bottom: 30px;}
+
+
+
+table.content_table {
+width: 90%;
+margin: 0px;
+margin-top: 1%;
+font-size: 8pt;
+border-collapse: collapse;
+border: none !important;
+display: block;
+}
+table.content_table > tbody > tr > td.results {
+color: #000066;
+font-size: 10pt;
+font-weight: bold;
+text-align: left;
+padding: .5%;
+margin-left: 20%;
+}
+
+.borderless > tbody > tr > th {
+    border: none;
+    border-top: none;
+    padding-bottom: none;
+    margin-bottom: none;
+}
+
+
+/* Credit Card form */
+/* === Basic reset === */
+* { margin: 0; padding: 0; outline: none; box-sizing:border-box; }
+a>img { border: none; }
+header, footer, article, section, nav, aside { display: block; }
+
+/* === General === 
+body {
+    font-family:Arial;
+    font-size: 14px;
+    background:#ddd;
+}
+*/
+body {
+    font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    background: url('../images/VBMenSunsetCrop.jpg') no-repeat center center fixed;
+   
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
+
+.clearfix {
+    clear:both;
+}
+
+
+/*responsive starts here*/
+@media (max-width: 1200px){
+	h2 {font: italic 45px/45px 'Old Standard TT', serif;}
+	h4 {font: italic 20px/20px 'Old Standard TT', serif;}
+	.btn{padding: 5px 12px;letter-spacing: 1px;}
+	.nav>li>a{padding:15px 10px;}
+	.searchbar .form-control{width: 160px;}	
+	.searchbar .btn,.footer .btn{display: none;}
+	
+	.block{background-size: cover !important;font-size: 13px;}
+	.block .info{display: inline-block; height: 120px; width: 120px; }
+	.block .overlay{padding: 15px;}
+	.block .info h3 {margin: 40px 0 5px 0;font: normal 23px/23px 'Old Standard TT', serif;}
+	.block .overlay p {margin-bottom: 10px;}
+	.block .overlay h4{font:italic 17px/15px 'Old Standard TT', serif;}
+	#progressbar{display: none;}
+
+}
+@media (max-width: 991px){
+	.nav>li>a{padding:15px 7px; font-size: 12px;}
+	.searchbar .form-control {width: 130px;}
+	.navbar-inverse .navbar-brand{width: 150px;}
+	.navbar-inverse .navbar-brand img{width: 100%;}
+	.homepage .height-half{height: 25%;}
+	.block .overlay h4{margin: 10px 0;}
+}
+@media (max-width: 767px){
+	h2{font-size: 20px; line-height: 20px;}
+	h2.title{font-size: 30px;line-height: 53px;margin-bottom: 20px;}
+	h1{font-size: 30px; line-height: 30px;margin-top: 20px;}
+
+	.breadcrumb{margin-bottom: 15px;}
+
+	.banner .caption h2{margin-bottom: 15px;}
+	.banner .caption a.btn{width: 100%; margin-top: 10px;}
+	.nav>li>a {padding: 7px;}
+	.navbar-nav .open .dropdown-menu>li>a {line-height: 15px;}
+	.navbar-nav {margin-top: 0; margin-bottom: 0;}
+	.searchbar {margin-top: 0;margin-bottom: 0;}
+	.searchbar .form-control{width: 100%;}
+
+	.banner .caption p{font: normal 15px/15px 'Old Standard TT', serif;}
+	.fullpage {height: auto !important;padding-bottom: 0 ; float: left;}
+	.block .overlay{position: relative;}
+	.navbar-fixed-bottom{position: relative;float: left; width: 100%;}
+
+	.block .info{margin: 20px;}
+	.block .overlay {padding: 25px;}
+	.height-full{float: left;width: 100%;}
+
+	.footer  .pull-left{width: 100%;}
+	.footer  .navbar-form{margin: 0;}
+	.footer .links,	.footer .social{width: 100%; text-align: center;}
+	.newsletter .form-control{width: 100%;}
+
+
+	.related-products{margin-bottom: 0;}
+	.inside-page{padding-bottom: 20px;}
+
+	.lookbook .product .info{position: static;width: 100%;padding: 15px 0;}
+	#msform{position: relative;}
+
+
+	.checkout h4,.modal-content h4{margin-top: 20px;}
+	.create-account .form-horizontal{padding: 0;}
+
+	.product-details .btn{padding: 5px 9px;letter-spacing: 0px;}
+}
+
+
+
+.iframe {
+    position:relative;
+}
+
+.iframe-blank {
+    width:100%;
+    height:100%;
+    position:relative;
+    color: white;
+    text-align: center;
+}
+.iframe-blank i {
+    color:white;
+    font-size: 1000%;
+    margin-top: 30px;
+}
+.iframe-blank p {
+    text-align: center;
+}
+.iframe-details {
+    position: absolute;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 45px 15px 15px;
+    background: black;
+    background: -moz-linear-gradient(top,  rgba(51,51,51,0) 0%, rgba(51,51,51,0.25) 16%, rgba(51,51,51,0.5) 35%, rgba(51,51,51,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(51,51,51,0)), color-stop(16%,rgba(51,51,51,0.25)), color-stop(35%,rgba(51,51,51,0.5)), color-stop(100%,rgba(51,51,51,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(51,51,51,0) 0%,rgba(51,51,51,0.25) 16%,rgba(51,51,51,0.5) 35%,rgba(51,51,51,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(51,51,51,0) 0%,rgba(51,51,51,0.25) 16%,rgba(51,51,51,0.5) 35%,rgba(51,51,51,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(51,51,51,0) 0%,rgba(51,51,51,0.25) 16%,rgba(51,51,51,0.5) 35%,rgba(51,51,51,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(51,51,51,0) 0%,rgba(51,51,51,0.25) 16%,rgba(51,51,51,0.5) 35%,rgba(51,51,51,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#333333',GradientType=0 ); /* IE6-9 */
+    max-height: 100%;
+    overflow-y: auto;
+}

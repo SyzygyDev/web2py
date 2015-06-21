@@ -40,12 +40,12 @@ auth.define_tables(username=False, signature=False)
 
 ## configure email
 mail = auth.settings.mailer
-mail.settings.server = 'smtp.gmail.com:587'
-mail.settings.sender = 'syzygywebbed@gmail.com'
-mail.settings.login = 'syzygywebbed@gmail.com:Mesha2Paige'
+mail.settings.server = 'smtp.office365.com:587'
+mail.settings.sender = 'admin@playersatx.club'
+mail.settings.login = 'admin@playersatx.club:P@ssw0rd!'
 
 ## configure auth policy
-# auth.settings.actions_disabled.append('register')
+auth.settings.actions_disabled.append('register')
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True

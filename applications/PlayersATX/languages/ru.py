@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'ru',
 '!langname!': 'Русский',
@@ -71,6 +71,7 @@
 'Edit current record': 'Редактировать текущую запись',
 'Edit Profile': 'Редактировать профиль',
 'Email and SMS': 'Email and SMS',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'enter an integer between %(min)g and %(max)g',
 'Errors': 'Errors',
 'export as csv file': 'экспорт в  csv-файл',
@@ -170,6 +171,7 @@
 'The output of the file is a dictionary that was rendered by the view %s': 'The output of the file is a dictionary that was rendered by the view %s',
 'The Views': 'The Views',
 'This App': 'This App',
+'This email already has an account': 'This email already has an account',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
 'Timestamp': 'Отметка времени',
 'Twitter': 'Twitter',

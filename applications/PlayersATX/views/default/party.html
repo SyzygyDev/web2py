@@ -1,0 +1,76 @@
+{{extend 'layout.html'}}
+{{include 'default/menu.html'}}
+
+<div class="container">
+
+    <div class="row">
+        <div class="box clearfix">
+            <hr>
+            <h2 class="intro-text text-center">Parties of
+                <strong>10 or more</strong>
+            </h2>
+            <div class="col-sm-6">
+                <h3 class="intro-text text-center">Party <span style="color:red">requirements</span>
+                </h3>
+                <p>Club Number (512) 670-2051</p><hr>
+                <p>Your party must be at least 10 couples. Each couple will receive $10 off the entry fee, and have your table(s) reserved. You are allowed to bring decorations for your table.<br><br>All the members to your party must be on the email reservation list to receive the discount. Your email reservation list must be complete. Party members can be changed up to 8pm Fri night, by sending an updated email reservation form.</p>
+
+            </div>
+            <div class="col-sm-6">
+                <h3 class="intro-text text-center">Party <span style="color:red">reservations</span>
+                </h3>
+                <p>Please fill out the form below<br><strong>NOTE:</strong>Email reservations can only be made 1 week in advance</p>
+                <p>The form must be filled out completely. Incomplete reservation submissions will be moved to the back of the list.</p>
+                {{=form.custom.begin}}
+                    <div class="row">
+                            <div class="form-group">
+                                <label>Names</label>
+                                <textarea id="no_table_name" name="name" class="form-control" rows="2" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Member ID</label>
+                                <input id="no_table_member_id" name="member_id" type="text" class="form-control" required>
+                                <span class="text-danger">You can NOT make reservations without a Membership</span>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <input id="no_table_email" name="email" type="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input id="no_table_Phone_Number" name="Phone_Number" type="tel" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Table Number</label>
+                                <select id="no_table_table_id" name="table_id" class="form-control" required>
+                                    <option value="">--Select A table--</option>
+                                    {{for index, reserved in enumerate(reservables):}}
+                                        <option value={{=index}}>{{=reserved["label"]}}</option>
+                                    {{pass}}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Date for Reservation</label>
+                                <input id="party_date" name="party_date" type="text" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-default" value="Submit">
+                            </div>
+                    </div>
+                {{=form.custom.end}}
+            </div>
+        </div>
+    </div>
+    {{if emailSuccess:}}
+        <div class="alert alert-success">
+            <p>Email confirmation of your reservation request has been sent, Thank you.</p>
+        </div>
+    {{pass}}
+    <div class="row">
+        <a href="{{=URL('static','images/clublayout1.jpg')}}" target="_new"><img src="{{=URL('static','images/clublayout1.jpg')}}" style="width:100%"></a><br>
+        <br>
+    </div>
+    {{if cards:}}
+        {{include 'default/cards.tpl.html'}}
+    {{pass}}
+</div>

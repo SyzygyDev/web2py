@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'zh-cn',
 '!langname!': '中文',
@@ -91,6 +91,7 @@
 'Editing file': '编辑文件',
 'Editing file "%s"': '编辑文件"%s"',
 'Email and SMS': 'Email and SMS',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'enter an integer between %(min)g and %(max)g',
 'Error logs for "%(app)s"': '"%(app)s"的错误记录',
 'Errors': 'Errors',
@@ -213,6 +214,7 @@
 'There are no translators, only default language is supported': '沒有对应的语言文件,仅支持原始语言',
 'There are no views': '沒有视图',
 'This App': '该应用',
+'This email already has an account': 'This email already has an account',
 'This is the %(filename)s template': '这是%(filename)s文件的模板(template)',
 'Ticket': '问题清单',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',

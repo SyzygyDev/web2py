@@ -1,0 +1,75 @@
+{{extend 'layout_admin.html'}}
+<div class="container register">
+    <h2>New Location</h2>
+    <br>
+    <div class="row" style="padding:15px">
+        <div class="col-sm-7">
+            <div class="form-group">
+                <label>Location Name</label>
+                <input class="form-control" ng-model="newLocation.name" placeholder="Summer Slammer">
+            </div>
+            <div class="form-group">
+                <label>Location Address</label>
+                <textarea class="form-control" ng-model="newLocation.address"></textarea>
+                <span class="help-block" ng-if="addressMessage">
+                    <label>Address Notes:</label>
+                    <br>
+                    <span>{!addressMessage!}</span>
+                </span>
+            </div>
+            <div class="form-group">
+                <label>Latitude</label>
+                <input class="form-control" ng-disabled="'true'" ng-model="newLocation.lat">
+            </div>
+            <div class="form-group">
+                <label>Longitude</label>
+                <input class="form-control" ng-disabled="'true'" ng-model="newLocation.lon">
+            </div>
+            <div class="form-group">
+                <label>Location Website -<span class="text-muted">optional</span></label>
+                <textarea class="form-control" ng-model="newLocation.webSite"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Location Image URL -<span class="text-muted">optional</span></label>
+                <textarea class="form-control" ng-model="newLocation.imgUrl"></textarea>
+                <span class="help-block">This is a link to an external image
+                    <br>
+                    e.g. - <code>http://austinparks.org/portfolio_images/8im8i38kbq54.jpg</code>
+                   <!--  <br>
+                    or add an image from the library
+                    <br>
+                    <button class="btn btn-sm btn-primary">Select Image</button> -->
+                </span>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-sm btn-primary" ng-disabled="!formComplete()" ng-click="createNewLocation()">
+                    Add Location
+                </button>
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <label>Find Site</label>
+            <div class="input-group">
+                <input type="text" class="form-control" id="pac-input" ng-model="newLocation.searchAddress" placeholder="enter an address" ng-keyup="$event.keyCode == 13 ? findAddress() : null">
+                <div class="input-group-addon" style="cursor: pointer" ng-click="findAddress()"><i class="fa fa-search"></i></div>
+            </div>
+            <div class="alert alert-warning" ng-if="error">
+                {!error!}
+            </div>
+            <div style="width:100%;height:250px;" location-map>
+                <div id="map-canvas" style="width:100%;height:100%"></div>
+            </div>
+            <div ng-if="photos.length >= 1" style="margin-top:10px">
+                <label>Photos linked to location:</label>
+                <span class="help-block">click to assign</span>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4 col-lg-3" ng-repeat="photo in photos">
+                        <div style="height:75px;margin:5px; background:#ffffff url('{!getPhotoUrl(photo)!}') no-repeat center top;;"
+                        ng-style="{'border' : selectedPhotoUrl(photo, $index) ? '5px solid blue' : ''}"
+                        ng-click="setPhotoUrl(photo, $index)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

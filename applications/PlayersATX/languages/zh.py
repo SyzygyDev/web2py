@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'zh-tw',
 '!langname!': '中文',
@@ -88,6 +88,7 @@
 'Editing file': '編輯檔案',
 'Editing file "%s"': '編輯檔案"%s"',
 'Email and SMS': 'Email and SMS',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'Error logs for "%(app)s"': '"%(app)s"的錯誤紀錄',
 'Errors': 'Errors',
 'export as csv file': '以逗號分隔檔(csv)格式匯出',
@@ -141,6 +142,7 @@
 'next 100 rows': '往後 100 筆',
 'NO': '否',
 'No databases in this application': '這應用程式不含資料庫',
+'Object or table name': 'Object or table name',
 'Online examples': '點此處進入線上範例',
 'or import from csv file': '或是從逗號分隔檔(CSV)匯入',
 'Origin': '原文',
@@ -168,6 +170,7 @@
 'Record id': '紀錄編號',
 'Register': '註冊',
 'register': '註冊',
+'Registration identifier': 'Registration identifier',
 'Registration key': '註冊金鑰',
 'Remember me (for 30 days)': '記住我(30 天)',
 'Reset Password key': '重設密碼',
@@ -201,6 +204,7 @@
 'There are no translators, only default language is supported': '沒有翻譯檔,只支援原始語言',
 'There are no views': '沒有視圖',
 'This App': 'This App',
+'This email already has an account': 'This email already has an account',
 'This is the %(filename)s template': '這是%(filename)s檔案的樣板(template)',
 'Ticket': '問題單',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',

@@ -1,0 +1,163 @@
+{{extend 'layout_site.html'}}
+<div class="container register">
+    <div class="row" style="padding:15px">
+        <h2>Register to play</h2>
+        {{if auth.is_logged_in():}}
+            <a class="btn btn-sm btn-warning" href="{{=URL('default', 'user', args='logout')}}" style="margin-top:25px">Log Out</a>
+        {{pass}}
+        <!-- REGISTRATION AND LOGIN -->
+        <div ng-if="!user">
+            <p style="margin-top:25px">You must register to play</p>
+            <button class="btn btn-sm btn-primary" ng-click="alreadyAMember('toggle')">
+                <span ng-if="!alreadyAMember()">Already a member</span>
+                <span ng-if="alreadyAMember()">Create new membership</span>
+            </button>
+            <div ng-if="alreadyAMember()" style="margin-top:25px">
+                {{if form2:}}
+                    {{=form2.custom.begin}}
+                        <div class="col-sm-6 col-xs-8"> 
+                            <div class="form-group">
+                                <label for="auth_user_email" style="color:white">Email address:</label>
+                                <input type="email" class="form-control" id="auth_user_email" name="email" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="auth_user_password" style="color:white">Password</label>
+                                <input type="password" class="form-control" id="auth_user_password" name="password">
+                            </div>
+                            <div class="alert alert-warning" ng-if="loginFailed">
+                                {!loginFailed!}
+                            </div>
+                            <hr>
+                            <button type="submit" class="btn btn-primary btn-sm">Login</button>
+                            <a href="{{=URL(args='request_reset_password')}}" class="btn btn-primary pull-right">Lost Password</a>
+                        </div>
+                    {{=form2.custom.end}}
+                {{pass}}
+            </div>
+            <div ng-if="!alreadyAMember()" style="margin-top:25px">
+                {{if form2:}}
+                    {{=form1.custom.begin}}
+                        <div class="col-sm-6 col-xs-8">    
+                            <div class="form-group required">
+                                <label class="control-label">First name</label>
+                                <input class="form-control" id="auth_user_first_name" name="first_name" type="text" value="" placeholder="Jon">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Last name</label>
+                                <input class="form-control" id="auth_user_last_name" name="last_name" type="text" value="" placeholder="Doe">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Email address</label>
+                                <input class="form-control" id="auth_user_email" name="email" type="text" value="" placeholder="your@email.here">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Password</label>
+                                <input class="form-control" id="auth_user_password" name="password" type="password" value="">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Repeat password</label>
+                                <input class="form-control" name="password_two" type="password">
+                            </div>
+                            <hr>
+                            <button type="submit" class="btn btn-primary btn-sm">Register</button>
+                        </div>
+                    {{=form1.custom.end}}
+                {{pass}}
+            </div>
+        </div>
+        <!-- REGISTRATION AND LOGIN END -->
+
+        <!-- TOURNAMENT SELECTION -->
+        <div ng-if="user">
+
+            <p style="margin-top:25px">Pick a tournament to enter</p>
+
+
+
+            <div class="panel panel-default" ng-if="tournaments.active.length >= 1">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Tournaments</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="tournament in tournaments.active | orderBy : 'date'" style="margin-bottom:25px">
+                            <div make-it-square class="iframe blank">
+                                <div style="background-color:{!tournament.color!};width:100%;height:100%;padding:10px">
+                                    <img src="{{=URL('static','images/double.png')}}" ng-if="!tournament.image && tournament.type == 'Double Elimination'"
+                                    style="width:100%;height:100%">
+                                </div>
+                                <div class="iframe-details" style="color: white;">
+                                    <h3 style="font-size:1em">{!tournament.name!}</h3>
+                                    <span><i class="fa fa-calendar"></i> {!tournament.day!} {!tournament.date!}</span><br>
+                                    <span>@ {!tournament.location.name!}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span ng-repeat="tournament in tournaments.active | orderBy : 'date'">{!tournament!}<hr></span>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div ng-if="alreadyAMember()" style="margin-top:25px">
+                {{if form2:}}
+                    {{=form2.custom.begin}}
+                        <div class="col-sm-6 col-xs-8"> 
+                            <div class="form-group">
+                                <label for="auth_user_email" style="color:white">Email address:</label>
+                                <input type="email" class="form-control" id="auth_user_email" name="email" placeholder="Enter email">
+                            </div>
+                            <div class="form-group">
+                                <label for="auth_user_password" style="color:white">Password</label>
+                                <input type="password" class="form-control" id="auth_user_password" name="password">
+                            </div>
+                            <hr>
+                            <button type="submit" class="btn btn-primary btn-sm">Login</button>
+                            <a href="{{=URL(args='request_reset_password')}}" class="btn btn-primary pull-right">Lost Password</a>
+                        </div>
+                    {{=form2.custom.end}}
+                {{pass}}
+            </div>
+            <div ng-if="!alreadyAMember()" style="margin-top:25px">
+                {{if form2:}}
+                    {{=form1.custom.begin}}
+                        <div class="col-sm-6 col-xs-8">    
+                            <div class="form-group required">
+                                <label class="control-label">First name</label>
+                                <input class="form-control" id="auth_user_first_name" name="first_name" type="text" value="" placeholder="Jon">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Last name</label>
+                                <input class="form-control" id="auth_user_last_name" name="last_name" type="text" value="" placeholder="Doe">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Email address</label>
+                                <input class="form-control" id="auth_user_email" name="email" type="text" value="" placeholder="your@email.here">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Password</label>
+                                <input class="form-control" id="auth_user_password" name="password" type="password" value="">
+                            </div>    
+                            <div class="form-group required">
+                                <label class="control-label">Repeat password</label>
+                                <input class="form-control" name="password_two" type="password">
+                            </div>
+                            <hr>
+                            <button type="submit" class="btn btn-primary btn-sm">Register</button>
+                        </div>
+                    {{=form1.custom.end}}
+                {{pass}}
+            </div>
+        </div>
+        <!-- TOURNAMENT SELECTION END -->
+
+
+    </div>
+</div>
+
+

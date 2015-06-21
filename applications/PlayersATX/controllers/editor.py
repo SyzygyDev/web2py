@@ -323,4 +323,4 @@ def page_content():
 	# 	else:
 	# 		redirect(URL('editor', 'assign', vars=dict(page_id=assignSource, element_id=elementId)))
 
-	return dict(thisPage=THISPAGE, form=form, cards=cards, events=events, partners=partners)
+	return dict(thisPage=THISPAGE, form=form, cards=cards, events=events, partners=partners, pageId=pageId)
