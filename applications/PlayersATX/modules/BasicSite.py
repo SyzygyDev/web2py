@@ -332,7 +332,7 @@ class Events:
 			imageData = self.db.image_library(event.event_image)
 			if imageData:
 				if altImage:
-					thisEvent["image"] = imageData.image_file
-				else:
 					thisEvent["image"] = imageData.banner
+				else:					
+					thisEvent["image"] = imageData.image_file
 		return thisEvent
