@@ -26,7 +26,7 @@ db.define_table('page_settings',
 				Field('data_type', writable=True, requires=IS_IN_SET(['content', 'event', 'partner']), label='Just Content or an Event?'),
 				Field('data_card', 'integer', writable=False),
 				Field('data_order', 'integer', writable=False),
-				Field('alt_image', 'boolean', writable=True, default=False, label='Use alternate image?'),
+				Field('alt_image', 'boolean', writable=True, default=False, label='Crop image to fit banner?'),
 				Field('layout_style', 'integer', requires=IS_IN_DB(db, db.layout_styles.id, '%(layout_label)s', zero=None), default=1, writable=True, label='Choose a layout style'),
 				Field('image_size', 'integer', writable=True, default=25, label='Image Size', comment="how big will the images be (in percentage, but just give us the number)"))
 
@@ -70,7 +70,7 @@ site_media = db.define_table('image_library',
 
 from Media import image_generator
 box = (200, 200)
-bannerbox = (450, 260)
+bannerbox = (900, 520)
 site_media.thumbnail.compute = lambda row: image_generator(row.image_file, box, name="thumb")
 site_media.banner.compute = lambda row: image_generator(row.image_file, bannerbox, name="banner")
 
