@@ -23,12 +23,13 @@
 						</ol>
 
 						<!-- Wrapper for slides -->
-						<div class="carousel-inner" role="listbox">
+						<div style="background:black" class="carousel-inner" role="listbox">
 							{{eventIndex = 0}}
 							{{for event in events:}}
 								{{if event['image']:}}
-									<div class="item{{=' active' if eventIndex == 0 else ''}}">
-										<img class="img-responsive img-full" src="{{=URL('default', 'download', args=event['image'])}}" alt="">  
+									<div class="item{{=' active' if eventIndex == 0 else ''}}" style="background-color:black; background:url('{{=URL('default', 'download', 	args=event['image'])}}') center no-repeat; background-size: contain">
+										<!-- <img class="img-responsive img-full" src="{{=URL('default', 'download', 	args=event['image'])}}" alt=""> -->
+										<img class="img-responsive img-full" src="{{=URL('static','images/playerspacer.png')}}" alt="">  
 										{{if event["layout"] >= 2:}}
 											<div class="container">
 												<div class="carousel-caption" style="background-color:rgba(255, 0, 0, 0.5)">

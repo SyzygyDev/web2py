@@ -211,3 +211,17 @@ CREATE TABLE auth_user(
     registration_id VARCHAR(512),
     PRIMARY KEY (id)
 ) ENGINE=InnoDB CHARACTER SET utf8;
+timestamp: 2015-06-21T18:34:21.983000
+ALTER TABLE page_types ADD is_group CHAR(1);
+timestamp: 2015-06-21T18:34:22.846000
+ALTER TABLE page_types ADD is_group CHAR(1);
+timestamp: 2015-06-21T18:34:25.320000
+ALTER TABLE page_types ADD is_group CHAR(1);
+timestamp: 2015-06-21T18:34:26.864000
+ALTER TABLE page_types ADD is_group CHAR(1);
+timestamp: 2015-06-21T18:34:31.607000
+ALTER TABLE page_types ADD is_group CHAR(1);
+timestamp: 2015-06-21T18:34:37.198000
+ALTER TABLE page_types ADD is_group CHAR(1);
+timestamp: 2015-06-21T18:34:45.970000
+ALTER TABLE page_types ADD is_group CHAR(1);
