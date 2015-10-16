@@ -1,17 +1,25 @@
 <ul class="nav nav-tabs">
-	<li class="{{='active' if thisPage['pageSetting']=='layout' else ''}}">
-		<a href="{{=URL('editor', 'page_content')}}">Page Content</a>
+	<li class="{{='active' if thisPage['pageSetting']=='front_desk' else ''}}">
+		<a href="{{=URL('editor', 'front_desk')}}">Front Desk</a>
 	</li>
-	<li class="{{='active' if thisPage['pageSetting']=='content' else ''}}">
-		<a href="{{=URL('editor', 'update', vars=dict(page_id='content'))}}">Content Cards</a>
-	</li>
-	<li class="{{='active' if thisPage['pageSetting']=='event' else ''}}">
-		<a href="{{=URL('editor', 'update', vars=dict(page_id='event'))}}">Events</a>
-	</li>
-	<li class="{{='active' if thisPage['pageSetting']=='image' else ''}}">
-		<a href="{{=URL('editor', 'update', vars=dict(page_id='image'))}}">Image Library</a>
-	</li>
-	<li class="{{='active' if thisPage['pageSetting']=='advanced' else ''}}">
-		<a href="{{=URL('editor', 'update')}}">Advanced Settings</a>
-	</li>
+	{{if auth.has_membership('Admin'):}}
+		<li class="{{='active' if thisPage['pageSetting']=='admin' else ''}}">
+			<a href="{{=URL('editor', 'admin')}}">Admin</a>
+		</li>
+		<li class="{{='active' if thisPage['pageSetting']=='image' else ''}}">
+			<a href="{{=URL('editor', 'update', vars=dict(page_id='image'))}}">Image Library</a>
+		</li>
+		<li class="{{='active' if thisPage['pageSetting']=='layout' else ''}}">
+			<a href="{{=URL('editor', 'page_content')}}">Page Content</a>
+		</li>
+		<li class="{{='active' if thisPage['pageSetting']=='content' else ''}}">
+			<a href="{{=URL('editor', 'update', vars=dict(page_id='content'))}}">Content Cards</a>
+		</li>
+		<li class="{{='active' if thisPage['pageSetting']=='event' else ''}}">
+			<a href="{{=URL('editor', 'update', vars=dict(page_id='event'))}}">Events</a>
+		</li>
+		<li class="{{='active' if thisPage['pageSetting']=='advanced' else ''}}">
+			<a href="{{=URL('editor', 'update')}}">Advanced Settings</a>
+		</li>
+	{{pass}}
 </ul>

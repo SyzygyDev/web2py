@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'fr',
 '!langname!': 'Français',
@@ -62,6 +62,8 @@
 'edit profile': 'modifier le profil',
 'Edit This App': 'Modifier cette application',
 'Email and SMS': 'Email et SMS',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'entrez un entier entre %(min)g et %(max)g',
 'Errors': 'Erreurs',
 'export as csv file': 'exporter sous forme de fichier csv',
@@ -164,6 +166,7 @@
 'The output of the file is a dictionary that was rendered by the view %s': 'La sortie de ce fichier est un dictionnaire qui été restitué par la vue %s',
 'The Views': 'Les Vues',
 'This App': 'Cette Appli',
+'This email already has an account': 'This email already has an account',
 'This is a copy of the scaffolding application': "Ceci est une copie de l'application échafaudage",
 'Time in Cache (h:m:s)': 'Temps en Cache (h:m:s)',
 'Timestamp': 'Horodatage',

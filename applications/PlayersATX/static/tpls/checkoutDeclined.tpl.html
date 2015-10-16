@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header clearfix">
+            <button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+                <i class="fa fa-times"></i>
+            </button>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+            <h4 class="modal-title">Uh-oh</h4>
+        </div>
+        <div class="modal-body" set-modal-height style="overflow-y:auto">
+            <div class="alert alert-warning"><h4>Your transaction was not accepted</h4>
+                <p>If you are seeing this page for the first time, you may have just mis-typed some of the important data. You can <a href="" ng-click="checkout('proceed')">click here</a> to try entering the card data and billing information again.</p>
+                <hr>
+                <p>If you are seeing this message for the second time, or are sure you entered all your card and billing information correctly, then you may need to contact your financial institution to find out where the issue lies.<br>PlayersATX staff and management do not have details as to why your transaction was not accepted.<br>A record of each transaction attempt made is stored in our system, and fraudulent attempts and abuse will be reported.<br>PlayersATX management</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,6 +7,15 @@
 			<br><br><br>
 		{{pass}}
 		<div class="box">
+			
+			<div class="col-lg-12">
+
+				{{if cards:}}
+			        {{include 'default/cards.tpl.html'}}
+				{{pass}}
+
+			</div>
+
 			<div class="col-lg-12">
 				{{if showbuttons:}}
 					<div class="btn-group btn-group-justified">
@@ -20,8 +29,10 @@
 				</h2>
 				<hr>
 			</div>
+
 			{{if events:}}
 				{{for event in events:}}
+					<a name="event-id-{{=event["eventID"]}}"></a>
 					<div class="col-lg-12 text-center">
 						{{if event["image"]:}}
 							<img src="{{=URL('default', 'download', args=event['image'])}}" alt="" style="width:100%;">
@@ -32,13 +43,25 @@
 						{{if event["eventDate"]:}}
 							<h3>{{=event["eventDate"].strftime("%a, %b %d %Y")}}</h3>
 						{{pass}}
-						<hr>
-						{{=XML(event["body_text"])}}
-						<hr>
+						{{if event["prepay"]:}}
+							<hr>
+							<a href="{{=URL('default', 'eventpay')}}?eventID={{=event['eventID']}}" class="btn btn-default">Online Specials</a>
+						{{pass}}
+						{{if event["body_text"]:}}
+							<hr>
+							{{=XML(event["body_text"])}}
+						{{pass}}
+						<hr style="max-width: 100%;">
 					</div>
 				{{pass}}
 			{{pass}}
+
 		</div>
 	</div>
 
 </div>
+{{if request.vars.eventID:}}
+	<script>
+		window.location.hash="event-id-{{=request.vars.eventID}}"; 
+	</script>
+{{pass}}

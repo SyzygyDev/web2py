@@ -1,0 +1,136 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header clearfix">
+            <button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+                <i class="fa fa-times"></i>
+            </button>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="!imSaving">time remaining: {!minutes!}:{!leadingZero!}{!seconds!}</span>
+            <h4 class="modal-title">Payment Information</h4>
+        </div>
+        <div class="modal-body" set-modal-height style="overflow-y:auto">
+            <p><small>We use Amazon Web Services secure servers and create a secure connection to NMI Network Merchants for each transaction. We do not store any of your billing information or credit card data. NOTE - If you close this screen without completing your transaction, you will have to enter all your billing information over again. We do not retain any billing information or credit card data.</small></p>
+            <div class="row">
+                <div class="col-sm-6">
+                    <p>Card Information</p>
+                    <div class="payment-methods secondary">
+                        <ul>
+                            <li ng-show="myCard('raw') == 'card' || myCard('raw') == 'amex'" class="amex">Amex</li>                                
+                            <li ng-show="myCard('raw') == 'card' || myCard('raw') == 'mastercard'" class="mastercard">Mastercard</li>
+                            <li ng-show="myCard('raw') == 'card' || myCard('raw') == 'visa'" class="visa">Visa</li>
+                            <li ng-show="myCard('raw') == 'card' || myCard('raw') == 'discover'" class="discover">Discover</li>                                                             
+                        </ul>
+                    </div>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>Card Number:</label>
+                            <div class="input-group">
+                                <input type="text" id="cardnumber" name="cardnumber" autocomplete="cc-number" class="form-control" ng-model="newPurchase.cardData.ccnumber" ng-change="checkMyCard()">
+                                <div class="input-group-addon">
+                                    <i class="fa {!myCard()!}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <label>Card Expiration:</label>
+                    <br>
+                    <div class="col-xs-6" style="padding:0 2px 0 0">
+                        <select class="form-control" ng-model="newPurchase.cardData.ccExpMonth">
+                            <option value="">Month</option>
+                            <option value="01">January</option>
+                            <option value="02">February</option>
+                            <option value="03">March</option>
+                            <option value="04">April</option>
+                            <option value="05">May</option>
+                            <option value="06">June</option>
+                            <option value="07">July</option>
+                            <option value="08">August</option>
+                            <option value="09">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-6" style="padding:0 0 0 3px">
+                        <select class="form-control" ng-model="newPurchase.cardData.ccExpYear">
+                            <option value="">Year</option>
+                            <option value="15">2015</option>
+                            <option value="16">2016</option>
+                            <option value="17">2017</option>
+                            <option value="18">2018</option>
+                            <option value="19">2019</option>
+                            <option value="20">2020</option>
+                            <option value="21">2021</option>
+                            <option value="22">2022</option>
+                            <option value="23">2023</option>
+                            <option value="24">2024</option>
+                            <option value="25">2025</option>
+                        </select>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <label>CVV Number:</label>
+                            <div class="input-group">
+                                <input type="text" name="cvc" autocomplete="cc-csc" class="form-control" ng-model="newPurchase.cardData.cvv">
+                                <div class="input-group-addon">
+                                    <a href="https://www.cvvnumber.com/cvv.html" target="_blank" style="font-size:11px">What's this?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="alert hidden-xs" ng-class="{'alert-success':purchaseFormCmplt('checkout'), 'alert-warning':!purchaseFormCmplt('checkout')}">
+                        <span ng-if="!purchaseFormCmplt('checkout')">
+                            The form needs to be filled out completely.
+                        </span>
+                        <span ng-if="purchaseFormCmplt('checkout')">
+                            By clicking the button below, you authorize PlayersATX to bill the credit card ending in "{!lastFour()!}" a total of:<br><strong>${!newPurchase.price!}</strong><br>for: <strong>{!newPurchase.label!}</strong>
+                        </span>
+                        <span ng-if="imSaving"><br>
+                            <strong><i class="fa fa-refresh fa-spin"></i> {!processing!}</strong>
+                        </span>
+                        <button class="btn btn-default btn-block" ng-disabled="!purchaseFormCmplt('checkout') || imSaving" ng-click="checkout('process')">Confirm Purchase</button>
+                    </div>
+                </div>
+                
+                <div class="col-sm-6">
+                    <p>Billing Information</p>
+                    <span>This information does not need to match your membership information, only your credit card information.</span>
+                    <div class="form-group">
+                        <label>First Name:</label>
+                        <input class="form-control" name="fname" autocomplete="given-name" type="text" ng-model="newPurchase.billingData.firstname">
+                        <span class="help-block">As it appears on the card</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name:</label>
+                        <input class="form-control" name="lname" autocomplete="family-name" type="text" ng-model="newPurchase.billingData.lastname">
+                        <span class="help-block">As it appears on the card</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Address:</label>
+                        <input class="form-control" name="address1" autocomplete="address-line1" type="text" ng-model="newPurchase.billingData.address1">
+                    </div>
+                    <div class="form-group">
+                        <label>Address 2:</label>
+                        <input class="form-control" name="address2" autocomplete="address-line2" type="text" ng-model="newPurchase.billingData.address2">
+                    </div>
+                    <div class="form-group">
+                        <label>City:</label>
+                        <input class="form-control" name="city" autocomplete="address-level2" type="text" ng-model="newPurchase.billingData.city">
+                    </div>
+                    <div class="form-group">
+                        <label>State:</label>
+                        <select ng-options="state.abb as state.label for state in stateInfo" class="form-control" ng-model="newPurchase.billingData.state"></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Zip:</label>
+                        <input class="form-control" name="zip" autocomplete="postal-code" type="text" ng-model="newPurchase.billingData.zip">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

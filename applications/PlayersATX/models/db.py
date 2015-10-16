@@ -45,11 +45,12 @@ mail.settings.sender = 'admin@playersatx.club'
 mail.settings.login = 'admin@playersatx.club:P@ssw0rd!'
 
 ## configure auth policy
+auth.settings.create_user_groups = False
 auth.settings.actions_disabled.append('register')
 auth.settings.registration_requires_verification = False
 auth.settings.registration_requires_approval = False
 auth.settings.reset_password_requires_verification = True
-auth.settings.login_next = URL('editor', 'page_content')
+auth.settings.login_next = URL('editor', 'front_desk')
 auth.settings.logout_next = URL('default', 'user')
 
 ## if you need to use OpenID, Facebook, MySpace, Twitter, Linkedin, etc.

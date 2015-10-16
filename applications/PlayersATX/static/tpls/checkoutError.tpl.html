@@ -1,0 +1,17 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header clearfix">
+            <button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+                <i class="fa fa-times"></i>
+            </button>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+            <h4 class="modal-title">Checkout Error</h4>
+        </div>
+        <div class="modal-body" set-modal-height style="overflow-y:auto">
+            <div class="alert alert-danger"><h3>{!error!}</h3></div>
+            <p>If you are seeing this page, something on our end hit a snag. Our web administrators have been notified and we are responding as quickly as possible.</p>
+            <div class="alert alert-warning"><h3>DO NOT TRY TO PURCHASE AGAIN!</h3></div>
+            <p>The problem was not incorrect information or card issues, but a technical one. There is a chance your transaction was successful. Contact our staff at (512) 670-2051 or via our <a href="/playersatx/default/contact">email form here.</a><br>We'll verify if your transaction was approved and get you the required information.<br>Thank you for your patience,<br>PlayersATX management</p>
+        </div>
+    </div>
+</div>

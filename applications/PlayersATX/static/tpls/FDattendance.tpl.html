@@ -1,0 +1,84 @@
+<div>
+    <div class="panel panel-info" ng-if="attendance.members.length >= 1">
+        <div class="panel-heading">
+            <strong>Summary</strong>
+        </div>
+        <div class="panel-body">
+            <span>Attendance by membership</span>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                           Staff:
+                        </th>
+                        <th>
+                            Standard:
+                        </th>
+                        <th>
+                            Executive:
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span>{!attendance.summary.Staff!}</span>
+                        </td>
+                        <td>
+                            <span>{!attendance.summary.Standard!}</span>
+                        </td>
+                        <td>
+                            <span>{!attendance.summary.VIP!}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Currently checked-in members</strong>
+        </div>
+        <div class="panel-body">
+            <div ng-if="attendance.members.length >= 1">
+            	<table class="table table-hover">
+            		<thead>
+                		<tr>
+                			<th>
+                				Member ID:
+                			</th>
+                			<th>
+                				Name:
+                			</th>
+                			<th>
+                				Gender:
+                			</th>
+                            <th ng-if="isAdmin">
+                                Checked in by:
+                            </th>
+                		</tr>
+                	</thead>
+                	<tbody>
+                		<tr ng-repeat="attendy in attendance.members">
+                			<td>
+                				<span ng-if="attendy.memberID">{!attendy.memberID!}</span>
+                			</td>
+                			<td>
+                				<span ng-if="attendy.name">{!attendy.name!}</span>
+                			</td>
+                			<td>
+                				<span ng-if="attendy.gender">{!attendy.gender!}</span>
+                			</td>
+                            <td ng-if="isAdmin">
+                                <span ng-if="attendy.staffName">{!attendy.staffName!}</span>
+                            </td>
+                		</tr>
+                	</tbody>
+            	</table>
+            </div>
+            <div ng-if="attendance.members.length === 0">
+                No current members checked in at this time
+            </div>
+        </div>
+    </div>
+</div>

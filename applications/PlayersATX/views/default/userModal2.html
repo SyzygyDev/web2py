@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}" ng-app="playersATX" ng-cloak>
+<head>
+<title>Login</title>
+	<meta charset="utf-8" />
+	<script src="{{=URL('static','js/modernizr.custom.js')}}"></script>
+
+
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link href="{{=URL('static','css/bootstrap.min.css')}}" rel="stylesheet">
+	<link href="{{=URL('static','css/business-casual.css')}}" rel="stylesheet">
+	<link href="{{=URL('static','css/cards.css')}}" rel="stylesheet">
+
+	<noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
+</head>
+
+<body>
+	<div style="padding:25px">
+		<h3>Your session has timed out, please log in again</h3>
+		{{=form.custom.begin}}
+			<div class="form-group">
+				<label for="auth_user_email" style="color:white">Email address:</label>
+				<input type="email" class="form-control" id="auth_user_email" name="email" placeholder="Enter email">
+			</div>
+			<div class="form-group">
+				<label for="auth_user_password" style="color:white">Password</label>
+				<input type="password" class="form-control" id="auth_user_password" name="password">
+			</div>
+			<hr>
+			<button type="submit" class="btn btn-danger btn-block">Login</button>
+			<!-- <a href="{{=URL(args='request_reset_password')}}" class="btn btn-default btn-block">Lost Password</a> -->
+		{{=form.custom.end}}
+	</div>
+</body>
+</html>
+

@@ -74,6 +74,7 @@
 'Edit This App': 'Edite esta aplicação',
 'Email': 'Email',
 'Email and SMS': 'Email and SMS',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
 'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'Errors': 'Errors',
 'export as csv file': 'exportar como ficheiro csv',

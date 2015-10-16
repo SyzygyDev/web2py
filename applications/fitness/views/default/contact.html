@@ -1,0 +1,70 @@
+{{extend 'layoutSite.html'}}
+
+
+<div class="ornge">
+	<div class="container">
+		<div class="row centered">
+			<div class="col-lg-8 col-lg-offset-2">
+			<h4 id="charcoal"><b>Let's get started!</b></h4>
+			<p id="charcoal">I look forward to hearing from you</p>
+			</div>
+		</div><!-- row -->
+	</div><!-- container -->
+</div><!-- ornge -->
+
+<div class="container">
+	<div class="row">
+	  {{=form.custom.begin}}
+	    <div class="col-lg-6">		    
+	      	<div class="well well-sm orngetxt" id="marginUP"><strong><i class="fa fa-check"></i> Required Field</strong></div>		      	
+			<div class="form-group">
+				<label for="InputName" class="orngetxt">Your Name</label>
+				<div class="input-group">
+					<input class="form-control" id="no_table_name" name="name" type="text" value="" placeholder="Enter Name" required>
+					<span class="input-group-addon"><i class="fa fa-check"></i></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="InputEmail" class="orngetxt">Your Email</label>
+				<div class="input-group">
+					<input type="email" class="form-control" id="no_table_email" name="email" placeholder="Enter Email" required>
+					<span class="input-group-addon"><i class="fa fa-check"></i></span>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="InputEmail" class="orngetxt">Your Phone Number</label>
+				<input type="text" class="form-control" id="no_table_Phone_Number" name="Phone_Number">
+			</div>
+			<div class="form-group">
+				<label for="InputMessage" class="orngetxt">Message</label>
+				<div class="input-group">
+					<textarea  id="no_table_message" name="message" class="form-control" rows="5" required>{{='Subject:' + emailSubject + ':\n' if emailSubject else ''}}</textarea>
+					<span class="input-group-addon"><i class="fa fa-check"></i></span></div>
+				</div>
+			<div class="form-group">
+				<input type="submit" value="Submit">
+			</div>
+	    </div>
+	  {{=form.custom.end}}
+
+		{{if emailSuccess:}}
+		  	<div class="alert alert-success">
+		  		<h4>Thank you.</h4>
+		  		<span>We recieved your message and will reply promptly</span>
+		  	</div>
+	  	{{pass}}
+	</div> <!-- Row -->
+</div>	<!-- Container -->
+
+
+
+<div class="ornge" id="marginUP">
+	<div class="container">
+		<div class="row centered">
+			<div class="col-lg-8 col-lg-offset-2">
+				<h4>I will reply promptly to your request</h4>
+				<p>I am excited you have chosen me to be your Fitness Trainer. Let’s start changing your life today.</p>
+			</div>
+		</div><!-- row -->
+	</div><!-- container -->
+</div> <!-- ornge -->

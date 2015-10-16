@@ -30,6 +30,9 @@
 			</div>
 			<a class="btn btn-lg btn-primary btn-block" href="" ng-click="getTwitterResults()"> Show me the pictures</a>
 		</form>
+		<div class="alert alert-info" ng-if="loadingPhotos" style="position:fixed;right:5px;left:75%;top:5px;bottom:auto;z-index:1055">
+			<span><i class="fa fa-spinner fa-pulse"></i> Loading</span>
+		</div>
 		<br>
 		<div class="row" ng-if="tweets">
 			<div ng-repeat="tweet in tweets" class="col-sm-6 col-md-4 col-lg-3">
@@ -39,7 +42,7 @@
 					</div>
 					<div class="panel-body">
 						<p compile="makeHashtagLinks(tweet.caption)"></p>
-						<img src="{!tweet.imageURL!}"style="position:relative;max-width:100%;max-height:150px;" ng-click="modalOn(tweet)">
+						<img ng-src="{!tweet.imageURL!}"style="position:relative;max-width:100%;max-height:150px;" ng-click="modalOn(tweet)">
 					</div>
 				</div>
 			</div>
@@ -62,7 +65,7 @@
 		    </div>
 
 		    <div style="width:100%;position:relative">
-		    	<img src="{!modalTweet.imageURL!}" style="width:100%">
+		    	<img ng-src="{!modalTweet.imageURL!}" style="width:100%">
 		    </div>
 
 		</div>
@@ -86,8 +89,8 @@
 
 
 			twitterSearchApp.controller('twitterSearchAppCtrl',
-				[		 '$scope', '$sce', '$http', '$timeout',
-				function ($scope,   $sce,   $http,   $timeout) {
+				[		 '$scope', '$sce', '$http', '$timeout', '$q',
+				function ($scope,   $sce,   $http,   $timeout,   $q) {
 
 					var displayModal = false;
 					$scope.modalTweet = {};
@@ -95,20 +98,19 @@
 					$scope.searchData = '';
 
 					$scope.getTwitterResults = function() {
+						$scope.loadingPhotos = true;
 						var count = 20;
 						if ($scope.searchData.count >= 1) {
 							count = $scope.searchData.count;
 						}
-						$http({
-							method: 'GET',
-							url: 'http://www.syzygy.works/init/api_twitter/search.json?search=' + $scope.searchData.keyWord + '&count=' + count
-						}).success(function( data ) {
-							$scope.tweets = data.tweets;
-                            if (data.message) {
-                                $scope.message = data.message;
+						callTwitterApi(count).then(function( results ) {
+							$scope.tweets = results.data.tweets;
+                            if (results.data.message) {
+                                $scope.message = results.data.message;
                             } else {
                                 $scope.message = false;
                             }
+                            $scope.loadingPhotos = false;
 						});
 					};
 
@@ -145,6 +147,13 @@
 							displayModal = true;
 						}
 					};
+
+					function callTwitterApi(count) {
+						return $http({
+							method: 'GET',
+							url: 'http://www.syzygy.works/init/api_twitter/search.json?search=' + $scope.searchData.keyWord + '&count=' + count
+						});
+					}
 
 
 				}]

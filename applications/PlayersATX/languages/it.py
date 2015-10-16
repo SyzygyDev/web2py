@@ -84,6 +84,7 @@
 'Email and SMS': 'Email e SMS',
 'Email non valida': 'Email non valida',
 'enter a number between %(min)g and %(max)g': 'enter a number between %(min)g and %(max)g',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
 'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'inserisci un intero tra %(min)g e %(max)g',
 'Errors': 'Errori',

@@ -1,4 +1,4 @@
-# coding: utf-8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'tr',
 '!langname!': 'Türkçe',
@@ -49,7 +49,9 @@
 'Download': 'İndir',
 'E-mail': 'E-posta',
 'Email and SMS': 'E-posta ve kısa mesaj (SMS)',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
 'enter a value': 'bir değer giriniz',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': '%(min)g ve %(max)g arasında bir sayı girin',
 'enter date and time as %(format)s': 'tarih ve saati %(format)s biçiminde girin',
 'Errors': 'Hatalar',
@@ -74,6 +76,7 @@
 'import': 'import',
 'Import/Export': 'Dışa/İçe Aktar',
 'Introduction': 'Giriş',
+'invalid controller': 'geçersiz denetleyici',
 'Invalid email': 'Yanlış eposta',
 'Is Active': 'Etkin',
 'Kayıt ol': 'Kayıt ol',
@@ -161,6 +164,4 @@
 'You are successfully running web2py': 'web2py çatısını çalıştırmayı başardın',
 'You can modify this application and adapt it to your needs': 'Artık uygulamayı istediğin gibi düzenleyebilirsin!',
 'You visited the url %s': '%s adresini ziyaret ettin',
-'invalid controller': 'geçersiz denetleyici',
 }
-

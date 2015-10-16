@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}">
+<head>
+<title>Fix Duplicates</title>
+	<link href="{{=URL('static','css/bootstrap.min.css')}}" rel="stylesheet">
+</head>
+
+<body>
+	<hr>
+	<div class="container">
+		{{for dup in duplicates:}}
+			<div class="row">
+				{{if not dup["diffList"]:}}
+					<a href="{{=URL('editor', 'doubler', vars=dict(dupID=dup["dupID"], fixMe='yes'))}}" class="btn btn-success btn-block">I'm done, fix me</a>
+				{{pass}}
+				<h4>Click on the data to keep</h4>
+				<div class="col-xs-6">
+					<ul>
+						{{for key, value in dup["oldMember"].iteritems():}}
+							{{if key == "updated" or key == "memberID" or key == "id" or key =="status":}}
+								<li><strong>{{=key}}</strong>: {{=value}}</li>
+							{{elif key == "address" or key == "member1" or key == "member2":}}
+								{{if dup["oldMember"].get(key):
+									oldStuff = dup["oldMember"].get(key)
+									newStuff = dup["newMember"].get(key)
+								}}
+									{{for subKey, subValue in oldStuff.iteritems():}}
+										<li class="{{='bg-danger' if dup["diffList"].get(key + subKey) else ''}}">
+											{{if dup["diffList"].get(key + subKey):}}
+												<a href="{{=URL('editor', 'doubler', vars=dict(dupID=dup["dupID"], key=key + subKey, record='old'))}}"><strong>{{=key + " " + subKey}}</strong>: {{=subValue}}</a>
+											{{else:}}
+												<strong>{{=key + " " + subKey}}</strong>: {{=subValue}}
+											{{pass}}
+										</li>
+									{{pass}}
+								{{pass}}
+							{{else:}}
+								<li class="{{='bg-danger' if not dup["oldMember"][key] == dup["newMember"][key] else ''}}">
+									{{if dup["diffList"].get(key):}}
+										<a href="{{=URL('editor', 'doubler', vars=dict(dupID=dup["dupID"], key=key, record='old'))}}"><strong>{{=key}}</strong>: {{=value}}</a>
+									{{else:}}
+										<strong>{{=key}}</strong>: {{=value}}
+									{{pass}}
+								</li>
+							{{pass}}
+						{{pass}}
+					</ul>
+				</div>
+				<div class="col-xs-6">
+					<ul>
+						{{for key, value in dup["newMember"].iteritems():}}
+							{{if key == "updated" or key == "memberID" or key == "id" or key =="status":}}
+								<li><strong>{{=key}}</strong>: {{=value}}</li>
+							{{elif key == "address" or key == "member1" or key == "member2":}}
+								{{if dup["newMember"].get(key):
+									newStuff = dup["newMember"].get(key)
+								}}
+									{{for subKey, subValue in newStuff.iteritems():}}
+										<li>
+											{{if dup["diffList"].get(key + subKey):}}
+												<a href="{{=URL('editor', 'doubler', vars=dict(dupID=dup["dupID"], key=key + subKey, record='new'))}}"><strong>{{=key + " " + subKey}}</strong>: {{=subValue}}</a>
+											{{else:}}
+												<strong>{{=key + " " + subKey}}</strong>: {{=subValue}}
+											{{pass}}
+										</li>
+									{{pass}}
+								{{pass}}
+							{{else:}}
+								<li>
+									{{if dup["diffList"].get(key):}}
+										<a href="{{=URL('editor', 'doubler', vars=dict(dupID=dup["dupID"], key=key, record='new'))}}"><strong>{{=key}}</strong>: {{=value}}</a>
+									{{else:}}
+										<strong>{{=key}}</strong>: {{=value}}
+									{{pass}}
+								</li>
+							{{pass}}
+						{{pass}}
+					</ul>
+				</div>
+			</div>
+			<hr>
+		{{pass}}
+	</div>
+</body>
+</html>
+

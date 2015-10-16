@@ -1,0 +1,48 @@
+{{extend 'layoutUser.html'}}
+<div class="container">
+	<div class="brand">{{=XML(thisPage["heading"])}}</div>
+	<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+	<div class="panel panel-default">
+		<div class="panel-heading" style="padding:0">
+			{{include 'editor/menu.html'}}
+		</div>
+		<div class="panel-body">
+			<div class="tab-pane active">
+				<div class="row">
+					<div class="col-sm-3">
+						<div class="list-group">
+							<a href="" class="list-group-item list-group-item-danger" style="overflow-x:hidden" ng-class="{'active': viewPane == 'members'}" ng-click="thisViewPane('members')">
+								Members
+							</a>
+							<!-- <a href="" class="list-group-item list-group-item-danger" style="overflow-x:hidden" ng-class="{'active': viewPane == 'newMember'}" ng-click="thisViewPane('newMember')">
+								New Member
+							</a> -->
+							<a href="" class="list-group-item list-group-item-danger" style="overflow-x:hidden" ng-class="{'active': viewPane == 'purchase'}" ng-click="thisViewPane('purchase')">
+								Current Purchases
+							</a>
+							<a href="" class="list-group-item list-group-item-danger" style="overflow-x:hidden" ng-class="{'active': viewPane == 'attendance'}" ng-click="thisViewPane('attendance')">
+								Attendance: <strong>{!attendance.count!}</strong>
+							</a>
+							<!-- {{if auth.has_membership('Super User'):}}
+								<a href="{{=URL('editor', 'member_map')}}" class="list-group-item list-group-item-danger" style="overflow-x:hidden">
+									Map Members
+								</a>
+							{{pass}} -->
+						</div>
+					</div>
+					<div class="col-sm-9">
+			        	<div class="panel panel-default">
+			        		<div class="panel-heading">
+			        			<button class="btn btn-default pull-right" ng-if="viewPane == 'members'" style="margin-top: 3px;" ng-click="createNewMember('initial')"><i class="fa fa-plus-square-o"></i> New Member</button>
+			        			<h4>{!panelSettings('heading')!}</h4>
+			        		</div>
+			        		<div class="panel-body" ng-include="panelSettings('template')">
+					        </div><!--  Panel body -->
+					    </div><!--  Panel -->
+
+					</div><!-- col-sm-9 -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

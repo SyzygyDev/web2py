@@ -1,0 +1,30 @@
+<div class="modal-dialog modal-sm">
+    <div class="modal-content">
+        <div class="modal-header clearfix">
+            <button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+                <i class="fa fa-times"></i>
+            </button>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+			<h4>Member Credits</h4>
+			<div class="alert alert-info">
+				<p>Member credits are not transferable and this credit will only be able to be used by {!currentMember.member1.fName!} {!currentMember.member1.lName!}<span ng-if="currentMember.gender == 'Couple'"> and {!currentMember.member2.fName!} {!currentMember.member2.lName!}</span>, as a {!currentMember.gender!}</p>
+			</div>
+			<div class="form-group">
+				<label>Type of Credit</label>
+				<select ng-model="newComp.creditType">
+					<option value="">--Pick One--</option>
+					<option value="enter-f">Free Standard entry - Friday</option>
+					<option value="enter-s">Free Standard entry - Saturday</option>
+					<option value="enterplus-f">Free VIP entry - Friday</option>
+					<option value="enterplus-s">Free VIP entry - Saturday</option>
+					<option value="vip">Free VIP upgrade with paid entry</option>
+				</select>
+			</div>
+			<div class="pull-right">
+				<button class="btn btn-info btn-sm" ng-click="addComp('commit')">
+					<i class="fa fa-plus-square-o"></i> Create
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

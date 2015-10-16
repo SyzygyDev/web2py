@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="{{=T.accepted_language or 'en'}}">
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}" ng-app="playersATX" ng-cloak>
 <head>
 <title>{{=thisPage["title"]}}</title>
 	<meta charset="utf-8" />
@@ -17,17 +17,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 
-	<link rel="shortcut icon" href="{{=URL('static','images/favicon.ico')}}" type="image/x-icon">
-	<link rel="apple-touch-icon" href="{{=URL('static','images/favicon.png')}}">
+	<link rel="shortcut icon" href="{{=URL('static','images/playersFavicon.png')}}" type="image/x-icon">
+	<link rel="apple-touch-icon" href="{{=URL('static','images/playersFavicon.png')}}">
 
 
 	<script src="{{=URL('static','js/modernizr.custom.js')}}"></script>
 
 
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<link href="{{=URL('static','css/bootstrap.min.css')}}" rel="stylesheet">
-	<link href="{{=URL('static','css/font-awesome.min.css')}}" rel="stylesheet">
 	<link href="{{=URL('static','css/business-casual.css')}}" rel="stylesheet">
 	<link href="{{=URL('static','css/cards.css')}}" rel="stylesheet">
+	<link type="text/css" href="{{=URL('static','css/angularDatePicker.css')}}" rel="stylesheet">
 	<link href="{{=URL('static','css/animate.css')}}" rel="stylesheet">
 
 	<!-- REPLACE THIS WITH THE SCRIPT AND STYLE TABLE -->
@@ -59,30 +60,53 @@
 		    -o-background-size: cover;
 		    background-size: cover;
 		}
+		
+		[ng-click],
+		[data-ng-click],
+		[x-ng-click] {
+		    cursor: pointer;
+		}
 	</style>
 </head>
 
-<body>
-<div class="pull-right" style="padding:15px">
-	<a class="btn btn-default btn-sm" href="{{=URL('default','index')}}"><i class="fa fa-external-link"></i> Back to Main Site</a>
-	{{if auth.is_logged_in():}}
-		<a class="btn btn-default btn-sm" href="{{=URL('default', 'user', args='logout')}}"><i class="fa fa-sign-out"></i> Log Me out</a>
-	{{pass}}
+<body ng-controller="{{='PATX' + request.function}}">
+	<div class="pull-right" style="padding:15px">
+		<a class="btn btn-default btn-sm" href="{{=URL('default','index')}}"><i class="fa fa-external-link"></i> Back to Main Site</a>
+		{{if auth.is_logged_in():}}
+			<a class="btn btn-default btn-sm" href="{{=URL('default', 'user', args='logout')}}"><i class="fa fa-sign-out"></i> Log Me out</a>
+		{{pass}}
 
-</div>
-	{{include}}
+	</div>
+		{{include}}
 
-<div style="height:50px"></div>
+	<div style="height:50px"></div>
 
-<nav class="navbar navbar-default navbar-fixed-bottom" style="background:rgba(255,255,255,0.5);">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-12 text-center">
-				<p>{{=XML(thisPage['footer'])}}</p>
+	<nav class="navbar navbar-default navbar-fixed-bottom" style="background:rgba(255,255,255,0.5);">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12 text-center">
+					<p>{{=XML(thisPage['footer'])}}</p>
+				</div>
 			</div>
 		</div>
-	</div>
-</nav>
+	</nav>
+	{{if globals().get('angularData'):}}
+
+	<div class="modal fade" ng-class="{'in':modalOn()}" style="display: block;overflow-y:auto" ng-if="modalOn()" ng-include="modalOn()"></div>
+
+	<div class="modal-backdrop fade" ng-class="{'in':modalOn()}" ng-if="modalOn()"></div>
+	    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+	    <script type="text/javascript" src="{{=URL('static','playersATX.js')}}"></script>
+	    <script type="text/javascript" src="{{=URL('static','js/angularDatePicker.js')}}"></script>
+	    <script type="text/javascript" src="{{=URL('static','ctrls/' + request.controller + '/' + request.function + '.js')}}"></script>
+		<script>
+		    playersATX.run(
+		        [        "$rootScope",
+		        function ($rootScope) {
+		            $rootScope.rawData = {{=XML(response.json(angularData))}};
+		    }]);
+		</script>
+	{{pass}}
 </body>
 </html>
 

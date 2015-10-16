@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'zh-cn',
 '!langname!': '中文',
@@ -9,6 +9,7 @@
 '%Y-%m-%d': '%Y-%m-%d',
 '%Y-%m-%d %H:%M:%S': '%Y-%m-%d %H:%M:%S',
 '(something like "it-it")': '(格式类似 "zh-tw")',
+'@markmin\x01An error occured, please [[reload %s]] the page': 'An error occured, please [[reload %s]] the page',
 'A new version of web2py is available': '新版 web2py 已推出',
 'A new version of web2py is available: %s': '新版 web2py 已推出: %s',
 'about': '关于',
@@ -91,6 +92,7 @@
 'Editing file': '编辑文件',
 'Editing file "%s"': '编辑文件"%s"',
 'Email and SMS': 'Email and SMS',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'enter an integer between %(min)g and %(max)g',
 'Error logs for "%(app)s"': '"%(app)s"的错误记录',
 'Errors': 'Errors',
@@ -213,6 +215,7 @@
 'There are no translators, only default language is supported': '沒有对应的语言文件,仅支持原始语言',
 'There are no views': '沒有视图',
 'This App': '该应用',
+'This email already has an account': 'This email already has an account',
 'This is the %(filename)s template': '这是%(filename)s文件的模板(template)',
 'Ticket': '问题清单',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
@@ -234,9 +237,11 @@
 'Views': '视图',
 'Welcome': '欢迎',
 'Welcome %s': '欢迎 %s',
+'Welcome to Syzygy!': 'Welcome to Syzygy!',
 'Welcome to web2py': '欢迎使用 web2py',
 'Welcome to web2py!': '欢迎使用 web2py!',
 'Which called the function %s located in the file %s': 'Which called the function %s located in the file %s',
+'Working...': 'Working...',
 'YES': '是',
 'You are successfully running web2py': '您已成功运行 web2py',
 'You can modify this application and adapt it to your needs': '请根据您的需要修改本程序',

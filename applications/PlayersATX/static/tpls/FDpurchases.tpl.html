@@ -1,0 +1,69 @@
+<div>
+    <div ng-if="!purchases">
+        No current Purchases
+    </div>
+    <div ng-if="purchases">
+        <div class="form-group">
+            <label>Filter current purchases:</label>
+            <input class="form-control" ng-model="q">
+            <span class="text-muted">Filter purchases by Confirmation code, Member ID, Last name, First name, or Email</span>
+        </div>
+    	<table class="table table-hover">
+    		<thead>
+        		<tr>
+        			<th>
+        				Confirmation:
+        			</th>
+        			<th>
+        				Member ID:
+        			</th>
+        			<th>
+        				Last Name:
+        			</th>
+        			<th>
+        				First Name:
+        			</th>
+        			<th>
+        				Email
+        			</th>
+        		</tr>
+        	</thead>
+        	<tbody>
+        		<tr ng-repeat="purchase in purchases | orderBy:'status' | filter:q as results" ng-class="{'info':purchase.status == 'pending','success':purchase.status == 'current','warning':purchase.status == 'expired'}">
+        			<td>
+        				<span ng-if="purchase.confirmation">{!purchase.confirmation!}</span>
+        			</td>
+        			<td>
+        				<span ng-if="purchase.memberID">{!purchase.memberID!}</span>
+        			</td>
+        			<td>
+        				<span ng-if="purchase.lName">{!purchase.lName!}</span>
+        			</td>
+        			<td>
+        				<span ng-if="purchase.fName">{!purchase.fName!}</span>
+        			</td>
+        			<td>
+        				<span ng-if="purchase.email">{!purchase.email!}</span>
+        			</td>
+        		</tr>
+        		<tr class="danger" ng-if="results.length==0">
+        			<td>
+        				<span>No</span>
+        			</td>
+        			<td>
+        				<span>Results</span>
+        			</td>
+        			<td>
+        				<span>Match</span>
+        			</td>
+        			<td>
+        				<span>That</span>
+        			</td>
+        			<td>
+        				<span>Search</span>
+        			</td>
+        		</tr>
+        	</tbody>
+    	</table>
+    </div>
+</div>

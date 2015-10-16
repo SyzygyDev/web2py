@@ -3,12 +3,14 @@
 from BasicSite import *
 basics = MainPage(db)
 cardDAL = ContentCards(db)
+
+from Events import Events
 eventDAL = Events(db)
+
 thisPage = basics.get_my_page()
 for pageData in thisPage["pages"]:
 	if pageData["pageFile"] == request.function:
 		PAGETYPE = pageData
-
 
 def index():
 	cards = cardDAL.get_data_cards(pageID=PAGETYPE["id"])
@@ -32,18 +34,34 @@ def about():
 	return dict(thisPage=thisPage, cards=cards)
 
 
+def news():
+	cards = cardDAL.get_data_cards(pageID=PAGETYPE["id"])
+	return dict(thisPage=thisPage, cards=cards)
+
+
 def events():
 	typeOfEvent = request.vars.event_type or "once"
 	showbuttons = eventDAL.is_both_recurring_and_upcoming(pageID=PAGETYPE["id"])
 	events = eventDAL.get_data_events(pageID=PAGETYPE["id"], typeOfEvent=typeOfEvent)
-	return dict(thisPage=thisPage, events=events, showbuttons=showbuttons)
+	cards = cardDAL.get_data_cards(pageID=PAGETYPE["id"])
+	return dict(thisPage=thisPage, events=events, showbuttons=showbuttons, cards=cards)
 
 
 def eventpay():
-	eventID = request.vars.event or None
+	eventID = request.vars.eventID or None
 	angularData = {"message":"no data available"}
+	if not eventID:
+		redirect(URL('default', 'events'))
 	if eventID:
-		angularData = {"message":"data available"}
+		event = eventDAL.get_events(int(eventID))
+		if event:
+			if not event["prepay"]:
+				redirect(URL('default', 'events'))
+			elif event["dateType"] == "expired":
+				redirect(URL('default', 'events'))
+			else:
+				angularData = {"message":"data available"}
+				angularData["event"] = event
 	return dict(thisPage=thisPage, angularData=angularData)
 
 
@@ -180,9 +198,68 @@ def party():
 
 
 def user():
+	response.generic_patterns = ['json', 'jsonp']
+
 	form=auth()
 
 	return dict(form=form, thisPage=thisPage)
+
+def userModal2():
+	form=auth()
+
+	return dict(form=form, thisPage=thisPage)
+
+
+def userModal():
+	angularData = {"message":"no data available"}
+
+	return dict(angularData=angularData, thisPage=thisPage)
+
+def csv_data():
+	recordStart = request.vars.start or "0"
+	recordCount = request.vars.count or "10"
+	# from Csvimport import Csvimport
+	# csvObj = Csvimport(db)
+	# testData = csvObj.get_me_clean_data(int(recordStart), int(recordCount))
+	testData = "Done"
+
+	dupList = make_dup_list()
+	if dupList:
+		testData = []
+		for dup in dupList:
+			query = db.members.member_number == dup
+			results = db(query).select()
+			if results:
+				testData.append(results)
+				# count = 0
+				# for result in results:
+				# 	if count != 0:
+				# 		newMemberKey = genterate_new_key()
+				# 		newID = db.membership_duplicates.insert(
+				# 			old_id=result.member_number,
+				# 			new_id=newMemberKey,
+				# 			member_id=result.id
+				# 		)
+				# 		if newID:
+				# 			result.update_record(member_number=newMemberKey)
+
+				# 	count = count + 1
+
+	return dict(thisPage=thisPage, testData=testData)
+
+def genterate_new_key():
+	import random, string
+	exists = False
+
+	newKey = ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(6))
+	newKey = newKey.replace("O", "0");
+	if db(db.members.member_number == newKey).count() > 0:
+		exists = True
+
+	if exists:
+		return genterate_new_key()
+	else:
+		return newKey
 
 @cache.action()
 def download():
@@ -217,4 +294,77 @@ def _get_reservable_spaces():
 		{"label":"Table 31", "group":"Elevated Area"},
 		{"label":"Executive VIP by the Dance Floor", "group":None},
 		{"label":"Executive VIP Lounge Area in the rear", "group":None},
+	]
+
+def make_dup_list():
+	return [
+		"A00519",
+		"A00917",
+		"a01591",
+		"A01919",
+		"A09779",
+		"A13099",
+		"a13899",
+		"A13905",
+		"A14606",
+		"A14792",
+		"A14921",
+		"A15608",
+		"A16321",
+		"A18788",
+		"A19234",
+		"A20468",
+		"A20680",
+		"A21796",
+		"A24363",
+		"A26834",
+		"A29910",
+		"A30804",
+		"A30867",
+		"A30999",
+		"A37685",
+		"A38003",
+		"A40413",
+		"A40564",
+		"A45304",
+		"A45494",
+		"A45505",
+		"A46632",
+		"A50367",
+		"A50533",
+		"A5246",
+		"A55000",
+		"A56025",
+		"A56027",
+		"A57140",
+		"A57308",
+		"A61445",
+		"A62825",
+		"A64236",
+		"A68585",
+		"A69980",
+		"A70149",
+		"A71822",
+		"A71908",
+		"A75799",
+		"A76392",
+		"A77594",
+		"A78174",
+		"A78361",
+		"A79294",
+		"a83948",
+		"A87351",
+		"A88178",
+		"A89990",
+		"A90045",
+		"A91774",
+		"A92428",
+		"A93077",
+		"A93507",
+		"A94800",
+		"A94921",
+		"A95563",
+		"A96764",
+		"A97106",
+		"A99381"
 	]

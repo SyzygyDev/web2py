@@ -1,0 +1,77 @@
+<!--[if HTML5]><![endif]-->
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]><html class="ie ie6 ie-lte9 ie-lte8 ie-lte7 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if IE 7]><html class="ie ie7 ie-lte9 ie-lte8 ie-lte7 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if IE 8]><html class="ie ie8 ie-lte9 ie-lte8 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if IE 9]><html class="ie9 ie-lte9 no-js" lang="{{=T.accepted_language or 'en'}}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
+<head>
+	<title>Gimme A Month!</title>
+	<meta charset="utf-8" />
+	<meta property="og:title" content="Gimme A Month!"/>
+	<meta property="og:site_name" content="Gimme A Month"/>
+	<meta property="og:url" content="{{=URL(request.controller,request.function)}}"/>
+	<meta property="og:description" content="..."/>
+	<meta property="og:image" content="..."/>
+
+	<link rel="shortcut icon" href="{{=URL('static','img/GimmeAMonth_sm.png')}}" type="image/x-icon">
+	<link rel="apple-touch-icon" href="{{=URL('static','img/GimmeAMonth_sm.png')}}">
+
+    <link href="{{=URL('static','css/bootstrap.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+
+    <link href="{{=URL('static','css/main.css')}}" rel="stylesheet">
+</head>
+
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+	<div class="navbar-header">
+	  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	  </button>          
+	  <a class="navbar-brand" id="navbarpadleft"><img src="{{=URL('static','img/GimmeAMonth_sm.png')}}" style="max-height:45px"/> </a>
+	  
+	</div>
+	<div class="container">
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-center" id="navbarsmpadleft" style="margin-top:10px">
+				<li class="{{='active' if request.function == 'index' else ''}}"><a href="{{=URL('default', 'index')}}">HOME</a></li>
+				<li class="{{='active' if request.function == 'coaching' else ''}}"><a href="{{=URL('default', 'coaching')}}">COACHING</a></li>
+				<li class="{{='active' if request.function == 'services' else ''}}"><a href="{{=URL('default', 'services')}}">I'M READY TO START!</a></li>
+				<li class="{{='active' if request.function == 'contact' else ''}}"><a href="{{=URL('default', 'contact')}}">CONTACT</a></li>
+				<li><a href="https://www.facebook.com/gimmeamonth" target="_blank"><i class="fa fa-facebook-square"></i></a></li>
+			</ul>
+			<img src="{{=URL('static','img/GimmeAMonth_sm.png')}}" style="margin-top:15px;max-height:45px"/>
+		</div><!--/.nav-collapse -->	         
+	</div>       
+  </div>
+</div>
+  
+			{{include}}
+	<br>
+	<br>
+	<br>
+	<!-- Footer ================================================== -->
+
+	
+<!-- FOOTER -->
+<div id="f">
+	<div class="container">
+		<div class="row centered">
+			<a><i>Shannon McCarty</i></a>
+	
+		</div><!-- row -->
+	</div><!-- container -->
+</div><!-- Footer -->	
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
+<script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=9c62c0eb617d9ae890bb6ec5ccf76db6ad6e2156"></script>
+</body>
+</html>
+

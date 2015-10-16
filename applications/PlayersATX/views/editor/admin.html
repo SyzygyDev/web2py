@@ -1,0 +1,464 @@
+{{extend 'layoutUser.html'}}
+<div class="container">
+	<div class="brand">{{=XML(thisPage["heading"])}}</div>
+	<div class="address-bar">13800 Dragline Dr. | Austin, Texas 78728 | (512) 670-2051</div>
+	<div class="panel panel-default">
+		<div class="panel-heading" style="padding:0">
+			{{include 'editor/menu.html'}}
+		</div>
+		<div class="panel-body">
+			<div class="tab-pane active">
+				<div class="row">
+					<div class="col-sm-2">
+						<div class="list-group">
+							{{
+							staffPage = request.vars.sap_id if request.vars.sap_id else "1"
+							sapData = sapPages[0]
+							}}
+							{{for page in sapPages:}}
+							{{
+							if str(page['id']) == staffPage:
+								sapData = page
+							}}
+							{{pass}}
+								{{if page["display"]:}}
+									{{if int(staffPage) >= 5:}}
+										<a href="{{=URL('editor', 'admin', vars=dict(sap_id=page['id']))}}" class="list-group-item list-group-item-danger{{=' active' if str(page['id']) == staffPage else ''}}" style="overflow-x:hidden">
+										{{=page['pageName']}}
+										</a>
+									{{else:}}
+										<a href="" class="list-group-item list-group-item-danger" ng-class="{'active': activePage('{{=page['id']}}')}" style="overflow-x:hidden" ng-click="activePage('{{=page['id']}}', 'toggle')">
+										{{=page['pageName']}}
+										</a>
+									{{pass}}
+								{{pass}}
+							{{pass}}
+						</div>
+					</div>
+					<div class="col-sm-10">
+						{{if int(staffPage) >= 5:}}
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4>{{=sapData["heading"]}}</h4>
+								</div>
+								<div class="panel-body">
+									{{if staffPage == '5' or  staffPage == '6':}}
+										{{=form}}
+									{{pass}}
+					            </div>
+					        </div>
+				        {{else:}}
+				        	<!-- DO THAT ANGULAR MAGIC -->
+				        	<div class="panel panel-default">
+				        		<div class="panel-heading">
+				        			<button class="btn btn-default pull-right" ng-if="pageSettings.id == 2" style="margin-top: 4px;" ng-click="createNewMember('initial')"><i class="fa fa-plus-square-o"></i> New Member</button>
+				        			<a class="btn btn-default pull-right" ng-if="pageSettings.id == 4" style="margin-top: 4px;" href="admin?sap_id=5"><i class="fa fa-plus-square-o"></i> New Staff Member</a>
+				        			<h4>{!pageSettings.heading!}</h4>
+				        		</div>
+				        		<div class="panel-body">
+				        			<div ng-if="pageSettings.id == 1">
+						                <label>Search by date (yyyy-mm-dd):</label>
+						                <div class="input-group">
+						                    <datepicker date-format="yyyy-MM-dd">
+						                        <input class="form-control" ng-model="searchDate">
+						                    </datepicker>
+						                    <!-- <input class="form-control" ng-model="searchDate"> -->
+						                    <span class="input-group-btn">
+						                        <button class="btn btn-input" ng-disabled="imSaving" ng-click="getAttendance(searchDate)">
+						                            <i class="fa fa-search-plus"></i> Search
+						                        </button>
+						                    </span>
+						                </div>
+						                <div ng-if="attendance">
+						                	<hr>
+						                	<div style="text-align:center">
+						                		<h4>Attendance for {!attendance.date!}</h4>
+						                	</div>
+						                	<hr>
+						                	<div ng-include="'/playersatx/static/tpls/FDattendance.tpl.html'"></div>
+						                </div>
+
+				        			</div>
+				        			<div ng-if="pageSettings.id == 3">
+				        				<div class="row">
+				        					<div class="col-sm-6">
+									            <div class="form-group" ng-style="{'margin-top':newMember.duration == 'custom' ? '50px' : '0'}">
+									                <label>Range:</label>
+									                <select class="form-control" ng-model="range" ng-change="getStaffAction(range, staffID)">
+									                	<option value="">--pick a range--</option>
+									                	<option value="day">Today</option>
+									                	<option value="week">1 week</option>
+									                	<option value="month">1 month</option>
+									                </select>
+								                </div>
+								            </div>
+				        					<div class="col-sm-6">
+									            <div class="form-group" ng-style="{'margin-top':newMember.duration == 'custom' ? '50px' : '0'}">
+									                <label>Filter By Staff:</label>
+									                <select class="form-control" ng-options="user.userID as user.lname + ', ' + user.fname for user in users" ng-model="staffID" ng-change="getStaffAction(range, staffID)">
+									                	<option value="">All</option>
+									                </select>
+								                </div>
+								            </div>
+								        </div>
+
+				        				<div ng-if="noLogs">
+				        					No changes made by the staff for the given range. This does NOT include checking members into the club. Those logs are kept in "attendance".
+				        				</div>
+									    <div ng-repeat="staffLog in staffChanges | orderBy: 'actionDate' : true" style="background-color:#eee;margin:10px 0;padding:5px 15px" ng-if="staffChanges">
+									        <div class="clearfix" style="background-color:#eee">
+									            <div class="pull-right" style="margin:0 -10px 0 0">
+									                <span>Staff: {!staffLog.staffer!}
+									            </div>
+									            <div style="margin-top:5px">
+									                <span>{!staffLog.actionDate | date : "EEE - MMM d @h:mma"!}<br>{!staffLog.action!}</span>
+									            </div>
+									        </div>
+									    </div>
+				        			</div>
+				        			<div ng-if="pageSettings.id == 4">
+				        				<div ng-if="!users">
+				        					No staff logins currently active
+				        				</div>
+									    <div ng-repeat="user in users | orderBy: 'lname'" style="background-color:#eee;margin:10px 0;padding:5px 15px" ng-if="users">
+									        <div class="clearfix" style="background-color:#eee">
+									            <div class="pull-right" style="margin:0 -10px 0 0">
+									                <a class="btn btn-default btn-sm" href="admin?sap_id=6&user_id={!user.userID!}"><i class="fa fa-pencil"></i></a>
+									            </div>
+									            <div style="margin-top:5px">
+									                <span>{!user.lname!}, {!user.fname!}</span>
+									            </div>
+									        </div>
+									    </div>
+				        			</div>
+				        			<div ng-if="pageSettings.id == 7">
+				        				<div ng-if="summaries">
+				        					<div ng-repeat="summary in summaries">
+				        						<span><strong>{!summary.event!}</strong></span>
+				        						<span>${!summary.revenue!} total, </span>
+				        						<span>{!summary.purchases!} sales, </span>
+				        						<span class="text-danger">{!summary.failures!} declined</span>
+				        					</div>
+				        				</div>
+				        				<hr>
+						               <!--  <label>Filter Purchases:</label>
+						                <div class="input-group">
+					                        <input class="form-control" ng-model="filter">
+					                    </div> -->
+				        				<div ng-if="!purchases">
+				        					No purchases have been made
+				        				</div>
+				        				<div ng-if="purchases">
+				        					<div ng-repeat="purchase in purchases | orderBy: 'completed' : true">
+				        						<hr ng-if="!$first">
+				        						<div class="alert" ng-class="{'alert-danger': purchase.failed}">
+					        						<span><strong>{!purchase.fName!} {!purchase.lName!}</strong></span>
+					        						<span>{!purchase.extras!}</span><br>
+					        						<span>Transaction ID: {!purchase.purchaseID !}</span><br>
+					        						<span>{!purchase.email!}</span><br>
+					        						<span>{!purchase.priceLabel!}: </span><span>${!purchase.price!}</span><br ng-if="purchase.failed">
+					        						<span ng-if="purchase.failed">Transaction declined - {!purchase.reason!}</span>
+					        					</div>
+				        					</div>
+				        				</div>
+									   <!--  <div ng-repeat="purchase in purchases | orderBy: 'lname'" style="background-color:#eee;margin:10px 0;padding:5px 15px" ng-if="purchases">
+									        <div class="clearfix" style="background-color:#eee">
+									            <div class="pull-right" style="margin:0 -10px 0 0">
+									                <a class="btn btn-default btn-sm"><i class="fa fa-pencil"></i></a>
+									            </div>
+									            <div style="margin-top:5px">
+									                <span>{!user.lname!}, {!user.fname!}</span>
+									            </div>
+									        </div>
+									    </div> -->
+				        			</div>
+				        			<div ng-if="pageSettings.id == 2">
+							            <div class="form-group">
+							                <label>Member ID:</label>
+							                <input class="form-control" ng-model="memberRequest.checkID" ng-change="checkIDEntered()">
+						                </div>
+							            <div class="form-group">
+							                <label>Check by last name:</label>
+							                <div class="input-group">
+							                    <input class="form-control" ng-model="memberRequest.checkLastName">
+							                    <span class="input-group-btn">
+							                        <button class="btn btn-input" ng-disabled="imSaving" ng-click="checkLastNameEntered()">
+							                            <i class="fa fa-search-plus"></i> Search
+							                        </button>
+							                    </span>
+							                </div>
+							            </div>
+							            <hr ng-if="!duplicateMembers">
+
+							            <div class="alert alert-warning" ng-if="duplicateMembers">
+							            	<span>
+							            		This Member ID has duplicates, verify first and last name
+							            		<span ng-if="currentMember.member2"> of both parties</span>, or
+							            		<a ng-click="showDuplicates()">click here to <span ng-if="!dupOpen">view</span><span ng-if="dupOpen">hide</span> a list</a> of the other members with this ID
+							            	</span>
+							            </div>
+
+							            <div ng-if="currentMember" class="panel" ng-class="{'panel-success': currentMember.status == 'valid', 'panel-warning': currentMember.status == 'expired', 'panel-danger': currentMember.status == 'Revoked'}">
+							            	<div class="panel-heading">
+								            	<span class="pull-right">membership expiration: {!currentMember.expiration!}
+								            		<span ng-if="currentMember.status == 'expired'"> - <strong>{!currentMember.status!}!</strong></span>
+								            	</span>
+								            	<label>{!currentMember.memberType!} {!currentMember.gender!}</label>
+								            	<button class="btn btn-default btn-sm" ng-click="toggleEditMode(currentMember)" ng-if="!currentMember.editMode"><i class="fa fa-pencil"></i></button>
+								            	<button class="btn btn-success btn-sm" ng-click="toggleEditMode(currentMember, 'save')" ng-if="currentMember.editMode"><i class="fa fa-floppy-o"></i> Save Changes</button>
+								            	<button class="btn btn-warning btn-sm" ng-click="toggleEditMode(currentMember, 'cancel')" ng-if="currentMember.editMode"><i class="fa fa-ban"></i> Undo/cancel</button>
+								            	<button class="btn btn-default btn-sm" ng-click="addComp()" ng-if="!currentMember.editMode"><i class="fa fa-ticket"></i> Add Comp</button>
+								            </div>
+							            	<div class="panel-body">
+							            		<div class="alert alert-info" ng-if="currentMember.credits">
+							            			<strong>Members has credits</strong>
+							            			<ul>
+							            				<li ng-repeat="credit in currentMember.credits">
+							            					{!credit.creditLabel!}
+							            				</li>
+							            			</ul>
+							            		</div>
+							            		<div class="row">
+									            	<div class="col-sm-6 col-md-4 col-lg-3" ng-if="currentMember.member1">
+									            		<ul ng-if="!currentMember.editMode">
+									            			<li>First Name: <strong>{!currentMember.member1.fName!}</strong></li>
+									            			<li>Last Name: <strong>{!currentMember.member1.lName!}</strong></li>
+									            			<li>Drivers License: <strong>{!currentMember.member1.dl!}</strong></li>
+									            			<li>DoB: <strong>{!currentMember.member1.dob!}</strong></li>
+									            			<li>Email: <strong>{!currentMember.member1.email!}</strong></li>
+									            		</ul>
+									            		<div ng-if="currentMember.editMode">
+												            <div class="form-group">
+												                <label>First Name:</label>
+												                <input class="form-control" ng-model="currentMember.member1.fName">
+											                </div>
+												            <div class="form-group">
+												                <label>Last Name:</label>
+												                <input class="form-control" ng-model="currentMember.member1.lName">
+											                </div>
+												            <div class="form-group">
+												                <label>DL or ID number:</label>
+												                <input class="form-control" ng-model="currentMember.member1.dl">
+											                </div>
+												            <div class="form-group">
+												                <label>Date of Birth:</label>
+											                    <datepicker date-set="{!currentMember.member1.dob!}" date-format="yyyy-MM-dd">
+											                        <input class="form-control" ng-model="currentMember.member1.dob">
+											                    </datepicker>
+											                </div>
+												            <div class="form-group" style="margin-top:50px">
+												                <label>Email:</label>
+												                <input class="form-control" ng-model="currentMember.member1.email" type="email">
+											                </div>
+											            </div>
+									            	</div>
+									            	<div class="col-sm-6 col-md-4 col-lg-3" ng-if="currentMember.member2">
+									            		<ul ng-if="!currentMember.editMode">
+									            			<li>First Name: <strong>{!currentMember.member2.fName!}</strong></li>
+									            			<li>Last Name: <strong>{!currentMember.member2.lName!}</strong></li>
+									            			<li>Drivers License: <strong>{!currentMember.member2.dl!}</strong></li>
+									            			<li>DoB: <strong>{!currentMember.member2.dob!}</strong></li>
+									            			<li>Email: <strong>{!currentMember.member2.email!}</strong></li>
+									            		</ul>
+									            		<div ng-if="currentMember.editMode">
+												            <div class="form-group">
+												                <label>First Name:</label>
+												                <input class="form-control" ng-model="currentMember.member2.fName">
+											                </div>
+												            <div class="form-group">
+												                <label>Last Name:</label>
+												                <input class="form-control" ng-model="currentMember.member2.lName">
+											                </div>
+												            <div class="form-group">
+												                <label>DL or ID number:</label>
+												                <input class="form-control" ng-model="currentMember.member2.dl">
+											                </div>
+												            <div class="form-group">
+												                <label>Date of Birth:</label>
+											                    <datepicker date-set="{!currentMember.member2.dob!}" date-format="yyyy-MM-dd">
+											                        <input class="form-control" ng-model="currentMember.member2.dob">
+											                    </datepicker>
+											                </div>
+												            <div class="form-group" style="margin-top:50px">
+												                <label>Email:</label>
+												                <input class="form-control" ng-model="currentMember.member2.email" type="email">
+											                </div>
+											            </div>
+									            	</div>
+									            	<div class="col-sm-6 col-md-4 col-lg-3" ng-if="currentMember.address">
+									            		<ul ng-if="!currentMember.editMode">
+									            			<li>Address: <strong>{!currentMember.address.address!}</strong></li>
+									            			<li>City: <strong>{!currentMember.address.city!}</strong></li>
+									            			<li>State: <strong>{!currentMember.address.state!}</strong></li>
+									            			<li>Zip: <strong>{!currentMember.address.zip!}</strong></li>
+									            			<li>Phone: <strong>{!currentMember.address.phone!}</strong></li>
+									            		</ul>
+									            		<div ng-if="currentMember.editMode">
+												            <div class="form-group">
+												                <label>Address:</label>
+												                <input class="form-control" ng-model="currentMember.address.address">
+											                </div>
+												            <div class="form-group">
+												                <label>City:</label>
+												                <input class="form-control" ng-model="currentMember.address.city">
+											                </div>
+												            <div class="form-group">
+												                <label>State:</label>
+												                <select class="form-control" ng-options="thisState.abb as thisState.label for thisState in stateInfo" ng-model="currentMember.address.state"></select>
+											                </div>
+												            <div class="form-group">
+												                <label>Zip/Postal code:</label>
+												                <input class="form-control" ng-model="currentMember.address.zip">
+											                </div>
+												            <div class="form-group">
+												                <label>Phone:</label>
+												                <input class="form-control" ng-model="currentMember.address.phone">
+											                </div>
+											            </div>
+									            	</div>
+									            	<div class="col-sm-6 col-md-4 col-lg-3" ng-if="currentMember.editMode">
+											            <div class="form-group">
+											                <label>Membership Expires:</label>
+										                    <datepicker date-set="{!currentMember.expiration!}" date-format="yyyy-MM-dd">
+										                        <input class="form-control" ng-model="currentMember.expiration">
+										                    </datepicker>
+										                </div>
+											            <div class="form-group" ng-style="{'margin-top':newMember.duration == 'custom' ? '50px' : '0'}">
+											                <label>Membership Type:</label>
+											                <select class="form-control" ng-options="thisType.label as thisType.label for thisType in memberTypeOptions" ng-model="currentMember.memberType"></select>
+										                </div>
+											            <div class="form-group">
+											                <label>Gender:</label>
+											                <select class="form-control" ng-options="thisType.label as thisType.label for thisType in genderOptions" ng-model="currentMember.gender"></select>
+										                </div>
+									            	</div>
+									            </div>
+								            	<div ng-if="currentMember.purchases" style="background:#ddd;padding:10px">
+								            		<strong>Recent Purchases</strong>
+								            		<div ng-repeat="purchase in currentMember.purchases | orderBy:'eventDate' " style="background:#fff;margin-top:5px" ng-if="purchase.status">
+								            			<div class="panel" ng-class="{'panel-info':purchase.status == 'pending','panel-success':purchase.status == 'current','panel-warning':purchase.status == 'expired','panel-default':purchase.status == 'purchased'}" ng-style="{'margin-bottom': $last ? 0 : ''}">
+								            				<div class="panel-heading">
+								            					<h3 class="panel-title">{!purchase.event!} - {!purchase.eventDate | date:'EEE, MMM, d'!}</h3>
+								            				</div>
+								            				<div class="panel-body">
+										            			<span><strong>{!purchase.priceLabel!}</strong></span>
+										            			<br>
+										            			<span class="text-muted">{!purchase.notes!}</span>
+										            			<br>
+										            			<span class="text-muted">purchased on {!purchase.completed!}</span>
+										            		</div>
+										            	</div>
+								            		</div>
+								            	</div>
+								            </div>
+							            </div>
+							            
+							            <div ng-if="duplicateMembers && dupOpen" ng-repeat="thisDup in duplicateMembers" class="panel" ng-class="{'panel-success': thisDup.status == 'valid', 'panel-warning': thisDup.status == 'expired', 'panel-danger': thisDup.status == 'Revoked'}">
+							            	<div class="panel-heading">
+								            	<span class="pull-right">membership expiration: {!thisDup.expiration!}
+								            		<span ng-if="thisDup.status == 'expired'"> - <strong>{!thisDup.status!}!</strong></span>
+								            	</span>
+								            	<label>{!thisDup.memberType!} {!thisDup.gender!}</label>
+								            </div>
+							            	<div class="panel-body">
+							            		<div class="row">
+									            	<div class="col-sm-6 col-md-4 col-lg-3" make-it-square ng-if="thisDup.member1">
+									            		<ul>
+									            			<li>First Name: <strong>{!thisDup.member1.fName!}</strong></li>
+									            			<li>Last Name: <strong>{!thisDup.member1.lName!}</strong></li>
+									            			<li>DoB: <strong>{!thisDup.member1.dob!}</strong></li>
+									            			<li>Drivers License: <strong>{!thisDup.member1.dl!}</strong></li>
+									            			<li>Email: <strong>{!thisDup.member1.email!}</strong></li>
+									            		</ul>
+									            	</div>
+									            	<div class="col-sm-6 col-md-4 col-lg-3" make-it-square ng-if="thisDup.member2">
+									            		<ul>
+									            			<li>First Name: <strong>{!thisDup.member2.fName!}</strong></li>
+									            			<li>Last Name: <strong>{!thisDup.member2.lName!}</strong></li>
+									            			<li>DoB: <strong>{!thisDup.member2.dob!}</strong></li>
+									            			<li>Drivers License: <strong>{!thisDup.member2.dl!}</strong></li>
+									            			<li>Email: <strong>{!thisDup.member2.email!}</strong></li>
+									            		</ul>
+									            	</div>
+									            	<div class="col-sm-6 col-md-4 col-lg-3" make-it-square ng-if="thisDup.address">
+									            		<strong>Address</strong><br>
+									            		<span>{!thisDup.address.address!}</span><br>
+									            		<span>{!thisDup.address.city!}</span><br>
+									            		<span>{!thisDup.address.state!}</span><br>
+									            		<span>{!thisDup.address.zip!}</span><br>
+									            		<span>{!thisDup.address.phone!}</span>
+									            	</div>
+									            </div>
+								            </div>
+							            </div>
+
+							            <div ng-if="memberList">
+							            	<table class="table table-hover">
+							            		<thead>
+								            		<tr>
+								            			<th>
+								            				First Name
+								            			</th>
+								            			<th>
+								            				Last Name
+								            			</th>
+								            			<th>
+								            				DL #
+								            			</th>
+								            			<th>
+								            				DoB
+								            			</th>
+								            			<th>
+								            				First Name
+								            			</th>
+								            			<th>
+								            				Last Name
+								            			</th>
+								            			<th>
+								            				DL #
+								            			</th>
+								            			<th>
+								            				DoB
+								            			</th>
+								            		</tr>
+								            	</thead>
+								            	<tbody>
+								            		<tr ng-repeat="thisMember in memberList" ng-click="getMemberKey(thisMember.memberKey)">
+								            			<td>
+								            				<span ng-if="thisMember.fname1">{!thisMember.fname1!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.lname1">{!thisMember.lname1!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.dl1">{!thisMember.dl1!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.dob1">{!thisMember.dob1!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.fname2">{!thisMember.fname2!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.lname2">{!thisMember.lname2!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.dl2">{!thisMember.dl2!}</span>
+								            			</td>
+								            			<td>
+								            				<span ng-if="thisMember.dob2">{!thisMember.dob2!}</span>
+								            			</td>
+								            		</tr>
+								            	</tbody>
+							            	</table>
+							            </div>
+				        			</div>
+				        		</div>
+				        	</div>
+			        	{{pass}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

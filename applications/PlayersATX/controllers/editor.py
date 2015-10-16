@@ -4,12 +4,115 @@
 from BasicSite import *
 basics = MainPage(db)
 cardDAL = ContentCards(db)
+
+from Events import Events
 eventDAL = Events(db)
 
 THISPAGE = basics.get_my_page()
 THISPAGE['pageSetting'] = request.vars.page_id or None
 
 @auth.requires_login()
+@auth.requires_membership('Staff')
+def doubler():
+	updateID = request.vars.dupID or None
+	updateKey = request.vars.key or None
+	thisRecord =  request.vars.record or None
+	fixMe =  request.vars.fixMe or None
+
+	if updateID and fixMe:
+		recordToFix = db.membership_duplicates(int(updateID))
+		if recordToFix:
+			thisWorked = recordToFix.update_record(fixed=True)
+			if thisWorked:
+				redirect(URL('editor', 'doubler'))
+
+	keyMap = {
+		"member1fName": "his_f_name",
+		"member1lName": "his_l_name",
+		"member1email": "his_email",
+		"member1dob": "his_dob",
+		"member1dl": "his_dl",
+		"member2fName": "her_f_name",
+		"member2lName": "her_l_name",
+		"member2email": "her_email",
+		"member2dob": "her_dob",
+		"member2dl": "her_dl",
+		"addressaddress": "address",
+		"addresscity": "city",
+		"addressstate": "state",
+		"addresszip": "zip",
+		"addressphone": "phone",
+		"expiration": "expiration"
+	}
+
+	if updateID and updateKey and keyMap.get(updateKey):
+		dupRecord = db.membership_duplicates(int(updateID))
+		if dupRecord:
+			if thisRecord == "old":
+				sourceMemID = dupRecord.old_id
+				targetMemID = dupRecord.new_id
+			else:
+				sourceMemID = dupRecord.new_id
+				targetMemID = dupRecord.old_id
+
+			sourceData = db(db.members.member_number == sourceMemID).select().first()
+
+			targetRow = db(db.members.member_number == targetMemID).select().first()
+
+			targetRow[keyMap[updateKey]] = sourceData[keyMap[updateKey]]
+
+			thisWorked = targetRow.update_record()
+
+			if thisWorked:
+				redirect(URL('editor', 'doubler'))
+
+
+			# query = db.members.member_number == dupRecord.old_id
+			# masterRecord = db(query).select().first()
+			# if masterRecord:
+			# 	masterRecord.update_record(expiration=expiration)
+			# thisWorked = dupRecord.update_record(fixed=True)
+			# if thisWorked:
+			# 	redirect(URL('editor', 'doubler'))
+	duplicates = []
+	query = db.membership_duplicates.fixed == False
+	results = db(query).select()
+	if results:
+		from Members import Members
+		memberObj = Members(db)
+		for result in results:
+			thisRecord = {
+				"newMember": memberObj.get_member(result.new_id),
+				"oldMember": memberObj.get_member(result.old_id),
+				"dupID": result.id,
+				"diffList": {}
+			}
+			count = 0
+			for key, value in thisRecord["newMember"].iteritems():
+				if key == "member1" or key == "member2" or key =="address":
+					subObject = value
+					if subObject:
+						for subkey, subvalue in subObject.iteritems():
+							if not thisRecord["newMember"][key][subkey] == thisRecord["oldMember"][key][subkey]:
+								thisRecord["diffList"][key + subkey] = True
+								count += 1
+
+				elif key == "updated" or key == "memberID" or key =="id" or key =="status":
+					thisKey = key
+				else:
+					if not thisRecord["newMember"][key] == thisRecord["oldMember"][key]:
+						thisRecord["diffList"][key] = True
+						count += 1
+
+			if count <= 6:
+				duplicates.append(thisRecord)
+
+
+	return dict(duplicates=duplicates)
+
+
+@auth.requires_login()
+@auth.requires_membership('Admin')
 def update():
 	pageSetting = request.vars.page_id or "advanced"
 	elementId = int(request.vars.element_id) if request.vars.element_id else None
@@ -20,6 +123,7 @@ def update():
 	cards=False
 	events=False
 	THISPAGE['pageSetting'] = pageSetting
+	angularData = False
 
 	from Media import Media
 	media = Media(db)
@@ -119,6 +223,11 @@ def update():
 				redirect(URL('editor', 'update', vars=dict(page_id="event")))
 
 		else:
+			angularData = {
+				"events": eventDAL.get_events(elementId),
+				"thisPageID": "event"
+			}
+			# images=media.g
 			events=eventDAL.get_events(elementId)
 			if not events:
 				redirect(URL('editor', 'update', vars=dict(page_id="event")))
@@ -140,7 +249,11 @@ def update():
 # ******************IMAGE PAGE********************
 	elif pageSetting=="image":
 		if not elementId:
-			images=media.get_images()
+			angularData = {
+				"images": media.get_images(),
+				"thisPageID": "image"
+			}
+			# images=media.get_images()
 			form = SQLFORM(db.image_library,
 				submit_button='Upload',
 				fields=['image_name','image_desc','keywords','image_file'],
@@ -175,9 +288,10 @@ def update():
 	else:
 		pageIdError="You are poking around where you dont belong, try something else, or close your browser and login in again"
 
-	return dict(thisPage=THISPAGE, form=form, bgForm=bgForm, images=images, cards=cards, events=events, pageIdError=pageIdError)
+	return dict(thisPage=THISPAGE, form=form, bgForm=bgForm, images=images, cards=cards, events=events, pageIdError=pageIdError, angularData=angularData)
 
 @auth.requires_login()
+@auth.requires_membership('Admin')
 def assign_image():
 	assignSource = request.vars.page_id
 	elementId = int(request.vars.element_id) if request.vars.element_id else None
@@ -219,23 +333,31 @@ def assign_image():
 	return dict(thisPage=THISPAGE, form=form, images=images)
 
 @auth.requires_login()
+@auth.requires_membership('Admin')
 def page_content():
 	THISPAGE['pageSetting']='layout'
 	pageId = int(request.vars.element_id) if request.vars.element_id else 1
 	dataId = int(request.vars.data_id) if request.vars.data_id else None
 	settingId = int(request.vars.setting_id) if request.vars.setting_id else None
 	action = request.vars.action or None
+	showEvents = request.vars.eventView or False
 
 	form = False
 	cards = False
 	events = False
-	partners= False
+	partners = False
+	angularData = False
 
 	if pageId:
 		if not action:
-				import operator
 				cards = cardDAL.get_cards_by_page_id(pageId)
 				events = eventDAL.get_events_by_page_id(pageId)
+				angularData = {
+					"message": "there was data",
+					"events": events,
+					"showEvents": showEvents,
+					"thisPageID": pageId
+				}
 
 		if action == "add_card":
 			if dataId:
@@ -263,6 +385,12 @@ def page_content():
 					redirect(URL('editor', 'page_content', vars=dict(element_id=pageId)))
 
 			else:
+				angularData = {
+					"message": "there was data",
+					"events": eventDAL.get_events(),
+					"showEvents": showEvents,
+					"thisPageID": pageId
+				}
 				events = eventDAL.get_events()
 
 		elif action == "edit":
@@ -323,4 +451,181 @@ def page_content():
 	# 	else:
 	# 		redirect(URL('editor', 'assign', vars=dict(page_id=assignSource, element_id=elementId)))
 
-	return dict(thisPage=THISPAGE, form=form, cards=cards, events=events, partners=partners, pageId=pageId)
+	return dict(thisPage=THISPAGE, form=form, cards=cards, events=events, partners=partners, pageId=pageId, angularData=angularData)
+
+@auth.requires_login()
+@auth.requires_membership('Staff')
+def front_desk():
+	THISPAGE['pageSetting']='front_desk'
+	from Members import Members
+	memberObj = Members(db)
+
+	angularData = memberObj.genterate_new_member_template()
+	angularData["user"] = get_user()
+	angularData["attendance"] = memberObj.get_current_attendance()
+
+	return dict(thisPage=THISPAGE, angularData=angularData)
+
+@auth.requires_login()
+@auth.requires_membership('Admin')
+def member_map():
+	THISPAGE['pageSetting']='map'
+	angularData = False
+
+	return dict(thisPage=THISPAGE, angularData=angularData)
+
+
+@auth.requires_login()
+@auth.requires_membership('Admin')
+def admin():
+	sapID = request.vars.sap_id or 1
+	userID = request.vars.user_id or None
+	sapID = int(sapID)
+	sessionRole = 3
+	if auth.has_membership('Super User'):
+		sessionRole = 2
+	THISPAGE['pageSetting']='admin'
+	users = None
+	form = False
+	angularData = False
+	sapPages = [
+		{"id": 1, "pageName": "Attendance", "heading": "Search Attendance Records", "display": True},
+		{"id": 2, "pageName": "Members", "heading": "Members Console", "display": True},
+		{"id": 3, "pageName": "Change Logs", "heading": "Staff Database Change Log", "display": True},
+		{"id": 4, "pageName": "Club Staff", "heading": "Staff Members with Web access", "display": True},
+		{"id": 5, "pageName": "New Staff", "heading": "Add New Staff Login", "display": False},
+		{"id": 6, "pageName": "Club Staff", "heading": "Edit Active Staff Login", "display": False},
+		{"id": 7, "pageName": "Online Purchases", "heading": "Event Purchases made through the website", "display": True}
+	]
+
+	from AccountAdmin import AccountAdmin
+	accountObj = AccountAdmin(db)
+
+	if sapID <= 4:
+		for page in sapPages:
+			if sapID == page["id"]:
+				thisPage = page
+		from Members import Members
+		memberObj = Members(db)
+
+		angularData = memberObj.genterate_new_member_template()
+		angularData["attendance"] = memberObj.get_current_attendance()
+		angularData["pageData"] = thisPage
+		angularData["pages"] = sapPages
+		angularData["users"] = accountObj.get_accounts(sessionRole)
+
+	else:
+
+		if sapID == 5:
+			form = SQLFORM(db.auth_user, submit_button='Create', fields=['first_name','last_name','email','password'])
+			if form.process().accepted:
+				accountObj.update_group_memberships([4], form.vars.id)
+				redirect(URL('editor', 'admin', vars=dict(sap_id="4")))
+
+		elif sapID == 6:
+			if not userID:
+				redirect(URL('editor', 'admin'))
+			query = db.auth_user(db.auth_user.id == int(userID))
+			form = SQLFORM(db.auth_user, query,
+				submit_button='Update',
+				deletable=True,
+				showid=False,
+				formstyle="bootstrap")
+			if form.process().accepted:
+				redirect(URL('editor', 'admin', vars=dict(sap_id="4")))
+
+	return dict(thisPage=THISPAGE, sapPages=sapPages, form=form, angularData=angularData)
+
+
+# @auth.requires_login()
+# @auth.requires_membership('Super User')
+# def create_user():
+#     # Create a new administrative user account
+#     if request.get_vars.org_id:
+#         orgID = request.get_vars.org_id
+#     elif request.post_vars.org_id:
+#         orgID = request.post_vars.org_id
+#     else:
+#         orgID = ''
+
+#     # Create user form
+#     form = SQLFORM(db.auth_user, submit_button='Create', fields=['first_name','last_name','email','password'])
+
+#     if form.process().accepted:
+#         from AccountAdmin import AccountAdmin
+#         accountObj = AccountAdmin(db)
+
+#         # Add the user to the 'Administrator' group
+#         accountObj.set_organization_administrator(form.vars.id)
+
+#         if orgID:
+#             # Make the user a member of the given organization
+#             accountObj.create_organization_membership(orgID, form.vars.id)
+
+#         # Redirect the user to the users screen
+#         redirect(URL('tadmin', 'users', vars=dict(org_id=orgID)))
+#     elif form.errors:
+#         response.flash = 'The form contains errors.'
+#     else:
+#         response.flash = 'Please complete the form.'
+
+#     return dict(form=form, orgID=orgID)
+
+
+# @auth.requires_login()
+# @auth.requires_membership('Super User')
+# def edit_user():
+#     userID = request.vars.uid or None
+#     view = request.vars.view or 'user'
+#     action = request.vars.action or None
+#     roleIDs = request.vars.role_ids or None
+
+#     # Retrieve the users existing organization membership for navigation
+#     from AccountAdmin import AccountAdmin
+#     accountObj = AccountAdmin(db, userID)
+#     accountObj.load_account()
+#     orgID = accountObj.get_organization_membership()
+
+#     if view == 'user':
+#         # Build user edit form
+#         user = db.auth_user(db.auth_user.id==userID)
+#         form = SQLFORM(db.auth_user, user, submit_button='Update', deletable=True, showid=False,
+#                        fields=['first_name','last_name','email','password'])
+#         if form.process().accepted:
+#             # Determine if the user account was deleted
+#             if db(db.auth_user.id==userID).count() == 0:
+#                 # The user account was deleted - remove the organization membership
+#                 accountObj.delete_organization_membership(userID)
+
+#                 # Redirect to the Users screen
+#                 if orgID:
+#                     redirect(URL('tadmin', 'users', vars=dict(org_id=orgID)))
+#                 else:
+#                     redirect(URL('tadmin', 'users'))
+#             else:
+#                 response.flash = 'The user account has been updated.'
+#         elif form.errors:
+#             response.flash = 'The form contains errors.'
+
+#         return dict(view=view, form=form, orgID=orgID, user=accountObj)
+#     elif view == 'role':
+#         # Get the list of available roles
+#         roles = accountObj.get_available_groups()
+
+#         if roleIDs:
+#             if action == 'update':
+#                 # Add the user to the given role(s)
+#                 accountObj.update_group_memberships(roleIDs, userID)
+#                 response.flash = 'User roles updated'
+
+#         userRoleIDs = accountObj.get_group_memberships(userID)
+
+#         return dict(view=view, orgID=orgID, user=accountObj, roles=roles, userRoleIDs=userRoleIDs)
+
+def get_user():
+	tempUser = auth.user
+	if not tempUser:
+		return False
+	else:
+		return {"fName": tempUser.first_name, "lName": tempUser.last_name, "email": tempUser.email}
+

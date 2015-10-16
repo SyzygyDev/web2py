@@ -1,0 +1,77 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header clearfix">
+            <button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+                <i class="fa fa-times"></i>
+            </button>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="!imSaving">time remaining: {!minutes!}:{!leadingZero!}{!seconds!}</span>
+            <h4 class="modal-title">Membership Information</h4>
+        </div>
+        <div class="modal-body" set-modal-height style="overflow-y:auto">
+            <p>Fill out the form below. This is for your reservation and membership information. Billing information will be collected in a minute.</p>
+            <div class="form-group">
+                <label>Member ID:</label>
+                <div class="input-group">
+                    <input class="form-control" ng-model="newPurchase.memberID" placeholder="P123456">
+                    <span class="input-group-btn">
+                        <button class="btn btn-input" ng-disabled="!newPurchase.memberID || imSaving" ng-click="verifyMemberID(newPurchase.memberID)">
+                            <i class="fa fa-search-plus"></i> Confirm ID
+                        </button>
+                    </span>
+                </div>
+                <span class="help-block">Don't have a membership? No problem! We'll set you up when you arrive.</span>
+            </div>
+            <div class="alert" ng-if="newPurchase.memberID" ng-class="{'alert-info': !newPurchase.status, 'alert-success':newPurchase.status == 'valid', 'alert-warning': newPurchase.status == 'invalid' || newPurchase.status == 'expired', 'alert-danger': newPurchase.status == 'Revoked'}">
+                <span ng-if="!newPurchase.status">By confirming your member ID, you will speed up the checkout process.</span>
+                <span ng-if="newPurchase.status == 'valid'">Your member ID has been confirmed, thank you.</span>
+                <span ng-if="newPurchase.status == 'expired'">Our records show your membership has expired. There may be addtional fees to be paid at the front desk when you enter unless what you are purchasing explicitly states that it includes membership. If you feel this is incorrect, send us an email or talk to the staff when you arrive.</span>
+                <span ng-if="newPurchase.status == 'invalid'">We could not find your member ID in our system. Please make sure you typed it correctly.<br>
+                    You may continue on without it, and we will verify your membership at the front desk.
+                </span>
+                <span ng-if="newPurchase.status == 'Revoked'">Our records indicate your membership has been revoked. You will not be allowed admittance and will not receive a refund if you purchase entry on-line.<br>
+                    If you feel you have received this message in error, please contact our staff via e-mail or phone.
+                </span>
+            </div>
+            <div ng-if="newPurchase.status != 'Revoked'">
+                <button class="btn btn-sm btn-default pull-right" ng-click="isCouple('toggle')" ng-if="!newPurchase.status || newPurchase.status == 'invalid'">
+                    <span ng-if="isCouple()"><i class="fa fa-neuter"></i> Not a couple</span>
+                    <span ng-if="!isCouple()"><i class="fa fa-venus-mars"></i> We're a Couple</span>
+                </button>
+                <br ng-if="!newPurchase.status || newPurchase.status == 'invalid'">
+                <div class="form-group">
+                    <label>Email Address:</label>
+                    <input class="form-control" ng-model="newPurchase.email" placeholder="John@doe.com">
+                    <span class="help-block">We will e-mail you your receipt and send you any additional info about your purchase. You can leave this blank and receive any information you need when you arrive.</span>
+                </div>
+                <div>
+                    <span class="text-muted">A valid picture ID will be required at the front desk<span ng-if="isCouple()"> for both people attending</span>.</span>
+                </div>
+                <div class="form-group">
+                    <label><span ng-if="isCouple()">His </span><span ng-if="!isCouple()">Your </span>first name:</label>
+                    <input class="form-control" ng-model="newPurchase.fName" placeholder="John">
+                </div>
+                <div class="form-group">
+                    <label><span ng-if="isCouple()">His </span><span ng-if="!isCouple()">Your </span>last name:</label>
+                    <input class="form-control" ng-model="newPurchase.lName" placeholder="Doe">
+                </div>
+                <div class="form-group" ng-if="isCouple()">
+                    <label>Her first name:</label>
+                    <input class="form-control" ng-model="newPurchase.fName1" placeholder="Jane">
+                </div>
+                <div class="form-group" ng-if="isCouple()">
+                    <label>Her last name:</label>
+                    <input class="form-control" ng-model="newPurchase.lName1" placeholder="Doe">
+                </div>
+                <div>
+                    <hr>
+                    <p><strong>{!newPurchase.label!} - ${!newPurchase.price!}</strong></p>
+                    <span>
+                        <button class="btn btn-sm" ng-class="{'btn-warning': !purchaseFormCmplt('initial'), 'btn-success':purchaseFormCmplt('initial')}" ng-disabled="!purchaseFormCmplt('initial') || imSaving" ng-click="checkout('proceed')">Proceed to checkout</button>
+                        <span ng-if="!purchaseFormCmplt('initial')"> - form incomplete</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

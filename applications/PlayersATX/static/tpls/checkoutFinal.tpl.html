@@ -1,0 +1,33 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header clearfix">
+            <button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+                <i class="fa fa-times"></i>
+            </button>
+            <span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+            <h4 class="modal-title">Purchase Complete</h4>
+        </div>
+        <div class="modal-body" set-modal-height style="overflow-y:auto">
+            <p>Your purchase has been approved and an email has been sent to the staff so they can make any special arrangements.</p>
+            <p ng-if="newPurchase.email">An email has also been sent to {!newPurchase.email!} as a receipt of this transaction.</p>
+            <hr>
+            <div class="panal panal-default">
+                <div class="panel-heading">
+                    <h3>Receipt</h3>
+                </div>
+                <div class="panel-body">
+                    <h4>{!txnSuccess.eventName!}</h4>
+                    <span><strong>{!newPurchase.label!}</strong></span>
+                    <br>
+                    <span>purchased for <strong>${!newPurchase.price!}</strong></span>
+                    <br>
+                    <span>with card ending in "{!lastFour()!}"</span>
+                    <h4>Confirmation Code: {!txnSuccess.confirmation!}</h4>
+                    <p>This purchase is for {!newPurchase.fName!} {!newPurchase.lName!}<span ng-if="newPurchase.fName1 && newPurchase.lName1"> and {!newPurchase.fName1!} {!newPurchase.lName1!}</span>. Photo ID<span ng-if="newPurchase.fName1 && newPurchase.lName1">s for both of you</span> will be required at entry.
+                </div>
+                <div class="alert alert-warning" ng-if="newPurchase.status == 'expired'">Please remember that unless expressly stated above, you may be required to renew your membership when you arrive.</div>
+                <div class="alert alert-warning" ng-if="!newPurchase.status || newPurchase.status == 'invalid'">If you are a new member, you will speed up check-in by <a href="/playersatx/default/membership?show_form=true">going here</a> to print and fill out the membership form.</div>
+            </div>
+        </div>
+    </div>
+</div>

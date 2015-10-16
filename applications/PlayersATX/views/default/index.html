@@ -17,8 +17,8 @@
 							{{for event in events:}}
 								{{if event['image']:}}
 									<li data-target="#players-carousel" data-slide-to="{{=eventIndex}}" class="{{='active' if eventIndex == 0 else ''}}"></li>
+									{{eventIndex = eventIndex + 1}}
 								{{pass}}
-								{{eventIndex = eventIndex + 1}}
 							{{pass}}
 						</ol>
 
@@ -28,28 +28,34 @@
 							{{for event in events:}}
 								{{if event['image']:}}
 									<div class="item{{=' active' if eventIndex == 0 else ''}}" style="background-color:black; background:url('{{=URL('default', 'download', 	args=event['image'])}}') center no-repeat; background-size: contain">
-										<!-- <img class="img-responsive img-full" src="{{=URL('default', 'download', 	args=event['image'])}}" alt=""> -->
-										<img class="img-responsive img-full" src="{{=URL('static','images/playerspacer.png')}}" alt="">  
-										{{if event["layout"] >= 2:}}
-											<div class="container">
-												<div class="carousel-caption" style="background-color:rgba(255, 0, 0, 0.5)">
-													{{if event["layout"] == 2 or event["layout"] == 4:}}
-														<h1>{{=XML(event["event_name"])}}</h1>
-													{{else:}}
-														<h1>{{=XML(event["event_heading"])}}</h1>
-													{{pass}}
-													{{if event["layout"] == 4:}}
-														<strong>{{=XML(event["event_heading"])}}</strong>
-													{{pass}}
-													{{if event["eventDate"]:}}
-														<h2>{{=event["eventDate"]}}</h2>
-													{{pass}}
-												</div>
-											</div>
+										{{if event['prepay']:}}
+											<a href="{{=URL('default', 'eventpay')}}?eventID={{=event['eventID']}}">
+										{{else:}}
+											<a href="{{=URL('default', 'events')}}?eventID={{=event['eventID']}}">
 										{{pass}}
+											<!-- <img class="img-responsive img-full" src="{{=URL('default', 'download', 	args=event['image'])}}" alt=""> -->
+											<img class="img-responsive img-full" src="{{=URL('static','images/playerspacer.png')}}" alt="">  
+											{{if event["layout"] >= 2:}}
+												<div class="container">
+													<div class="carousel-caption" style="background-color:rgba(255, 0, 0, 0.5)">
+														{{if event["layout"] == 2 or event["layout"] == 4:}}
+															<h1>{{=XML(event["event_name"])}}</h1>
+														{{else:}}
+															<h1>{{=XML(event["event_heading"])}}</h1>
+														{{pass}}
+														{{if event["layout"] == 4:}}
+															<strong>{{=XML(event["event_heading"])}}</strong>
+														{{pass}}
+														{{if event["eventDate"]:}}
+															<h2>{{=event["eventDate"]}}</h2>
+														{{pass}}
+													</div>
+												</div>
+											{{pass}}
+										</a>
 									</div>
+									{{eventIndex = eventIndex + 1}}
 								{{pass}}
-								{{eventIndex = eventIndex + 1}}
 							{{pass}}
 						</div>
 

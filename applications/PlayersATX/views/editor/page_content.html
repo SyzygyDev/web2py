@@ -13,9 +13,11 @@
 						<div class="list-group">
 							{{thisPageID =request.vars.element_id if request.vars.element_id else "1"}}
 							{{for page in thisPage["pages"]:}}
-								<a href="{{=URL('editor', 'page_content', vars=dict(element_id=page['id']))}}" class="list-group-item list-group-item-danger{{=' active' if str(page['id']) == thisPageID else ''}}">
-									{{=page['pageName']}}
-								</a>
+								{{if page['display']:}}
+									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=page['id']))}}" class="list-group-item list-group-item-danger{{=' active' if str(page['id']) == thisPageID else ''}}" style="overflow-x:hidden">
+										{{=page['pageName']}}
+									</a>
+								{{pass}}
 							{{pass}}
 						</div>
 					</div>
@@ -23,183 +25,296 @@
 						{{if thisPageID:}}
 							{{for page in thisPage["pages"]:}}
 								{{if str(page['id']) == thisPageID:}}
+									{{PAGEVALUE = page['pageFile']}}
 									<h3>Events and Content for the "{{=page['pageName']}}" page</h3>
 								{{pass}}
 							{{pass}}
-							{{if request.vars.action:}}
-<!-- *************** ADD CONTENT CARD ****************** -->
-								{{if request.vars.action == "add_card":}}
-									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
-										<i class="fa fa-chevron-left"></i> back to page content
-									</a>
-									{{if cards:}}
-										<h4>Choose the Content Card to add:</h4>
-										{{for card in cards:}}
-											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card', data_id=card['cardID']))}}" class="btn btn-default btn-block">
-												{{=card["card_name"]}}: {{=XML(card["card_heading"])}}
-											</a>
-										{{pass}}
-									{{else:}}
-										<h3>You have no content cards to add</h3>
-										<a href="" class="btn btn-default btn-block">Add Content card</a>
-									{{pass}}
-								{{elif request.vars.action == "add_event":}}
-<!-- *************** ADD EVENT ****************** -->
-									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
-										<i class="fa fa-chevron-left"></i> back to page content
-									</a>
-									{{if events:}}
-										<h4>Choose the Event to add:</h4>
-										{{for event in events:}}
-											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event', data_id=event['eventID']))}}" class="btn btn-default btn-block">
-												{{=event["event_name"]}}: {{=XML(event["event_heading"])}}
-											</a>
-										{{pass}}
-									{{else:}}
-										<h3>You have no current events to add</h3>
-										<p>Events can not be added if they have expired, make sure the dates on any event you might be looking for is AFTER the current date/time or you wont see it
-										<a href="" class="btn btn-default btn-block">Add or update event</a>
-									{{pass}}
-								{{elif request.vars.action == "add_partner":}}
-<!-- *************** ADD PARTNER ****************** -->
-									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
-										<i class="fa fa-chevron-left"></i> back to page content
-									</a>
-									{{if events:}}
-										<h4>Choose the Event to add:</h4>
-										{{for event in events:}}
-											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event', data_id=event['eventID']))}}" class="btn btn-default btn-block">
-												{{=event["event_name"]}}: {{=XML(event["event_heading"])}}
-											</a>
-										{{pass}}
-									{{else:}}
-										<h3>You have no current events to add</h3>
-										<p>Events can not be added if they have expired, make sure the dates on any event you might be looking for is AFTER the current date/time or you wont see it
-										<a href="" class="btn btn-default btn-block">Add or update event</a>
-									{{pass}}
-								{{elif request.vars.action == "edit":}}
-<!-- *************** EDIT PAGE SETTING ****************** -->
-									<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
-										<i class="fa fa-chevron-left"></i> back to page content
-									</a>
-									{{if cards:}}
-										<h3>Adjust the image size</h3>
-										<p>By default, the content card uses the image as it was uploaded. You can choose to convert the image to an alternate banner shape.</p> 
-										{{=form}}
-										<br>
-
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												{{=cards["card_name"]}}
-											</div>
-											<div class="panel-body">
-												<div class="panel-body">
-													<hr>
-													<h2 class="intro-text text-center">
-														{{=XML(cards["card_heading"])}}
-													</h2>
-													<hr>
-													{{if cards["left_image"]:}}
-														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-left', element_id=cards['cardID']))}}">
-															<img class="pull-left" src="{{=URL('default', 'download', args=cards['left_image'])}}" alt="" style="width:{{=cards['imageSize']}};padding:10px">
-														</a>
-													{{pass}}
-													{{if cards["right_image"]:}}
-														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-right', element_id=cards['cardID']))}}">
-															<img class="pull-right" src="{{=URL('default', 'download', args=cards['right_image'])}}" alt="" style="width:{{=cards['imageSize']}};padding:10px">
-														</a>
-													{{pass}}
-													<hr class="visible-xs">
-													{{=XML(cards["body_text"])}}
-												</div>
-											</div>
-										</div>
-									{{elif events:}}
-										<h3>Adjust the Layout settings</h3>
-										<p>By default, the event uses the banner image. You can choose to use the alternate image, in the original uploaded shape.</p> 
-										{{=form}}
-										<br>
-
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												{{=events["event_name"]}}
-											</div>
-											<div class="panel-body">
-												<div class="panel-body">
-													{{if events["image"]:}}
-														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
-													{{else:}}
-														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
-													{{pass}}
-													<h2 class="intro-text text-center">
-														{{=XML(events["event_heading"])}}
-													</h2>
-													<hr>
-													<hr class="visible-xs">
-													{{=XML(events["body_text"])}}
-												</div>
-											</div>
-										</div>
-									{{elif partners:}}
-										<h3>Adjust the Layout settings</h3>
-										<p>By default, the system uses the image you uploaded. You can choose to have the image cropped to fit the banner.</p> 
-										{{=form}}
-										<br>
-
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												{{=events["event_name"]}}
-											</div>
-											<div class="panel-body">
-												<div class="panel-body">
-													{{if events["image"]:}}
-														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
-													{{else:}}
-														<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
-													{{pass}}
-													<h2 class="intro-text text-center">
-														{{=XML(events["event_heading"])}}
-													</h2>
-													<hr>
-													<hr class="visible-xs">
-													{{=XML(events["body_text"])}}
-												</div>
-											</div>
-										</div>
-									{{pass}}
-
-								{{else:}}{{redirect(URL('editor', 'page_content', vars=dict(element_id=thisPageID)))}}
-								{{pass}}
-							{{else:}}
-<!-- *************** LIST PAGE EVENTS ****************** -->
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										Displayed Events
-									</div>
-									<div class="panel-body">
-										{{if pageId == 1:}}
-											<div class="alert alert-info">
-												Home page events are set on the "Events" page
-											</div>
+							<div class="{{='col-xs-6 col-sm-8' if thisPageID == '1' else 'col-xs-12'}}">
+								{{if request.vars.action:}}
+	<!-- *************** ADD CONTENT CARD ****************** -->
+									{{if request.vars.action == "add_card":}}
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+											<i class="fa fa-chevron-left"></i> back to page content
+										</a>
+										{{if cards:}}
+											<h4>Choose the Content Card to add:</h4>
+											{{for card in cards:}}
+												<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card', data_id=card['cardID']))}}" class="btn btn-default btn-block">
+													{{=card["card_name"]}}: {{=XML(card["card_heading"])}}
+												</a>
+											{{pass}}
 										{{else:}}
-											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event'))}}" class="btn btn-default btn-block">Add event to display on this page</a><br>
-											{{if events:}}
-												<ul class="list-group">
-													{{for event in events:}}
-														<li class="list-group-item clearfix">
-															<div class="pull-left">
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='edit'))}}">{{=event["event_name"]}}: {{=XML(event["event_heading"])}}</a></div>
-															<div class="pull-right">
-																{{if len(events) > 1:}}
+											<h3>You have no content cards to add</h3>
+											<a href="" class="btn btn-default btn-block">Add Content card</a>
+										{{pass}}
+									{{elif request.vars.action == "add_event":}}
+	<!-- *************** ADD EVENT ****************** -->
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+											<i class="fa fa-chevron-left"></i> back to page content
+										</a>
+										<br>
+										<br>
+										<div class="panel panel-default">
+											<div class="panel-heading">
+												<span>Choose the event to add</span>
+												<div class="btn-group btn-group-sm pull-right" style="margin-top:-5px" ng-if="events">
+													<button class="btn btn-default" ng-click="eventView('toggle')" ng-disabled="eventView() == 'list'"><i class="fa fa-list"></i> List View</button>
+													<button class="btn btn-default" ng-click="eventView('toggle')" ng-disabled="eventView() == 'grid'"><i class="fa fa-th-large"></i> Grid View</button>
+												</div>
+											</div>
+											<div class="panel-body">
+												<div ng-if="events">
+													<div class="alert" ng-class="{'alert-warning': showFiltered(),'alert-info': !showFiltered()}">
+														<button class="btn btn-default btn-sm pull-right" ng-click="showFiltered('toggle')" style="margin-top:-5px">
+															<span ng-if="showFiltered()">Show all events</span>
+															<span ng-if="!showFiltered()">Show only current</span>
+														</button>
+														<span ng-if="showFiltered()">Showing only current events, expired events are hidden</span>
+														<span ng-if="!showFiltered()">Showing all events, including expired events</span>
+													</div>
 
-																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(events) == event['position'] else ''}}">
+													<ul class="list-group" ng-if="eventView() == 'list'">
+														<li class="list-group-item clearfix" ng-repeat="event in events | orderBy: ['dateType', 'position']" ng-style="{'background':event.dateType == 'expired' ? '#faebcc' : 'f'}" ng-if="showFiltered(event)">
+															<div class="pull-left">
+																<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&data_id={!event.eventID!}&action=add_event">{!event.event_name!}<span ng-if="event.dateType == 'expired'"> - expired</span></a>
+															</div>
+														</li>
+													</ul>
+													<div ng-if="eventView() == 'grid'">
+										                <div class="row">
+										                    <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="event in gridEvents | orderBy: ['dateType', 'eventDate']" style="margin-bottom:25px">
+										                        <div make-it-square="image" class="iframe" style="background-color:#000;overflow:hidden" ng-click="getEventAction(event, 'add')">
+										                            <img ng-src="{!eventImage(event)!}">
+										                            <div class="iframe-details" style="color: white;">
+										                                <span style="font-size:0.9em">{!event.event_name!}</span><br>
+										                                <span style="font-size:0.75em" ng-style="{'color':event.dateType == 'expired' ? 'red' : ''}">
+										                                	<i class="fa fa-circle" ng-style="{'color':event.dateType == 'expired' ? 'red' : 'green'}"></i> {!event.eventDate!}</span>
+										                            </div>
+										                        </div>
+										                    </div>
+										                </div>
+													</div>
+												</div>
+											</div>
+										</div>
+									{{elif request.vars.action == "add_partner":}}
+	<!-- *************** ADD PARTNER ****************** -->
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+											<i class="fa fa-chevron-left"></i> back to page content
+										</a>
+										{{if events:}}
+											<h4>Choose the Event to add:</h4>
+											{{for event in events:}}
+												<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_event', data_id=event['eventID']))}}" class="btn btn-default btn-block">
+													{{=event["event_name"]}}: {{=XML(event["event_heading"])}}
+												</a>
+											{{pass}}
+										{{else:}}
+											<h3>You have no current events to add</h3>
+											<p>Events can not be added if they have expired, make sure the dates on any event you might be looking for is AFTER the current date/time or you wont see it
+											<a href="" class="btn btn-default btn-block">Add or update event</a>
+										{{pass}}
+									{{elif request.vars.action == "edit":}}
+	<!-- *************** EDIT PAGE SETTING ****************** -->
+										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID))}}" class="btn btn-default">
+											<i class="fa fa-chevron-left"></i> back to page content
+										</a>
+										{{if cards:}}
+											<h3>Adjust the image size</h3>
+											<p>By default, the content card uses the image as it was uploaded. You can choose to convert the image to an alternate banner shape.</p> 
+											{{=form}}
+											<br>
+
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													{{=cards["card_name"]}}
+												</div>
+												<div class="panel-body">
+													<div class="panel-body">
+														<hr>
+														<h2 class="intro-text text-center">
+															{{=XML(cards["card_heading"])}}
+														</h2>
+														<hr>
+														{{if cards["left_image"]:}}
+															<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-left', element_id=cards['cardID']))}}">
+																<img class="pull-left" src="{{=URL('default', 'download', args=cards['left_image'])}}" alt="" style="width:{{=cards['imageSize']}};padding:10px">
+															</a>
+														{{pass}}
+														{{if cards["right_image"]:}}
+															<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='content-right', element_id=cards['cardID']))}}">
+																<img class="pull-right" src="{{=URL('default', 'download', args=cards['right_image'])}}" alt="" style="width:{{=cards['imageSize']}};padding:10px">
+															</a>
+														{{pass}}
+														<hr class="visible-xs">
+														{{=XML(cards["body_text"])}}
+													</div>
+												</div>
+											</div>
+										{{elif events:}}
+											<h3>Adjust the Layout settings</h3>
+											<p>By default, the event uses the banner image. You can choose to use the alternate image, in the original uploaded shape.</p> 
+											{{=form}}
+											<br>
+
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													{{=events["event_name"]}}
+												</div>
+												<div class="panel-body">
+													<div class="panel-body">
+														{{if events["image"]:}}
+															<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
+														{{else:}}
+															<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
+														{{pass}}
+														<h2 class="intro-text text-center">
+															{{=XML(events["event_heading"])}}
+														</h2>
+														<hr>
+														<hr class="visible-xs">
+														{{=XML(events["body_text"])}}
+													</div>
+												</div>
+											</div>
+										{{elif partners:}}
+											<h3>Adjust the Layout settings</h3>
+											<p>By default, the system uses the image you uploaded. You can choose to have the image cropped to fit the banner.</p> 
+											{{=form}}
+											<br>
+
+											<div class="panel panel-default">
+												<div class="panel-heading">
+													{{=events["event_name"]}}
+												</div>
+												<div class="panel-body">
+													<div class="panel-body">
+														{{if events["image"]:}}
+															<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}"><img src="{{=URL('default', 'download', args=events['image'])}}" alt="" style="width:100%;"></a>
+														{{else:}}
+															<a href="{{=URL('editor', 'assign_image', vars=dict(page_id='event', element_id=events['eventID']))}}" class="btn btn-default btn-block">add image</a>
+														{{pass}}
+														<h2 class="intro-text text-center">
+															{{=XML(events["event_heading"])}}
+														</h2>
+														<hr>
+														<hr class="visible-xs">
+														{{=XML(events["body_text"])}}
+													</div>
+												</div>
+											</div>
+										{{pass}}
+
+									{{else:}}{{redirect(URL('editor', 'page_content', vars=dict(element_id=thisPageID)))}}
+									{{pass}}
+								{{else:}}
+	<!-- *************** LIST PAGE EVENTS ****************** -->
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<span>Displayed Events</span>
+											{{if pageId != 1:}}
+												<div class="btn-group btn-group-sm pull-right" style="margin-top:-5px" ng-if="events">
+													<button class="btn btn-default" ng-click="eventView('toggle')" ng-disabled="eventView() == 'list'"><i class="fa fa-list"></i> List View</button>
+													<button class="btn btn-default" ng-click="eventView('toggle')" ng-disabled="eventView() == 'grid'"><i class="fa fa-th-large"></i> Grid View</button>
+												</div>
+											{{pass}}
+										</div>
+										<div class="panel-body">
+											{{if pageId == 1:}}
+												<div class="alert alert-info">
+													Home page events are set on the "Events" page
+												</div>
+											{{else:}}
+												<div class="alert alert-warning" ng-if="!events">
+													There are no events set to display on this page
+												</div>
+
+												<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&action=add_event" class="btn btn-default btn-block" ng-if="!events" style="margin-bottom:10px">Add an event to this page</a>
+
+												<div ng-if="events">
+
+													<div class="alert" ng-class="{'alert-warning': showFiltered(),'alert-info': !showFiltered()}">
+														<button class="btn btn-default btn-sm pull-right" ng-click="showFiltered('toggle')" style="margin-top:-5px">
+															<span ng-if="showFiltered()">Show all events</span>
+															<span ng-if="!showFiltered()">Show only current</span>
+														</button>
+														<span ng-if="showFiltered()">Showing only current events, expired events are hidden</span>
+														<span ng-if="!showFiltered()">Showing all events, including expired events</span>
+														<span ng-if="eventView() == 'grid'"><br>You can not reorder events in grid view.<br>Events are ordered by date.</span> 
+													</div>
+
+													<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&action=add_event" class="btn btn-default btn-block" ng-if="eventView() == 'list'" style="margin-bottom:10px">Add another event to this page</a>
+
+													<ul class="list-group" ng-if="eventView() == 'list'">
+														<li class="list-group-item clearfix" ng-repeat="event in events | orderBy: ['dateType', 'position']" ng-style="{'background':event.dateType == 'expired' ? '#faebcc' : 'f'}" ng-if="showFiltered(event)">
+															<div class="pull-left">
+																<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&setting_id={!event.dataID!}&action=edit">{!event.event_name!}<span ng-if="event.dateType == 'expired'"> - expired</span></a></div>
+															<div class="pull-right">
+																<div class="btn-group btn-group-sm" ng-if="events.length > 1 && event.dateType != 'expired'">
+																	<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&setting_id={!event.dataID!}&action=down" class="btn btn-default" ng-disabled="event.position == events.length">
 																		<i class="fa fa-chevron-down"></i>
 																	</a>
-																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if events[0]['dataID'] == event['dataID'] else ''}}">
+																	<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&setting_id={!event.dataID!}&action=up" class="btn btn-default" ng-disabled="events[0].dataID == event.dataID">
+																		<i class="fa fa-chevron-up"></i>
+																	</a>
+																</div>
+																<a href="/playersatx/editor/page_content?element_id={!thisPageID!}&setting_id={!event.dataID!}&action=remove" class="btn btn-danger btn-sm">
+																	<i class="fa fa-trash-o"></i> remove
+																</a>
+															</div>
+														</li>
+													</ul>
+													<div ng-if="eventView() == 'grid'">
+										                <div class="row">
+										                    <div class="col-xs-6 col-sm-4 col-md-3" style="margin-bottom:25px">
+										                        <div make-it-square class="iframe" ng-click="getEventAction()">
+										                            <div style="background-color:blue;width:100%;height:100%"></div>
+										                            <div class="iframe-details" style="color: white;">
+										                                <h3 style="font-size:0.75em"><i class="fa fa-plus-square"></i> Add Event</h3>
+										                                <span style="font-size:0.75em">Have another event display on this page.</span>
+										                            </div>
+										                        </div>
+										                    </div>
+										                    <div class="col-xs-6 col-sm-4 col-md-3" ng-repeat="event in gridEvents | orderBy: ['dateType', 'eventDate']" style="margin-bottom:25px">
+										                        <div make-it-square="image" class="iframe" style="background-color:#000;overflow:hidden" ng-click="getEventAction(event)">
+										                            <img ng-src="{!eventImage(event)!}">
+										                            <div class="iframe-details" style="color: white;">
+										                                <span style="font-size:0.9em">{!event.event_name!}</span><br>
+										                                <span style="font-size:0.75em" ng-style="{'color':event.dateType == 'expired' ? 'red' : ''}">
+										                                	<i class="fa fa-circle" ng-style="{'color':event.dateType == 'expired' ? 'red' : 'green'}"></i> {!event.eventDate!}</span>
+										                            </div>
+										                        </div>
+										                    </div>
+										                </div>
+													</div>
+												</div>
+											{{pass}}
+										</div>
+									</div>
+	<!-- *************** LIST CONTENT CARDS ****************** -->
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											Displayed Content Cards
+										</div>
+										<div class="panel-body">
+											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card'))}}" class="btn btn-default btn-block">Add content card to display on this page</a><br>
+											{{if cards:}}
+												<ul class="list-group">
+													{{for card in cards:}}
+														<li class="list-group-item clearfix">
+															<div class="pull-left">
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='edit'))}}">{{=card["card_name"]}}: {{=XML(card["card_heading"])}}</a></div>
+															<div class="pull-right">
+																{{if len(cards) > 1:}}
+
+																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(cards) == card['position'] else ''}}">
+																		<i class="fa fa-chevron-down"></i>
+																	</a>
+																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if cards[0]['dataID'] == card['dataID'] else ''}}">
 																		<i class="fa fa-chevron-up"></i>
 																	</a>
 																{{pass}}
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=event['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
 																	<i class="fa fa-trash-o"></i> remove
 																</a>
 															</div>
@@ -208,87 +323,58 @@
 												</ul>
 											{{else:}}
 												<div class="alert alert-warning">
-													There are no events set to display on this page
+													There are no content cards set to display on this page
 												</div>
 											{{pass}}
-										{{pass}}
+										</div>
+									</div>
+	<!-- *************** LIST PARTNERS ****************** -->
+			<!-- 						<div class="panel panel-default">
+										<div class="panel-heading">
+											Displayed Partners
+										</div>
+										<div class="panel-body">
+											<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card'))}}" class="btn btn-default btn-block">Add partners to display on this page</a><br>
+											{{if partners:}}
+												<ul class="list-group">
+													{{for partner in partners:}}
+														<li class="list-group-item clearfix">
+															<div class="pull-left">
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='edit'))}}">{{=card["card_name"]}}: {{=XML(card["card_heading"])}}</a></div>
+															<div class="pull-right">
+																{{if len(cards) > 1:}}
+
+																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(cards) == card['position'] else ''}}">
+																		<i class="fa fa-chevron-down"></i>
+																	</a>
+																	<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if cards[0]['dataID'] == card['dataID'] else ''}}">
+																		<i class="fa fa-chevron-up"></i>
+																	</a>
+																{{pass}}
+																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
+																	<i class="fa fa-trash-o"></i> remove
+																</a>
+															</div>
+														</li>
+													{{pass}}
+												</ul>
+											{{else:}}
+												<div class="alert alert-warning">
+													There are no partners set to display on this page
+												</div>
+											{{pass}}
+										</div>
+									</div> -->
+	<!-- *************** DONE ****************** -->
+								{{pass}}
+							</div>
+							{{if thisPageID == '1':}}
+								<div class="col-xs-6 col-sm-4">
+									<div class="iframe" style="height:500px;width:100%">
+										<iframe id="preview-frame" src="{{=URL('default', PAGEVALUE)}}" class="iframe-view" scrolling="no"></iframe>
+										<div class="iframe-blocker-div"></div>
 									</div>
 								</div>
-<!-- *************** LIST CONTENT CARDS ****************** -->
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										Displayed Content Cards
-									</div>
-									<div class="panel-body">
-										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card'))}}" class="btn btn-default btn-block">Add content card to display on this page</a><br>
-										{{if cards:}}
-											<ul class="list-group">
-												{{for card in cards:}}
-													<li class="list-group-item clearfix">
-														<div class="pull-left">
-															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='edit'))}}">{{=card["card_name"]}}: {{=XML(card["card_heading"])}}</a></div>
-														<div class="pull-right">
-															{{if len(cards) > 1:}}
-
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(cards) == card['position'] else ''}}">
-																	<i class="fa fa-chevron-down"></i>
-																</a>
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if cards[0]['dataID'] == card['dataID'] else ''}}">
-																	<i class="fa fa-chevron-up"></i>
-																</a>
-															{{pass}}
-															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
-																<i class="fa fa-trash-o"></i> remove
-															</a>
-														</div>
-													</li>
-												{{pass}}
-											</ul>
-										{{else:}}
-											<div class="alert alert-warning">
-												There are no content cards set to display on this page
-											</div>
-										{{pass}}
-									</div>
-								</div>
-<!-- *************** LIST PARTNERS ****************** -->
-		<!-- 						<div class="panel panel-default">
-									<div class="panel-heading">
-										Displayed Partners
-									</div>
-									<div class="panel-body">
-										<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, action='add_card'))}}" class="btn btn-default btn-block">Add partners to display on this page</a><br>
-										{{if partners:}}
-											<ul class="list-group">
-												{{for partner in partners:}}
-													<li class="list-group-item clearfix">
-														<div class="pull-left">
-															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='edit'))}}">{{=card["card_name"]}}: {{=XML(card["card_heading"])}}</a></div>
-														<div class="pull-right">
-															{{if len(cards) > 1:}}
-
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='down'))}}" class="btn btn-sm btn-default{{=' disabled' if len(cards) == card['position'] else ''}}">
-																	<i class="fa fa-chevron-down"></i>
-																</a>
-																<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='up'))}}" class="btn btn-sm btn-default{{=' disabled' if cards[0]['dataID'] == card['dataID'] else ''}}">
-																	<i class="fa fa-chevron-up"></i>
-																</a>
-															{{pass}}
-															<a href="{{=URL('editor', 'page_content', vars=dict(element_id=thisPageID, setting_id=card['dataID'], action='remove'))}}" class="btn btn-danger btn-sm">
-																<i class="fa fa-trash-o"></i> remove
-															</a>
-														</div>
-													</li>
-												{{pass}}
-											</ul>
-										{{else:}}
-											<div class="alert alert-warning">
-												There are no partners set to display on this page
-											</div>
-										{{pass}}
-									</div>
-								</div> -->
-<!-- *************** DONE ****************** -->
 							{{pass}}
 						{{else:}}
 							<div class="alert alert-info">Pick a page to add or remove content</div>

@@ -17,15 +17,15 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
 				{{for page in thisPage["pages"]:}}
-					{{if page["group"] == 0:}}
+					{{if page["group"] == 0 and page["display"]:}}
 						<li>
 							<a href="{{=URL('default', page['pageFile'])}}">{{=page['pageName']}}</a>
 						</li>
 					{{pass}}
 				{{pass}}
 				{{for group in thisPage["groups"]:}}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle " data-toggle="dropdown"><i class="fa fa-caret-down"></i> {{=group['pageName']}}</a>
+                    <li class="dropdown" ng-class="{'open':menuIsClicked}">
+                        <a href="#" class="dropdown-toggle " data-toggle="dropdown" ng-click="menuClick()"><i class="fa fa-caret-down"></i> {{=group['pageName']}}</a>
                         <ul class="dropdown-menu">
 							{{for page in thisPage["pages"]:}}
 								{{if page["group"] == group["id"]:}}

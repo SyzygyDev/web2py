@@ -1,0 +1,61 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header clearfix">
+			<button class="pull-right btn btn-default btn-sm" ng-click="modalOn('off')" ng-disabled="imSaving">
+				<i class="fa fa-times"></i>
+			</button>
+			<span class="pull-right text-muted" style="margin-right:5px;margin-top:5px" ng-if="imSaving"><i class="fa fa-refresh fa-spin"></i> standby...</span>
+			<h4 class="modal-title">Check Member In</h4>
+			<p>By clicking the buttons below, you (logged in as {!user.fName + ' ' + user.lName!}) acknowledge that each action has been performed</p>
+		</div>
+		<div class="modal-body" set-modal-height style="overflow-y:auto">
+			<div class="row">
+				<div ng-class="{'col-xs-6': currentMember.member1 && currentMember.member2, 'col-xs-12': !currentMember.member1 || !currentMember.member2}" ng-if="currentMember.member1" style="padding:10px 5px">
+					<Button class="btn btn-lg btn-block" ng-class="{'btn-danger': !checkIn.member1, 'btn-success':checkIn.member1}" ng-click="staffVerified('member1')">
+						<i class="fa fa-lg" ng-class="{'fa-check-square-o': checkIn.member1, 'fa-square-o': !checkIn.member1}"></i> {!currentMember.member1.fName!} {!currentMember.member1.lName!} ID verified
+					</button>
+				</div>
+				<div ng-class="{'col-xs-6': currentMember.member1 && currentMember.member2, 'col-xs-12': !currentMember.member1 || !currentMember.member2}" ng-if="currentMember.member2" style="padding:10px 5px">
+					<Button class="btn btn-lg btn-block" ng-class="{'btn-danger': !checkIn.member2, 'btn-success':checkIn.member2}" ng-click="staffVerified('member2')">
+						<i class="fa fa-lg" ng-class="{'fa-check-square-o': checkIn.member2, 'fa-square-o': !checkIn.member2}"></i> {!currentMember.member2.fName!} {!currentMember.member2.lName!} ID verified
+					</button>
+				</div>
+				<div class="col-xs-6" style="padding:10px 5px" ng-click="staffVerified('status')">
+					<Button class="btn btn-lg btn-block" ng-class="{'btn-danger': !checkIn.status && currentMember.status != 'valid', 'btn-warning': !checkIn.status && currentMember.status == 'valid', 'btn-success':checkIn.status}">
+						<i class="fa fa-lg" ng-class="{'fa-check-square-o': checkIn.status, 'fa-square-o': !checkIn.status}"></i> Membership was renewed
+					</button>
+				</div>
+				<div class="col-xs-6" style="padding:10px 5px" ng-if="currentMember.credits">
+					<div class="alert alert-info">
+						<span>Did Member use a credit?</span>
+						<div class="form-group">
+							<select ng-model="checkIn.credit" ng-options="credit.creditID as credit.creditLabel for credit in currentMember.credits">
+								<option value="">Didn't use credit</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div style="padding:15px" ng-if="checkIn.status">
+				<div class="form-group">
+					<label>Renewal Length:</label>
+					<select class="form-control" ng-model="checkIn.renewalDefault">
+						<option value="">-- Choose One --</option>
+						<option value="weekend">One Weekend</option>
+						<option value="year">One Year</option>
+						<option value="custom">Custom</option>
+					</select>
+				</div>
+				<div class="form-group" ng-if="checkIn.renewalDefault == 'custom'">
+					<label>Duration in months:</label>
+					<input class="form-control" ng-model="checkIn.renewalMonths" type="number">
+				</div>
+			</div>
+			<div ng-class="{'col-xs-6': currentMember.status != 'valid', 'col-xs-12': currentMember.status == 'valid'}" style="padding:15px">
+				<Button class="btn btn-lg btn-block btn-default" ng-disabled="finalizeCheckin()" ng-click="finalizeCheckin('submit')">
+					Complete Checkin
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
