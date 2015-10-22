@@ -197,6 +197,12 @@ playersATX.factory("playersATXService",
 				return apiGet('api_admin/purchase_info').then(function(response) {
 					return response.data;
 				});
+			},
+
+			getExecVpList: function(params) {
+				return apiGet('api_admin/get_vp_list', params).then(function(response) {
+					return response.data;
+				});
 			}
 		};
 

@@ -225,6 +225,15 @@ def purchase_info():
 	return api_response(purchaseData = Purchase(db).purchase_info())
 
 
+@auth.requires_login()
+@auth.requires_membership('Staff')
+def get_vp_list():
+	memberID = int(request.vars.member_id) if request.vars.member_id else None
+	gender = request.vars.gender or None
+	from Members import Members
+	return api_response(execVps = Members(db).get_executive_members(auth.user, memberID, gender))
+
+
 def api_response(**kwargs):
 	resp = dict(**kwargs)
 
