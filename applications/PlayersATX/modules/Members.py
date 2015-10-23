@@ -390,11 +390,11 @@ class Members:
 								thisMember["memberType"] = membershipType.membership_label
 
 						if member_row.his_f_name or member_row.his_l_name:
-							thisMember["name"] += member_row.his_f_name + " " + member_row.his_l_name
+							thisMember["name"] += str(member_row.his_f_name) + " " + str(member_row.his_l_name)
 						if member_row.her_f_name or member_row.her_l_name:
 							if thisMember["name"]:
 								thisMember["name"] += " and "
-							thisMember["name"] += member_row.her_f_name + " " + member_row.her_l_name
+							thisMember["name"] += str(member_row.her_f_name) + " " + str(member_row.her_l_name)
 
 						if result.staff_id:
 							thisStaffer = self.db.auth_user(result.staff_id)
@@ -431,8 +431,9 @@ class Members:
 			if member_row:
 				from datetime import date
 				NOW = datetime.now().date()
-				if member_row.expiration > NOW:
-					NOW = member_row.expiration
+				if member_row.expiration:
+					if member_row.expiration > NOW:
+						NOW = member_row.expiration
 
 				if renewalType == "weekend":
 					newExpiration = NOW + timedelta(days=5)
