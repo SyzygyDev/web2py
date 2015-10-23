@@ -41,6 +41,7 @@ playersATX.controller('PATXfront_desk',
 			var thisValue = false,
 				settingsMap = {
 				"members": {"heading": "Members", "template": templatePrefix + "FDmembers.tpl.html"},
+				"execVp": {"heading": "Executive VIP Check-in", "template": templatePrefix + "FDExecCheckIn.tpl.html"},
 				"purchase": {"heading": "Completed Purchases for this weekend", "template": templatePrefix + "FDpurchases.tpl.html"},
 				"attendance": {"heading": "Current Attendance", "template": templatePrefix + "FDattendance.tpl.html"},
 			};
@@ -174,7 +175,7 @@ playersATX.controller('PATXfront_desk',
 			$scope.imSaving = false;
 		}
 
-
+		getExecVpList();
 		getRecentPurchases();
 		playersATXService.getCurrentAttendance().then(function(results) {
 			$scope.attendance = results.attendance;
@@ -280,6 +281,28 @@ playersATX.controller('PATXfront_desk',
         	}
         	return formCmplt;
         };
+
+        $scope.checkInVp = function(member) {
+        	getExecVpList(member);
+        };
+
+        function getExecVpList(member) {
+			$scope.imSaving = true;
+			var params = false;
+			if (member) {
+				params = {"member_id": member.id, "gender": member.gender};
+			}
+			playersATXService.getExecVpList(params).then(function(result) {
+				console.log(result);
+				$scope.execVps = result.execVps;
+				$scope.imSaving = false;
+				if (member) {
+					playersATXService.getCurrentAttendance().then(function(results) {
+						$scope.attendance = results.attendance;
+					});
+				}
+			});
+        }
 
 		function getRecentPurchases(dataRequest, dataType) {
 			$scope.imSaving = true;

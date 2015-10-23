@@ -7,6 +7,51 @@ class Members:
 	def __init__(self, db):
 		self.db = db
 
+	def member_is_checked_in(self, memberRowID):
+		if not memberRowID:
+			return False
+		TODAY = datetime.now() - timedelta(hours=9)
+		TODAY = TODAY.date()
+		query = (self.db.attendance.attend_date == TODAY) & (self.db.attendance.member_id == memberRowID)
+		return self.db(query).count() >= 1
+
+
+	def get_executive_members(self, user, memberRowID=False, gender=False):
+		TODAY = datetime.now() - timedelta(hours=9)
+		TODAY = TODAY.date()
+		checkedIn = False
+		if memberRowID and gender:
+			if not self.member_is_checked_in(memberRowID):
+				genderID = self.db(self.db.gender_types.gender_label == gender).select().first()
+				genderID = genderID.id if genderID else 1
+				self.db.attendance.insert(member_id=memberRowID, gender=genderID, staff_id=user.id, attend_date=TODAY)
+				checkedIn = memberRowID
+			else:
+				checkedIn = memberRowID
+
+		members=False
+		query = (self.db.members.status == self.db.membership_type.id) & (self.db.membership_type.membership_label == "Executive VIP")
+		member_rows = self.db(query).select()
+		if member_rows:
+			members = []
+			for mRow in member_rows:
+				tempMember = self._extract_member(mRow.members)
+
+				query = self.db.purchases.member_id == mRow.members.id
+				purchases = self.db(query).select()
+				if purchases:
+					tempMember["purchases"] = self._extract_member_purchases(purchases)
+
+				if checkedIn and checkedIn == mRow.members.id:
+					tempMember["checkedIn"] = True
+				else:
+					query = (self.db.attendance.attend_date == TODAY) & (self.db.attendance.member_id == mRow.members.id)
+					tempMember["checkedIn"] = self.db(query).count() >= 1
+
+				members.append(tempMember)
+
+		return members
+
 	def get_member_by_row_id(self, memberRowID):
 		if not memberRowID:
 			return False
@@ -14,11 +59,11 @@ class Members:
 		member=False
 		member_row = self.db.members(memberRowID)
 		if member_row:
-				member = self._extract_member(member_row)
-				query = self.db.purchases.member_id == member_row.id
-				purchases = self.db(query).select()
-				if purchases:
-					member["purchases"] = self._extract_member_purchases(purchases)
+			member = self._extract_member(member_row)
+			query = self.db.purchases.member_id == member_row.id
+			purchases = self.db(query).select()
+			if purchases:
+				member["purchases"] = self._extract_member_purchases(purchases)
 
 		return member
 
@@ -345,11 +390,11 @@ class Members:
 								thisMember["memberType"] = membershipType.membership_label
 
 						if member_row.his_f_name or member_row.his_l_name:
-							thisMember["name"] += member_row.his_f_name + " " + member_row.his_l_name
+							thisMember["name"] += str(member_row.his_f_name) + " " + str(member_row.his_l_name)
 						if member_row.her_f_name or member_row.her_l_name:
 							if thisMember["name"]:
 								thisMember["name"] += " and "
-							thisMember["name"] += member_row.her_f_name + " " + member_row.her_l_name
+							thisMember["name"] += str(member_row.her_f_name) + " " + str(member_row.her_l_name)
 
 						if result.staff_id:
 							thisStaffer = self.db.auth_user(result.staff_id)
@@ -365,15 +410,16 @@ class Members:
 		if not user:
 			return False
 
-		TODAY = datetime.now() - timedelta(hours=9)
-		TODAY = TODAY.date()
-		genderID = self.db(self.db.gender_types.gender_label == gender).select().first()
-		genderID = genderID.id if genderID else 1
-		usedCredit = int(usedCredit) if usedCredit else None
+		if not self.member_is_checked_in(memberID):
+			TODAY = datetime.now() - timedelta(hours=9)
+			TODAY = TODAY.date()
+			genderID = self.db(self.db.gender_types.gender_label == gender).select().first()
+			genderID = genderID.id if genderID else 1
+			usedCredit = int(usedCredit) if usedCredit else None
 
-		credits = self.use_credit(memberID, usedCredit)
+			credits = self.use_credit(memberID, usedCredit)
 
-		self.db.attendance.insert(member_id=memberID, gender=genderID, staff_id=user.id, attend_date=TODAY, credit=usedCredit)
+			self.db.attendance.insert(member_id=memberID, gender=genderID, staff_id=user.id, attend_date=TODAY, credit=usedCredit)
 
 		return self.get_current_attendance(True)
 
@@ -385,8 +431,9 @@ class Members:
 			if member_row:
 				from datetime import date
 				NOW = datetime.now().date()
-				if member_row.expiration > NOW:
-					NOW = member_row.expiration
+				if member_row.expiration:
+					if member_row.expiration > NOW:
+						NOW = member_row.expiration
 
 				if renewalType == "weekend":
 					newExpiration = NOW + timedelta(days=5)

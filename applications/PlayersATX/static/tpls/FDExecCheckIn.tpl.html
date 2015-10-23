@@ -1,0 +1,41 @@
+<div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong>Current Executive VIPs</strong>
+        </div>
+        <div class="panel-body">
+            <div class="clearfix" ng-repeat="member in execVps" style="border-bottom:1px solid #efefef;padding:15px;margin:0 -15px" ng-if="member.status == 'valid'">
+                <div class="pull-left">
+                    <span><i class="fa" ng-class="{'fa-venus-mars': member.gender == 'Couple','fa-venus': member.gender == 'Single Female','fa-mars': member.gender == 'Single Male'}"></i></span>
+                    <span ng-if="member.member1">{!member.member1.fName!} {!member.member1.lName!}</span>
+                    <span ng-if="member.gender == 'Couple'"> with </span>
+                    <span ng-if="member.member2">{!member.member2.fName!} {!member.member2.lName!}</span>
+                </div>
+                <div class="pull-right">
+                    <span class="text-info" ng-if="member.checkedIn">Checked in</span>
+                    <button class="btn btn-info btn-sm" ng-click="checkInVp(member)" ng-if="!member.checkedIn">Check me in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-warning">
+        <div class="panel-heading">
+            <strong>Expired Executive VIPs</strong>
+        </div>
+        <div class="panel-body">
+            <div class="clearfix" ng-repeat="member in execVps" style="border-bottom:1px solid #efefef;padding:15px;margin:0 -15px" ng-style="{'border-top': $first ? '1px' : 0}" ng-if="member.status != 'valid'">
+                <div class="pull-left">
+                    <span><i class="fa" ng-class="{'fa-venus-mars': member.gender == 'Couple','fa-venus': member.gender == 'Single Female','fa-mars': member.gender == 'Single Male'}"></i></span>
+                    <span ng-if="member.member1">{!member.member1.fName!} {!member.member1.lName!}</span>
+                    <span ng-if="member.gender == 'Couple'"> with </span>
+                    <span ng-if="member.member2">{!member.member2.fName!} {!member.member2.lName!}</span>
+                    <span class="text-muted">| expired {!member.expiration!}</span>
+                </div>
+                <div class="pull-right">
+                    <span class="text-info" ng-if="member.checkedIn">Checked in</span>
+                    <button class="btn btn-info btn-sm" ng-click="checkInVp(member)" ng-if="!member.checkedIn">Check me in</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

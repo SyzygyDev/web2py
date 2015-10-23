@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'pt-br',
 '!langname!': 'Português (do Brasil)',
@@ -58,6 +58,7 @@
 'edit profile': 'editar perfil',
 'Edit This App': 'Edit This App',
 'Email and SMS': 'Email and SMS',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'Errors': 'Errors',
 'export as csv file': 'exportar como um arquivo csv',
 'FAQ': 'FAQ',
@@ -100,6 +101,7 @@
 'new record inserted': 'novo registro inserido',
 'next 100 rows': 'próximas 100 linhas',
 'No databases in this application': 'Sem bancos de dados nesta aplicação',
+'Object or table name': 'Object or table name',
 'Online examples': 'Alguns exemplos',
 'or import from csv file': 'ou importar de um arquivo csv',
 'Origin': 'Origin',
@@ -124,6 +126,7 @@
 'Record id': 'id do registro',
 'Register': 'Registre-se',
 'register': 'Registre-se',
+'Registration identifier': 'Registration identifier',
 'Registration key': 'Registration key',
 'Reset Password key': 'Reset Password key',
 'Resources': 'Resources',
@@ -146,6 +149,7 @@
 'The output of the file is a dictionary that was rendered by the view %s': 'The output of the file is a dictionary that was rendered by the view %s',
 'The Views': 'The Views',
 'This App': 'This App',
+'This email already has an account': 'This email already has an account',
 'This is a copy of the scaffolding application': 'This is a copy of the scaffolding application',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
 'Timestamp': 'Timestamp',
