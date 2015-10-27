@@ -56,6 +56,7 @@ class Purchase:
 		return purchaseReturn
 
 	def _extract_purchase(self, purchaseRow):
+		memberKey = None
 		if not purchaseRow:
 			return False
 		if purchaseRow.notes:
@@ -71,7 +72,7 @@ class Purchase:
 		thisPurchase = {
 			"id": purchaseRow.id,
 			"confirmation": purchaseRow.purchase_id,
-			"memberID": memberKey or None,
+			"memberID": memberKey,
 			"lName": purchaseRow.l_name,
 			"fName": purchaseRow.f_name,
 			"purchaser": notes,
