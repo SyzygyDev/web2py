@@ -236,6 +236,14 @@ a:after {
 	padding: 20px;
 }
 
+.sponsors {
+    display: inline-block;
+    position: relative;
+    padding-right: 55px;
+    padding-left: 55px;
+}
+
+
 
 
 /****** SECTIONS *****/
@@ -370,6 +378,14 @@ a:after {
 
 .pricing-option .pricing-signup:hover {
     background: #2d2d2d;
+}
+
+.pricing-option .testimonial-edition {
+    
+    display: block;
+    text-align: left;
+    font-size: 12px;
+    font-style: italic;    
 }
 
 

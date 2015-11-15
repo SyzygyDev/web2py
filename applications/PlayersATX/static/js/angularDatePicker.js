@@ -38,7 +38,7 @@
           , defaultNextButton = '<b class="datepicker-default-button">&rang;</b>'
           , prevButton = attr.buttonPrev || defaultPrevButton
           , nextButton = attr.buttonNext || defaultNextButton
-          , dateFormat = attr.dateFormat
+          , dateFormat = "MM-dd-yyyy"
           , dateMinLimit
           , dateMaxLimit
           , date = new Date()
