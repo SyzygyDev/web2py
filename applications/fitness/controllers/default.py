@@ -19,6 +19,11 @@ def coaching():
 def services():
     return dict()
 
+def testimonials():
+    return dict()
+
+def shop():
+    return dict()
 
 def contact():
     emailSuccess = False
