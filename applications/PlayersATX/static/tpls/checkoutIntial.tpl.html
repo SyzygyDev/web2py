@@ -10,23 +10,28 @@
         </div>
         <div class="modal-body" set-modal-height style="overflow-y:auto">
             <p>Fill out the form below. This is for your reservation and membership information. Billing information will be collected in a minute.</p>
-            <div class="form-group">
-                <label>Member ID:</label>
-                <div class="input-group">
+            <div class="clearfix">
+                <div class="form-group">
+                    <label>Member ID:</label>
                     <input class="form-control" ng-model="newPurchase.memberID" placeholder="P123456">
-                    <span class="input-group-btn">
-                        <button class="btn btn-input" ng-disabled="!newPurchase.memberID || imSaving" ng-click="verifyMemberID(newPurchase.memberID)">
-                            <i class="fa fa-search-plus"></i> Confirm ID
-                        </button>
-                    </span>
                 </div>
-                <span class="help-block">Don't have a membership? No problem! We'll set you up when you arrive.</span>
+                <div class="form-group">
+                    <label>Last name on membership (either if couple):</label>
+                    <input class="form-control" ng-model="newPurchase.memberName" placeholder="Doe">
+                    <span class="help-block">Don't have a membership? No problem! We'll set you up when you arrive.</span>
+                </div>
+                <div class="pull-right">
+                    <button class="btn btn-input" ng-disabled="!(newPurchase.memberID && newPurchase.memberName) || imSaving" ng-click="verifyMemberID(newPurchase.memberID, newPurchase.memberName)">
+                        <i class="fa fa-search-plus"></i> Confirm ID
+                    </button>
+                </div>
             </div>
+            <br>
             <div class="alert" ng-if="newPurchase.memberID" ng-class="{'alert-info': !newPurchase.status, 'alert-success':newPurchase.status == 'valid', 'alert-warning': newPurchase.status == 'invalid' || newPurchase.status == 'expired', 'alert-danger': newPurchase.status == 'Revoked'}">
                 <span ng-if="!newPurchase.status">By confirming your member ID, you will speed up the checkout process.</span>
                 <span ng-if="newPurchase.status == 'valid'">Your member ID has been confirmed, thank you.</span>
                 <span ng-if="newPurchase.status == 'expired'">Our records show your membership has expired. There may be addtional fees to be paid at the front desk when you enter unless what you are purchasing explicitly states that it includes membership. If you feel this is incorrect, send us an email or talk to the staff when you arrive.</span>
-                <span ng-if="newPurchase.status == 'invalid'">We could not find your member ID in our system. Please make sure you typed it correctly.<br>
+                <span ng-if="newPurchase.status == 'invalid'">We could not find your member ID in our system. Please make sure you typed it correctly and that the last name matches at least one member on that ID (capitalization counts).<br>
                     You may continue on without it, and we will verify your membership at the front desk.
                 </span>
                 <span ng-if="newPurchase.status == 'Revoked'">Our records indicate your membership has been revoked. You will not be allowed admittance and will not receive a refund if you purchase entry on-line.<br>

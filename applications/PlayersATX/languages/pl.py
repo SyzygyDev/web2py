@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'pl',
 '!langname!': 'Polska',
@@ -62,6 +62,8 @@
 'Edit Profile': 'Edytuj profil',
 'Edit This App': 'Edytuj tę aplikację',
 'Email and SMS': 'Email and SMS',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'Errors': 'Errors',
 'export as csv file': 'eksportuj jako plik csv',
 'FAQ': 'FAQ',
@@ -104,6 +106,7 @@
 'new record inserted': 'nowy rekord został wstawiony',
 'next 100 rows': 'następne 100 wierszy',
 'No databases in this application': 'Brak baz danych w tej aplikacji',
+'Object or table name': 'Object or table name',
 'Online examples': 'Kliknij aby przejść do interaktywnych przykładów',
 'or import from csv file': 'lub zaimportuj z pliku csv',
 'Origin': 'Źródło',
@@ -129,7 +132,9 @@
 'Record id': 'id rekordu',
 'Register': 'Zarejestruj',
 'register': 'register',
+'Registration identifier': 'Registration identifier',
 'Registration key': 'Klucz rejestracji',
+'Reset Password key': 'Reset Password key',
 'Role': 'Rola',
 'Rows in Table': 'Wiersze w tabeli',
 'Rows selected': 'Wybrane wiersze',
@@ -150,6 +155,7 @@
 'The output of the file is a dictionary that was rendered by the view %s': 'The output of the file is a dictionary that was rendered by the view %s',
 'The Views': 'The Views',
 'This App': 'This App',
+'This email already has an account': 'This email already has an account',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
 'Timestamp': 'Znacznik czasu',
 'Twitter': 'Twitter',

@@ -129,8 +129,8 @@ playersATX.factory("playersATXService",
 					return response.data;
 				});
 			},
-			verifyMemberID: function(memberID) {
-				var params = {"memberID": memberID};
+			verifyMemberID: function(memberID, memberName) {
+				var params = {"memberID": memberID.toUpperCase(), "name": memberName};
 				return apiGet('api_user/verify_member_id', params).then(function(response) {
 					return response.data;
 				});
