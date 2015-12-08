@@ -80,26 +80,29 @@ playersATX.controller('PATXeventpay',
 	    		showModal = modalMap[action];
 	    		StartPageTimeout();
 	    	} else if (action == "process") {
-	    		$scope.newPurchase.cardData.cleanCCnumber = $scope.newPurchase.cardData.ccnumber.replace(/\D/g,'');
-	    		$scope.newPurchase.cardData.thisCard = thisCard;
-	        	$scope.imSaving = true;
-		    	playersATXService.purchaseEvent($scope.newPurchase).then(function(results){
-		    		console.log(results);
-		    		if (results.error && results.errorText) {
-		    			$scope.error = results.errorText;
-		    			showModal = modalMap['error'];
-		    		} else {
-		    			var successData = results.thisPurchase;
-		    			if (successData.successCode == 1) {
-		    				$scope.txnSuccess = successData;
-		    				showModal = modalMap['process'];
-		    			} else {
-		    				showModal = modalMap['declined'];
-		    			}
-		    		}
+				$scope.$broadcast("autofill:update");
+				$timeout(function() {
+		    		$scope.newPurchase.cardData.cleanCCnumber = $scope.newPurchase.cardData.ccnumber.replace(/\D/g,'');
+		    		$scope.newPurchase.cardData.thisCard = thisCard;
+		        	$scope.imSaving = true;
+			    	playersATXService.purchaseEvent($scope.newPurchase).then(function(results){
+			    		console.log(results);
+			    		if (results.error && results.errorText) {
+			    			$scope.error = results.errorText;
+			    			showModal = modalMap['error'];
+			    		} else {
+			    			var successData = results.thisPurchase;
+			    			if (successData.successCode == 1) {
+			    				$scope.txnSuccess = successData;
+			    				showModal = modalMap['process'];
+			    			} else {
+			    				showModal = modalMap['declined'];
+			    			}
+			    		}
 
-	        		$scope.imSaving = false;
-	            });
+		        		$scope.imSaving = false;
+		            });
+				}, 100);
 	    	}
 	    	// showModal = modalMap[action];
 	    };
@@ -142,9 +145,9 @@ playersATX.controller('PATXeventpay',
         // *****************PURCHASE STUFF**************
         $scope.newPurchase = {}
 
-        $scope.verifyMemberID = function(memberID) {
+        $scope.verifyMemberID = function(memberID, memberName) {
         	$scope.imSaving = true;
-	    	playersATXService.verifyMemberID(memberID).then(function(results){
+	    	playersATXService.verifyMemberID(memberID, memberName).then(function(results){
 		    	if (results.memberInfo) {
 		    		$scope.newPurchase = angular.extend($scope.newPurchase, results.memberInfo);
 		    		isCouple = $scope.newPurchase.gender == "Couple";
@@ -356,4 +359,13 @@ playersATX.controller('PATXeventpay',
 			{"label": "Armed Forces Pacific", "abb": "AP"},
 		];
 	}]
-);
+).directive('valueLink', function () {
+    return {
+        require: "ngModel",
+        link: function (scope, element, attrs, ngModel) {
+            scope.$on("autofill:update", function() {
+                ngModel.$setViewValue(element.val());
+            });
+        }
+    };
+});

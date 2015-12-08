@@ -141,6 +141,7 @@
 'Statistics': 'Statistics',
 'Stylesheet': 'Stylesheet',
 'submit': 'submit',
+'Submit': 'Submit',
 'Support': 'Support',
 'Sure you want to delete this object?': 'Está certo(a) que deseja apagar esse objeto ?',
 'Table': 'tabela',

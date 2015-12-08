@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'hu',
 '!langname!': 'Magyar',
@@ -58,6 +58,8 @@
 'edit profile': 'profil szerkesztése',
 'Edit This App': 'Alkalmazást szerkeszt',
 'Email and SMS': 'Email and SMS',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'Errors': 'Errors',
 'export as csv file': 'exportál csv fájlba',
 'FAQ': 'FAQ',
@@ -98,6 +100,7 @@
 'new record inserted': 'új bejegyzés felvéve',
 'next 100 rows': 'következő 100 sor',
 'No databases in this application': 'Nincs adatbázis ebben az alkalmazásban',
+'Object or table name': 'Object or table name',
 'Online examples': 'online példákért kattints ide',
 'or import from csv file': 'vagy betöltés csv fájlból',
 'Origin': 'Origin',
@@ -122,6 +125,7 @@
 'Record id': 'bejegyzés id',
 'Register': 'Register',
 'register': 'regisztráció',
+'Registration identifier': 'Registration identifier',
 'Registration key': 'Registration key',
 'Reset Password key': 'Reset Password key',
 'Role': 'Role',
@@ -134,6 +138,7 @@
 'Statistics': 'Statistics',
 'Stylesheet': 'Stylesheet',
 'submit': 'submit',
+'Submit': 'Submit',
 'Support': 'Support',
 'Sure you want to delete this object?': 'Biztos törli ezt az objektumot?',
 'Table': 'tábla',
@@ -143,6 +148,7 @@
 'The output of the file is a dictionary that was rendered by the view %s': 'The output of the file is a dictionary that was rendered by the view %s',
 'The Views': 'The Views',
 'This App': 'This App',
+'This email already has an account': 'This email already has an account',
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
 'Timestamp': 'Timestamp',
 'Twitter': 'Twitter',

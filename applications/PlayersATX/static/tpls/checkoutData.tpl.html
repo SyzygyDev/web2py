@@ -25,7 +25,7 @@
                         <div class="form-group">
                             <label>Card Number:</label>
                             <div class="input-group">
-                                <input type="text" id="cardnumber" name="cardnumber" autocomplete="cc-number" class="form-control" ng-model="newPurchase.cardData.ccnumber" ng-change="checkMyCard()">
+                                <input value-link type="text" id="cardnumber" name="cardnumber" autocomplete="cc-number" class="form-control" ng-model="newPurchase.cardData.ccnumber" ng-change="checkMyCard()">
                                 <div class="input-group-addon">
                                     <i class="fa {!myCard()!}"></i>
                                 </div>
@@ -74,7 +74,7 @@
                         <div class="form-group">
                             <label>CVV Number:</label>
                             <div class="input-group">
-                                <input type="text" name="cvc" autocomplete="cc-csc" class="form-control" ng-model="newPurchase.cardData.cvv">
+                                <input value-link type="text" name="cvc" autocomplete="cc-csc" class="form-control" ng-model="newPurchase.cardData.cvv">
                                 <div class="input-group-addon">
                                     <a href="https://www.cvvnumber.com/cvv.html" target="_blank" style="font-size:11px">What's this?</a>
                                 </div>
@@ -82,7 +82,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="alert hidden-xs" ng-class="{'alert-success':purchaseFormCmplt('checkout'), 'alert-warning':!purchaseFormCmplt('checkout')}">
+                    <div class="alert hidden-sm hidden-xs" ng-class="{'alert-success':purchaseFormCmplt('checkout'), 'alert-info':!purchaseFormCmplt('checkout')}">
                         <span ng-if="!purchaseFormCmplt('checkout')">
                             The form needs to be filled out completely.
                         </span>
@@ -92,7 +92,7 @@
                         <span ng-if="imSaving"><br>
                             <strong><i class="fa fa-refresh fa-spin"></i> {!processing!}</strong>
                         </span>
-                        <button class="btn btn-default btn-block" ng-disabled="!purchaseFormCmplt('checkout') || imSaving" ng-click="checkout('process')">Confirm Purchase</button>
+                        <button class="btn btn-default btn-block" ng-disabled="imSaving" ng-click="checkout('process')">Confirm Purchase</button>
                     </div>
                 </div>
                 
@@ -101,25 +101,25 @@
                     <span>This information does not need to match your membership information, only your credit card information.</span>
                     <div class="form-group">
                         <label>First Name:</label>
-                        <input class="form-control" name="fname" autocomplete="given-name" type="text" ng-model="newPurchase.billingData.firstname">
+                        <input value-link class="form-control" name="fname" autocomplete="given-name" type="text" ng-model="newPurchase.billingData.firstname">
                         <span class="help-block">As it appears on the card</span>
                     </div>
                     <div class="form-group">
                         <label>Last Name:</label>
-                        <input class="form-control" name="lname" autocomplete="family-name" type="text" ng-model="newPurchase.billingData.lastname">
+                        <input value-link class="form-control" name="lname" autocomplete="family-name" type="text" ng-model="newPurchase.billingData.lastname">
                         <span class="help-block">As it appears on the card</span>
                     </div>
                     <div class="form-group">
                         <label>Address:</label>
-                        <input class="form-control" name="address1" autocomplete="address-line1" type="text" ng-model="newPurchase.billingData.address1">
+                        <input value-link class="form-control" name="address1" autocomplete="address-line1" type="text" ng-model="newPurchase.billingData.address1">
                     </div>
                     <div class="form-group">
                         <label>Address 2:</label>
-                        <input class="form-control" name="address2" autocomplete="address-line2" type="text" ng-model="newPurchase.billingData.address2">
+                        <input value-link class="form-control" name="address2" autocomplete="address-line2" type="text" ng-model="newPurchase.billingData.address2">
                     </div>
                     <div class="form-group">
                         <label>City:</label>
-                        <input class="form-control" name="city" autocomplete="address-level2" type="text" ng-model="newPurchase.billingData.city">
+                        <input value-link class="form-control" name="city" autocomplete="address-level2" type="text" ng-model="newPurchase.billingData.city">
                     </div>
                     <div class="form-group">
                         <label>State:</label>
@@ -127,9 +127,21 @@
                     </div>
                     <div class="form-group">
                         <label>Zip:</label>
-                        <input class="form-control" name="zip" autocomplete="postal-code" type="text" ng-model="newPurchase.billingData.zip">
+                        <input value-link class="form-control" name="zip" autocomplete="postal-code" type="text" ng-model="newPurchase.billingData.zip">
                     </div>
                 </div>
+            </div>
+            <div class="alert visible-sm visible-xs" ng-class="{'alert-success':purchaseFormCmplt('checkout'), 'alert-info':!purchaseFormCmplt('checkout')}">
+                <span ng-if="!purchaseFormCmplt('checkout')">
+                    The form needs to be filled out completely.
+                </span>
+                <span ng-if="purchaseFormCmplt('checkout')">
+                    By clicking the button below, you authorize PlayersATX to bill the credit card ending in "{!lastFour()!}" a total of:<br><strong>${!newPurchase.price!}</strong><br>for: <strong>{!newPurchase.label!}</strong>
+                </span>
+                <span ng-if="imSaving"><br>
+                    <strong><i class="fa fa-refresh fa-spin"></i> {!processing!}</strong>
+                </span>
+                <button class="btn btn-default btn-block" ng-disabled="imSaving" ng-click="checkout('process')">Confirm Purchase</button>
             </div>
         </div>
     </div>

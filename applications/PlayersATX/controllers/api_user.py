@@ -19,39 +19,50 @@ response.headers['Cache-Control'] = "max-age=0"
 
 def verify_member_id():
     memberID = request.vars.memberID or None
+    memberLastName = request.vars.name or None
     memberInfo = False
+    processMemberInfo = False
+    responses = []
 
-    if memberID:
-        query = db.members.member_number == memberID
-        memberRecord = db(query).select().first()
-        if memberRecord:
-            memberInfo = {
-                "fName": memberRecord.his_f_name,
-                "lName": memberRecord.his_l_name,
-                "fName1": memberRecord.her_f_name,
-                "lName1": memberRecord.her_l_name,
-                "email": memberRecord.his_email or memberRecord.her_email or None,
-                "status": "valid"
-            }
-            if memberRecord.gender:
-                memberInfo["gender"] = db.gender_types(memberRecord.gender).gender_label
+    if memberID and memberLastName:
+        query = (db.members.member_number == memberID) | (db.members.his_l_name == memberLastName) | (db.members.her_l_name == memberLastName)
+        memberRecords = db(query).select()
+        if memberRecords:
+            for memberRecord in memberRecords:
+                responses.append({"rowID": memberRecord.member_number, "compare": memberID})
+                if not memberInfo:
+                    if memberID == memberRecord.member_number:
+                        if memberLastName == memberRecord.his_l_name or memberLastName == memberRecord.her_l_name:
+                            processMemberInfo = True
 
-            if memberRecord.expiration:
-                from datetime import datetime, timedelta
-                TODAY = datetime.now().date()
-                if memberRecord.expiration < TODAY:
-                    memberInfo["status"] = "expired"
+                    if processMemberInfo:
+                        memberInfo = {
+                            "fName": memberRecord.his_f_name,
+                            "lName": memberRecord.his_l_name,
+                            "fName1": memberRecord.her_f_name,
+                            "lName1": memberRecord.her_l_name,
+                            "email": memberRecord.his_email or memberRecord.her_email or None,
+                            "status": "valid"
+                        }
+                        if memberRecord.gender:
+                            memberInfo["gender"] = db.gender_types(memberRecord.gender).gender_label
 
-            if memberRecord.status:
-                memberStatus = db.membership_type(memberRecord.status).membership_label
-                if memberStatus == "Revoked":
-                    memberInfo["status"] = "Revoked"
+                        if memberRecord.expiration:
+                            from datetime import datetime, timedelta
+                            TODAY = datetime.now().date()
+                            if memberRecord.expiration < TODAY:
+                                memberInfo["status"] = "expired"
+
+                        if memberRecord.status:
+                            memberStatus = db.membership_type(memberRecord.status).membership_label
+                            if memberStatus == "Revoked":
+                                memberInfo["status"] = "Revoked"
 
         else:
             memberInfo = getTestMemberData(memberID)
 
 
-    return api_response(memberInfo=memberInfo)
+    return api_response(memberInfo=memberInfo, tempInfo=responses)
 
 def purchase_event():
     jsonData = simplejson.loads(request.body.read()) if request.body else {}

@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'fr-ca',
 '!langname!': 'Français (Canadien)',
@@ -61,6 +61,8 @@
 'edit profile': 'modifier le profil',
 'Edit This App': 'Modifier cette application',
 'Email and SMS': 'Email and SMS',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'entrer un entier compris entre %(min)g et %(max)g',
 'Errors': 'Erreurs',
 'export as csv file': 'exporter sous forme de fichier csv',
@@ -109,6 +111,7 @@
 'new record inserted': 'nouvel enregistrement inséré',
 'next 100 rows': '100 prochaines lignes',
 'No databases in this application': "Cette application n'a pas de bases de données",
+'Object or table name': 'Object or table name',
 'Online examples': 'Exemples en ligne',
 'or import from csv file': "ou importer d'un fichier CSV",
 'Origin': 'Origine',
@@ -142,6 +145,7 @@
 'Record Updated': 'Record Updated',
 'Register': "S'inscrire",
 'register': "s'inscrire",
+'Registration identifier': 'Registration identifier',
 'Registration key': "Clé d'enregistrement",
 'Registration successful': 'Inscription réussie',
 'Remember me (for 30 days)': 'Se souvenir de moi (pendant 30 jours)',
@@ -168,6 +172,7 @@
 'The output of the file is a dictionary that was rendered by the view %s': 'La sortie de ce fichier est un dictionnaire qui été restitué par la vue %s',
 'The Views': 'Les Vues',
 'This App': 'Cette Appli',
+'This email already has an account': 'This email already has an account',
 'This is a copy of the scaffolding application': "Ceci est une copie de l'application échafaudage",
 'Time in Cache (h:m:s)': 'Time in Cache (h:m:s)',
 'Timestamp': 'Horodatage',
