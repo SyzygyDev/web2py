@@ -40,9 +40,9 @@ auth.define_tables(username=False, signature=False)
 
 ## configure email
 mail = auth.settings.mailer
-mail.settings.server = 'logging' or 'smtp.gmail.com:587'
-mail.settings.sender = 'you@gmail.com'
-mail.settings.login = 'username:password'
+mail.settings.server = 'smtp.office365.com:587'
+mail.settings.sender = 'Kim@cryostudionorth.com'
+mail.settings.login = 'Kim@cryostudionorth.com:Cryo6202418*'
 
 ## configure auth policy
 auth.settings.registration_requires_verification = False
