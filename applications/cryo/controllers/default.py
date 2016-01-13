@@ -33,7 +33,7 @@ def index():
             message= thisMessage)
         if x == True:
             emailSuccess = True
-            otherMessage = "Cryo Studio North is waiting to server you. We are by appointment only.\n"
+            otherMessage = "Cryo Studio North is waiting to serve you. We are by appointment only.\n"
             otherMessage = otherMessage + "Our staff typically responds during this time, but we will get to your email as soon as we can.\n\n\n" 
             otherMessage = otherMessage + "We recieved the following:\n" + thisMessage
             mail.send(to=[form.vars.email],
