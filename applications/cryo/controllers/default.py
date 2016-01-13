@@ -23,22 +23,22 @@ def index():
     if form.process().accepted:
         from datetime import datetime
         messageSent = datetime.now().strftime( "%A, %b %d %Y at %I:%M:%S %p" )
-        thisMessage = "On " + messageSent + ":\nFrom: " + form.vars.name + "\n" + "Email address: " + form.vars.email + "\n"
+        thisMessage = "On " + messageSent + ":\nFrom: " + form.vars.first_name + " " + form.vars.last_name + "\n" + "Email address: " + form.vars.email + "\n"
         if form.vars.Phone_Number:
             thisMessage = thisMessage + "Phone: " + form.vars.Phone_Number + "\n"
         thisMessage = thisMessage + "\n___________________________________________\nMessage: \n" + form.vars.message
 
-        # x = mail.send(to=['web_contact@playersatx.club'],
-        #     subject="Players website response",
-        #     message= thisMessage)
-        # if x == True:
-        #     emailSuccess = True
-        #     otherMessage = "The club is open Fridays 9:00pm to 2:00am and Saturdays 9:00pm to 3:00am.\n"
-        #     otherMessage = otherMessage + "Our staff typically responds during this time, but we will get to your email as soon as we can.\n\n\n" 
-        #     otherMessage = otherMessage + "We recieved the following:\n" + thisMessage
-        #     mail.send(to=[form.vars.email],
-        #         subject="We appreciate your email",
-        #         message= otherMessage)
+        x = mail.send(to=['Kim@CryoStudioNorth.com'],
+            subject="CryoStudioNorth.com website response",
+            message= thisMessage)
+        if x == True:
+            emailSuccess = True
+            otherMessage = "Cryo Studio North is waiting to server you. We are by appointment only.\n"
+            otherMessage = otherMessage + "Our staff typically responds during this time, but we will get to your email as soon as we can.\n\n\n" 
+            otherMessage = otherMessage + "We recieved the following:\n" + thisMessage
+            mail.send(to=[form.vars.email],
+                subject="We appreciate your email",
+                message= otherMessage)
     return dict(form=form, emailSuccess=emailSuccess)
 
 
