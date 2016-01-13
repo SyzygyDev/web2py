@@ -39,6 +39,11 @@ def news():
 	return dict(thisPage=thisPage, cards=cards)
 
 
+def partners():
+	cards = cardDAL.get_data_cards(pageID=PAGETYPE["id"])
+	return dict(thisPage=thisPage, cards=cards)
+
+
 def events():
 	typeOfEvent = request.vars.event_type or "once"
 	showbuttons = eventDAL.is_both_recurring_and_upcoming(pageID=PAGETYPE["id"])

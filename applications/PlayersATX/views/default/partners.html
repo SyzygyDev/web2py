@@ -1,0 +1,36 @@
+{{extend 'layout.html'}}
+{{include 'default/menu.html'}}
+<div class="container">
+
+    {{if cards:}}
+        {{include 'default/cards.tpl.html'}}
+    {{pass}}
+
+    <div class="row">
+        <div class="box">
+            <div class="col-sm-12">
+                <hr>
+                <h2 class="intro-text text-center">Support
+                    <strong>Our Partners</strong>
+                </h2>
+                <hr>
+            </div>
+            <div class="col-sm-12 text-center" style="margin-bottom:15px">                
+                <a href="http://www.quiver.us" target="_new"> 
+                    <img src="{{=URL('static', 'images/quiver.jpg')}}" style="width:100%">
+                </a>
+            </div>
+            <div class="col-sm-12 text-center" style="margin-bottom:15px">                
+                <a href="http://www.sdc.com/index.aspx?ref=23036" target="_new"> 
+                    <img src="http://www.clubscash.com/images/banners/sdc-redvelvet.gif" border="0" style="width:100%">
+                </a>
+            </div>
+            <div class="col-sm-12 text-center" style="margin-bottom:15px">
+                <a href="http://www.kasidie.com/?referredby="><img src="http://www.kasidie.com/static/graphics/ads/ad-tande-486x60.jpg" width="100%" border="0" alt="Kasidie.com - Get your FREE account and become sexually social today!" /></a>
+                            
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
