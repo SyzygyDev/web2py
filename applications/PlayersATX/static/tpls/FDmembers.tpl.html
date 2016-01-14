@@ -35,6 +35,7 @@
         	<label ng-if="!currentMember.editMode">{!currentMember.memberType!} {!currentMember.gender!}</label>
         	<button class="btn btn-default btn-sm" ng-click="checkMemberIn(currentMember)" ng-if="!memberCheckedIn(currentMember) && !currentMember.editMode">Check-in</button>
         	<button class="btn btn-info btn-sm disabled" ng-if="memberCheckedIn(currentMember) && !currentMember.editMode">Member Checked In</button>
+            <span ng-if="currentMember.comments && !currentMember.editMode"><strong> {!currentMember.comments.length!} comments</strong></span>
         </div>
     	<div class="panel-body">
             <div class="alert alert-info" ng-if="currentMember.credits">
@@ -161,6 +162,31 @@
 	            	</div>
         		</div>
         	</div>
+        </div>
+        <div class="panel-footer clearfix">
+            <button class="pull-right btn btn-sm btn-default" ng-click="showCommentForm(currentMember)"><i class="fa fa-plus-square-o"></i> Add comment</button>
+            <h5>Member Comments</h5>
+            <hr>
+            <div class="form-group clearfix" ng-if="currentMember.showCommentForm">
+                <label>Comment:</label>
+                <textarea class="form-control" ng-model="newComment.comment" ng-change="commentFormChanged()"></textarea>
+                <br>
+                <button class="btn btn-sm btn-success pull-right" ng-disabled="!commentFormChanged('check')" ng-click="saveComment(currentMember)" ng-if="currentMember.showCommentForm">
+                    Save Comment
+                </button>
+            </div>
+            <hr ng-if="currentMember.showCommentForm">
+            <div ng-repeat="comment in currentMember.comments | orderBy:'created':true" ng-if="currentMember.comments">
+                <div class="clearfix">
+                    <span class="pull-right">Made by {!comment.made_by!}</span>
+                    <textarea disabled>{!comment.comment!}</textarea>
+                    <br>
+                    <span class="text-muted">on {!comment.created!}</span>
+                    <hr ng-if="!$last">
+                </div>
+            </div>
+
+
         </div>
     </div>
     

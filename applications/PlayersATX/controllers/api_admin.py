@@ -68,12 +68,14 @@ def get_member_info():
 	member = False
 	memberDuplicates = False
 
-	from Members import Members
+	from Members import Members, MembersComments
 	memberObj = Members(db)
 
 	if requestType == "memberID":
 		member = memberObj.get_member(memberKey)
 		memberDuplicates = memberObj.get_member_duplicates(memberKey)
+		if member:
+			member["comments"] = MembersComments(db, member["id"]).get_comments()
 	elif requestType == "lastName":
 		member = memberObj.get_members_by_last_name(member_L_Name)
 
@@ -171,6 +173,24 @@ def check_member_in():
 				logger.log_activity("Renew member " + member["memberID"] + " for " + thisRenewal  , auth.user.id)
 
 	return api_response(attendance=attendance, member=member)
+
+
+@auth.requires_login()
+@auth.requires_membership('Staff')
+def add_member_comment():
+	jsonData = simplejson.loads(request.body.read()) if request.body else {}
+	memberID = int(jsonData["memberID"]) if jsonData.get("memberID") else None
+	commentRequest = jsonData.get("comment")
+	userID = auth.user
+	comments = False
+	error = False
+	if memberID and userID and commentRequest:
+		from Members import MembersComments
+		comments = MembersComments(db, memberID).set_comment(userID, commentRequest)
+	else:
+		error = "We did not recieve enough data to log this comment"
+
+	return api_response(comments=comments, error=error)
 
 
 @auth.requires_login()

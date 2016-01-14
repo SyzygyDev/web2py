@@ -88,6 +88,13 @@ db.define_table('member_credits',
                 Field('created', 'datetime', writable=False, default=request.now),
                 Field('used', 'datetime', writable=True))
 
+
+db.define_table('member_comments',
+                Field('member_id', 'reference members'),
+                Field('staff_id', 'reference auth_user'),
+                Field('create_date', 'datetime', writable=False, default=request.now),
+                Field('comment', 'text', writable=True))
+
 db.define_table('purchases',
                 Field('purchase_id', 'string', writable=True),
                 Field('price_id', 'reference event_price'),
