@@ -571,4 +571,44 @@ class Members:
 
 		return credits
 
-			
+class MembersComments:
+	def __init__(self, db, memberID):
+		self.db = db
+		self.memberID = memberID
+
+	def get_comments(self):
+		commentQuery = self.db.member_comments.member_id == self.memberID
+		# WE ARE USING THE ABOVE DECLARED QUERY AS A FILTER ON THE DB, NOTICE TABLE IS DECLARED IN THE FILTER
+		commentRows = self.db(commentQuery).select()
+		if commentRows:
+			memberComments = []
+			for comment in commentRows:
+				thisComment = {
+					"made_by": False,
+					"created": comment.create_date,
+					"comment": comment.comment
+				}
+				# SINCE WE ARE USING ROW ID, WE DO NOT NEED A QUERY, ON A FILTER AT THE TABLE LEVEL
+				user = self.db.auth_user(comment.staff_id)
+				if user:
+					thisComment["made_by"] = user.first_name + " " + user.last_name
+
+				memberComments.append(thisComment)
+
+			return memberComments
+		return False
+
+	def set_comment(self, staffID, comment):
+		if staffID and comment:
+			newCommentID = self.db.member_comments.insert(
+				member_id=self.memberID,
+				staff_id=int(staffID),
+				comment=comment
+			)
+			if newCommentID:
+				self.db.commit()
+				return self.get_comments()
+		else:
+			return False
+
+

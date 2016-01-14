@@ -105,6 +105,44 @@ playersATX.controller('PATXfront_desk',
 			}
 		};
 
+		function setNewComment() {
+			$scope.newComment = {
+				"comment": "",
+				"memberID": 0
+			};
+		}
+
+		setNewComment();
+		var commentFormChanged = false;
+
+		$scope.showCommentForm = function(member) {
+			member.showCommentForm = !member.showCommentForm;
+			if (member.showCommentForm) {
+				$scope.newComment.memberID = member.id;
+				$scope.oldComment = angular.copy($scope.newComment);
+			}
+		};
+
+		$scope.commentFormChanged = function(check) {
+			if (check) {
+				return commentFormChanged;
+			} else {
+				commentFormChanged = ($scope.newComment.comment != $scope.oldComment.comment);
+			}
+		};
+
+		$scope.saveComment = function(member) {
+			playersATXService.saveComment($scope.newComment).then(function (response) {
+				if (response.error) {
+					alert(response.error);
+				} else {
+					member.comments = response.comments;
+				}
+				setNewComment();
+				member.showCommentForm = false;
+			})
+		};
+
         $scope.createNewMember = function(action) {
         	if (action == "initial") {
 				setNewMemberTemplate(rootData.newMemberID, rootData.genderOptions, rootData.memberTypeOptions);
@@ -257,9 +295,6 @@ playersATX.controller('PATXfront_desk',
 					$scope.imSaving = false;
 					if (params.renew) {
 						$scope.currentMember = results.member;
-						// REMOVE THIS AFTER TESTING
-						// $scope.currentMember.status = 'valid'
-						// alert("Test mode enabled, the membership renewal was not saved");
 					}
 				});
 			} else {
@@ -293,7 +328,6 @@ playersATX.controller('PATXfront_desk',
 				params = {"member_id": member.id, "gender": member.gender};
 			}
 			playersATXService.getExecVpList(params).then(function(result) {
-				console.log(result);
 				$scope.execVps = result.execVps;
 				$scope.imSaving = false;
 				if (member) {

@@ -203,6 +203,12 @@ playersATX.factory("playersATXService",
 				return apiGet('api_admin/get_vp_list', params).then(function(response) {
 					return response.data;
 				});
+			},
+
+			saveComment: function(commentObj) {
+				return apiPost('api_admin/add_member_comment', commentObj).then(function(response) {
+					return response.data;
+				});
 			}
 		};
 
