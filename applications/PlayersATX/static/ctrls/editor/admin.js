@@ -162,12 +162,59 @@ playersATX.controller('PATXadmin',
 			}
 		};
 
-		function getPurchases() {
-			$scope.imSaving = true;
-			playersATXService.getPurchaseSummary().then(function(result) {
-				$scope.purchases = result.purchaseData.purchases;
-				$scope.summaries = result.purchaseData.summary;
+		$scope.purchaseEvent = {"current": "none"};
+		$scope.setSortOption = function(sortType) {
+			var currentEventID = $scope.purchaseEvent.current;
+			$scope.purchaseEvent[currentEventID] = sortType;
+			$scope.purchases[currentEventID] = setPurchaseSort($scope.purchases[currentEventID]);
+		};
+
+		$scope.getPurchaseDetails = function(eventID) {
+			$scope.purchaseEvent.current = eventID; 
+			getPurchases(eventID);
+		};
+
+		$scope.showSummaryDetails = function(summary) {
+			$scope.purchaseEvent.current = "none";
+			angular.forEach($scope.summaries, function(thisSummary) {
+				if (thisSummary.eventID != summary.eventID) {
+					thisSummary.showDetails = false;
+				}
 			});
+			summary.showDetails = !summary.showDetails;
+			if (summary.showDetails) {
+				$scope.purchaseEvent.current = summary.eventID;
+				$scope.purchaseEvent.currentName = summary.event;
+			}
+		};
+
+		$scope.showPurchaseDetails = function(purchase) {
+			purchase.showDetails = !purchase.showDetails;
+		};
+
+		$scope.purchases = {};
+
+		function getPurchases(eventID) {
+			$scope.imSaving = true;
+			playersATXService.getPurchaseData(eventID).then(function(result) {
+				if (eventID) {
+					$scope.purchases[eventID] = setPurchaseSort(result.purchaseData.purchases);
+				} else {
+					$scope.summaries = result.purchaseData.summary;
+				}
+			});
+		}
+
+		function setPurchaseSort(sortArray) {
+			var currentSort = $scope.purchaseEvent[$scope.purchaseEvent.current];
+			angular.forEach(sortArray, function(purchase) {
+				purchase.sortExclude = false;
+				if (currentSort != "all") {
+					purchase.sortExclude = (currentSort == "declined" && !purchase.failed) ? true : purchase.sortExclude;
+					purchase.sortExclude = (currentSort == "approved" && purchase.failed) ? true : purchase.sortExclude;
+				}
+			});
+			return sortArray
 		}
 
 		function getMemberInfo(requestType) {

@@ -193,8 +193,9 @@ playersATX.factory("playersATXService",
 				});
 			},
 
-			getPurchaseSummary: function() {
-				return apiGet('api_admin/purchase_info').then(function(response) {
+			getPurchaseData: function(eventID) {
+				params = eventID ? {"event_id": eventID} : "";
+				return apiGet('api_admin/purchase_info', params).then(function(response) {
 					return response.data;
 				});
 			},

@@ -142,74 +142,86 @@ class Purchase:
 
 		return purchaseResponse
 
-	def purchase_info(self):
+	def purchase_info(self, eventID):
 		thisReturn = {
 			"summary": [],
 			"purchases": []
 		}
-		purchases = thisReturn["purchases"]
-		results = self.db(self.db.purchases.id >= 1).select()
-		if results:
-			for result in results:
-				thisPurchase = {
-					"purchaseID": result.purchase_id,
-					"completed": result.update_date,
-					"transactionID": None,
-					"failed": result.is_pending,
-					"reason": None,
-					"email": result.e_mail,
-					"fName": result.f_name,
-					"lName": result.l_name,
-					"extras": result.notes,
-					"price": None,
-					"priceID": result.price_id,
-					"priceLabel": None,
-					"eventID": None,
-					"event": None
-				}
+		if eventID:
+			# GET ALL PRICES FOR EVENT
+			purchaseResults = self.db(self.db.event_price.event_id == eventID).select()
+			if purchaseResults:
+				purchaseIDArray = []
+				for purchaseResult in purchaseResults:
+					purchaseIDArray.append(purchaseResult.id)
+				purchases = thisReturn["purchases"]
+				results = self.db(self.db.purchases.price_id.belongs(purchaseIDArray)).select()
+				if results:
+					for result in results:
+						thisPurchase = {
+							"purchaseID": result.purchase_id,
+							"completed": result.update_date,
+							"transactionID": None,
+							"failed": result.is_pending,
+							"reason": None,
+							"email": result.e_mail,
+							"fName": result.f_name,
+							"lName": result.l_name,
+							"extras": result.notes,
+							"price": None,
+							"priceID": result.price_id,
+							"priceLabel": None,
+							"eventID": None,
+							"event": None
+						}
 
-				if "-" in result.temp_number:
-					transArray = result.temp_number.split("-")
-					thisPurchase["transactionID"] = transArray[0]
-					thisPurchase["reason"] = transArray[1]
-				else:
-					thisPurchase["transactionID"] = result.temp_number
+						if "-" in result.temp_number:
+							transArray = result.temp_number.split("-")
+							thisPurchase["transactionID"] = transArray[0]
+							thisPurchase["reason"] = transArray[1]
+						else:
+							thisPurchase["transactionID"] = result.temp_number
 
-				priceRow = self.db.event_price(result.price_id)
-				if priceRow:
-					thisPurchase["price"] = priceRow.price
-					thisPurchase["priceLabel"] = self.db.event_price_label(priceRow.price_label_id).price_label
-					thisPurchase["eventID"] = priceRow.event_id
-					thisPurchase["event"] = self.db.events(priceRow.event_id).event_name
+						priceRow = self.db.event_price(result.price_id)
+						if priceRow:
+							thisPurchase["price"] = priceRow.price
+							thisPurchase["priceLabel"] = self.db.event_price_label(priceRow.price_label_id).price_label
+							thisPurchase["eventID"] = priceRow.event_id
+							thisPurchase["event"] = self.db.events(priceRow.event_id).event_name
 
-				purchases.append(thisPurchase)
+						purchases.append(thisPurchase)
+		else:
+			summary = thisReturn["summary"]
+			results = self.db(self.db.event_price.id >= 1).select(self.db.event_price.event_id, distinct=True)
+			if results:
+				from decimal import *
+				for result in results:
+					thisSummary = {
+						"eventID": result.event_id,
+						"failures": 0,
+						"purchases": 0,
+						"revenue": 0.00,
+						"event": "",
+						"eventDate": False
+					}
+					eventDetails = self.db.events(result.event_id)
+					if eventDetails:
+						thisSummary["event"] = eventDetails.event_name
+						thisSummary["eventDate"] = eventDetails.expiration
+					priceArray = self.db(self.db.event_price.event_id == result.event_id).select()
+					if priceArray:
+						for priceRow in priceArray:
+							query = (self.db.purchases.is_pending == False) & (self.db.purchases.price_id == priceRow.id)
+							purchaseCount = self.db(query).count()
+							thisSummary["purchases"] = thisSummary["purchases"] + purchaseCount
+							thisSummary["revenue"] = Decimal(thisSummary["revenue"]) + Decimal(Decimal(purchaseCount) * priceRow.price)
 
-		summary = thisReturn["summary"]
-		results = self.db(self.db.event_price.id >= 1).select(self.db.event_price.event_id, distinct=True)
-		if results:
-			from decimal import *
-			for result in results:
-				thisSummary = {
-					"eventID": result.event_id,
-					"failures": 0,
-					"purchases": 0,
-					"revenue": 0.00
-				}
-				thisSummary["event"] = self.db.events(result.event_id).event_name
-				priceArray = self.db(self.db.event_price.event_id == result.event_id).select()
-				if priceArray:
-					for priceRow in priceArray:
-						query = (self.db.purchases.is_pending == False) & (self.db.purchases.price_id == priceRow.id)
-						purchaseCount = self.db(query).count()
-						thisSummary["purchases"] = thisSummary["purchases"] + purchaseCount
-						thisSummary["revenue"] = Decimal(thisSummary["revenue"]) + Decimal(Decimal(purchaseCount) * priceRow.price)
+							query = (self.db.purchases.is_pending == True) & (self.db.purchases.price_id == priceRow.id)
+							failCount = self.db(query).count()
+							thisSummary["failures"] = thisSummary["failures"] + failCount
 
-						query = (self.db.purchases.is_pending == True) & (self.db.purchases.price_id == priceRow.id)
-						failCount = self.db(query).count()
-						thisSummary["failures"] = thisSummary["failures"] + failCount
-
-				if thisSummary["purchases"] >= 1:
-					summary.append(thisSummary)
+					if thisSummary["purchases"] >= 1:
+						summary.append(thisSummary)
 
 		return thisReturn
 

@@ -133,11 +133,20 @@
 				        			</div>
 				        			<div ng-if="pageSettings.id == 7">
 				        				<div ng-if="summaries">
-				        					<div ng-repeat="summary in summaries">
-				        						<span><strong>{!summary.event!}</strong></span>
-				        						<span>${!summary.revenue!} total, </span>
-				        						<span>{!summary.purchases!} sales, </span>
-				        						<span class="text-danger">{!summary.failures!} declined</span>
+				        					<div ng-repeat="summary in summaries | orderBy:'eventDate':true">
+				        						<button class="btn btn-default btn-sm pull-right" ng-click="showSummaryDetails(summary)">
+				        							<i class="fa" ng-class="{'fa-caret-up': summary.showDetails, 'fa-caret-down': !summary.showDetails}"></i>
+				        						</button>
+				        						<span><strong>{!summary.event!}</strong> <font style="color:green">${!summary.revenue!}</font></span>
+				        						<div ng-if="summary.showDetails">
+				        							<ul>
+				        								<!-- <li>${!summary.revenue!} total</li> -->
+				        								<li>{!summary.purchases!} sales</li>
+				        								<li class="text-danger">{!summary.failures!} declined</li>
+				        							</ul>
+				        							<button class="btn btn-sm btn-input" ng-click="getPurchaseDetails(summary.eventID)"><i class="fa fa-list"></i> List purchases</button>
+					        					</div>
+				        						<hr ng-if="!$last">
 				        					</div>
 				        				</div>
 				        				<hr>
@@ -145,22 +154,60 @@
 						                <div class="input-group">
 					                        <input class="form-control" ng-model="filter">
 					                    </div> -->
-				        				<div ng-if="!purchases">
-				        					No purchases have been made
-				        				</div>
-				        				<div ng-if="purchases">
-				        					<div ng-repeat="purchase in purchases | orderBy: 'completed' : true">
-				        						<hr ng-if="!$first">
-				        						<div class="alert" ng-class="{'alert-danger': purchase.failed}">
-					        						<span><strong>{!purchase.fName!} {!purchase.lName!}</strong></span>
-					        						<span>{!purchase.extras!}</span><br>
-					        						<span>Transaction ID: {!purchase.purchaseID !}</span><br>
-					        						<span>{!purchase.email!}</span><br>
-					        						<span>{!purchase.priceLabel!}: </span><span>${!purchase.price!}</span><br ng-if="purchase.failed">
-					        						<span ng-if="purchase.failed">Transaction declined - {!purchase.reason!}</span>
-					        					</div>
-				        					</div>
-				        				</div>
+					                    <div class="panel panel-default" ng-if="purchases[purchaseEvent.current]">
+					                    	<div class="panel-heading">
+					                    		<div class="btn-group pull-right" role="group" ng-if="purchases[purchaseEvent.current]">
+													<button type="button" class="btn btn-default" ng-class="{'active': (!purchaseEvent[purchaseEvent.current] || purchaseEvent[purchaseEvent.current] == 'all')}" title="Show all purchases" ng-click="setSortOption('all')">
+														<i class="fa fa-list"></i>
+													</button>
+													<button type="button" class="btn btn-default" ng-class="{'active': purchaseEvent[purchaseEvent.current] == 'approved'}" title="Show only approved" ng-click="setSortOption('approved')">
+														<i class="fa fa-thumbs-o-up"></i>
+													</button>
+													<button type="button" class="btn btn-default" ng-class="{'active': purchaseEvent[purchaseEvent.current] == 'declined'}" title="Show only declined" ng-click="setSortOption('declined')">
+														<i class="fa fa-thumbs-o-down"></i>
+													</button>
+												</div>
+					                    		<h5>{!purchaseEvent.currentName!}</h5>
+					                    	</div>
+					                    	<div class="panel-body">
+						        				<div ng-if="purchases[purchaseEvent.current]">
+						        					<div ng-repeat="purchase in purchases[purchaseEvent.current] | orderBy: 'completed' : true" ng-if="!purchase.sortExclude">
+						        						<hr ng-if="!$first" style="margin:5px">
+						        						<div class="alert" ng-class="{'alert-info': purchase.failed && purchase.reason == 'Transaction error returned by processor.', 'alert-warning': purchase.failed && purchase.reason == 'Transaction was rejected by gateway.', 'alert-danger': purchase.failed && purchase.reason == 'Transaction was declined by processor.'}" style="margin-bottom:5px">
+						        							<button
+						        							class="btn btn-sm btn-default pull-right"
+						        							ng-click="showPurchaseDetails(purchase)"
+						        							style="margin-top: -5px;">
+						        								<i class="fa" ng-class="{'fa-caret-up': purchase.showDetails, 'fa-caret-down': !purchase.showDetails}"></i>
+						        							</button>
+							        						<span><strong>{!purchase.fName!} {!purchase.lName!} - ${!purchase.price!}</strong></span>
+							        						<ul ng-if="purchase.showDetails">
+							        							<li ng-if="purchase.extras">{!purchase.extras!}</li>
+							        							<li ng-if="purchase.purchaseID">Transaction ID: {!purchase.purchaseID !}</li>
+							        							<li ng-if="purchase.email">{!purchase.email!}</li>
+							        							<li><span>{!purchase.priceLabel!}</li>
+							        							<li ng-if="purchase.failed">Transaction declined - {!purchase.reason!}</li>
+							        							<li ng-if="purchase.failed && purchase.reason == 'Transaction was rejected by gateway.'">
+								        							<small class="text-muted">
+									        							This is not a decline due to insufficient funds. This typically means the user either entered incorrect data or not enough data to complete the transaction. Mis-typing the card number, personal data (name, address, zip code) different from the card, expiration date wrong, or the CVV Number was omitted or mis-typed are the most common causes.
+								        							</small>
+								        						</li>
+							        							<li ng-if="purchase.failed && purchase.reason == 'Transaction error returned by processor.'">
+								        							<small class="text-muted">
+									        							This is not a decline due to insufficient funds. This typically means there was a communication error during the transaction that resulted in the transaction being aborted due to an insecure connection.
+								        							</small>
+								        						</li>
+							        							<li ng-if="purchase.failed && purchase.reason == 'Transaction was declined by processor.'">
+								        							<small class="text-muted">
+									        							This means that all the card data was correct, but there is a problem with the account attached to the card. Most likely the card was declined do to insufficient funds, but can also mean a card has a hold on it, it has been cancelled, or has been reported stolen.
+								        							</small>
+								        						</li>
+							        						</ul>
+							        					</div>
+						        					</div>
+						        				</div>
+					                    	</div>
+					                    </div>
 									   <!--  <div ng-repeat="purchase in purchases | orderBy: 'lname'" style="background-color:#eee;margin:10px 0;padding:5px 15px" ng-if="purchases">
 									        <div class="clearfix" style="background-color:#eee">
 									            <div class="pull-right" style="margin:0 -10px 0 0">

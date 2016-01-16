@@ -241,8 +241,9 @@ def edit_member():
 @auth.requires_login()
 @auth.requires_membership('Admin')
 def purchase_info():
+	eventID = int(request.vars.event_id) if request.vars.event_id else None
 	from Purchase import Purchase
-	return api_response(purchaseData = Purchase(db).purchase_info())
+	return api_response(purchaseData = Purchase(db).purchase_info(eventID))
 
 
 @auth.requires_login()
