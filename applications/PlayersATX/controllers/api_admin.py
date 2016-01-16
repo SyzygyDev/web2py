@@ -119,7 +119,11 @@ def get_attendance_info():
 	date = request.vars.date_stamp or None
 	idToRemove = request.vars.attendance_id or None
 	if idToRemove:
-		del db.attendance[int(idToRemove)]
+		attendanceRow = db.attendance(int(idToRemove))
+		if attendanceRow:
+			logger.log_activity("attendance of memberID " + str(attendanceRow.member_id) + " removed", auth.user.id)
+			attendanceRow.delete_record()
+			# del db.attendance[int(idToRemove)]
 	# if date:
 	# 	from datetime import datetime, timedelta
 	# 	date = datetime.fromtimestamp(int(date)) - timedelta(hours=9)

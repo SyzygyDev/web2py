@@ -227,7 +227,10 @@ playersATX.controller('PATXfront_desk',
 		getCurrentAttendance();
 
 		$scope.removeAttendy = function(attendy) {
-			getCurrentAttendance(attendy.attendID);
+			var message = "This is not for when someone leaves,\nThis is only when someone was checked in by mistake.\nAre you sure?"
+			if (confirm(message)) {
+				getCurrentAttendance(attendy.attendID);
+			}
 		};
 
 		$scope.thisViewPane = function(paneLabel) {
