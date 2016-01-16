@@ -123,7 +123,6 @@ def get_attendance_info():
 		if attendanceRow:
 			logger.log_activity("attendance of memberID " + str(attendanceRow.member_id) + " removed", auth.user.id)
 			attendanceRow.delete_record()
-			# del db.attendance[int(idToRemove)]
 	# if date:
 	# 	from datetime import datetime, timedelta
 	# 	date = datetime.fromtimestamp(int(date)) - timedelta(hours=9)
@@ -187,6 +186,7 @@ def check_member_in():
 def add_member_comment():
 	jsonData = simplejson.loads(request.body.read()) if request.body else {}
 	memberID = int(jsonData["memberID"]) if jsonData.get("memberID") else None
+	revokeMember = jsonData.get("revoke") or  False
 	commentRequest = jsonData.get("comment")
 	userID = auth.user
 	comments = False
@@ -194,6 +194,11 @@ def add_member_comment():
 	if memberID and userID and commentRequest:
 		from Members import MembersComments
 		comments = MembersComments(db, memberID).set_comment(userID, commentRequest)
+		if revokeMember:
+			memberRow = db.members(memberID)
+			if memberRow:
+				memberRow.update_record(status=4)
+				logger.log_activity("memberID " + str(memberID) + " had membership revoked", auth.user.id)
 	else:
 		error = "We did not recieve enough data to log this comment"
 

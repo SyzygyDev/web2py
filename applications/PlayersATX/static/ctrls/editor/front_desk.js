@@ -108,6 +108,7 @@ playersATX.controller('PATXfront_desk',
 		function setNewComment() {
 			$scope.newComment = {
 				"comment": "",
+				"revoke": false,
 				"memberID": 0
 			};
 		}
@@ -132,15 +133,29 @@ playersATX.controller('PATXfront_desk',
 		};
 
 		$scope.saveComment = function(member) {
-			playersATXService.saveComment($scope.newComment).then(function (response) {
-				if (response.error) {
-					alert(response.error);
-				} else {
-					member.comments = response.comments;
+			var saveThisComment = false,
+				message = "Are you sure you want to revoke this member?\nThis can only be undone by a manager";
+			if ($scope.newComment.revoke) {
+				if (confirm(message)) {
+					saveThisComment = true;
 				}
-				setNewComment();
-				member.showCommentForm = false;
-			})
+			} else {
+				saveThisComment = true;
+			}
+			if (saveThisComment) {
+				playersATXService.saveComment($scope.newComment).then(function (response) {
+					if (response.error) {
+						alert(response.error);
+					} else {
+						member.comments = response.comments;
+					}
+					if ($scope.newComment.revoke) {
+						member.status = 'Revoked';
+					}
+					setNewComment();
+					member.showCommentForm = false;
+				})
+			}
 		};
 
         $scope.createNewMember = function(action) {

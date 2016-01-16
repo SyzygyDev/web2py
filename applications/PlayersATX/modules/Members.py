@@ -582,11 +582,12 @@ class MembersComments:
 		# WE ARE USING THE ABOVE DECLARED QUERY AS A FILTER ON THE DB, NOTICE TABLE IS DECLARED IN THE FILTER
 		commentRows = self.db(commentQuery).select()
 		if commentRows:
+			from utils import unix_time_millis
 			memberComments = []
 			for comment in commentRows:
 				thisComment = {
 					"made_by": False,
-					"created": comment.create_date,
+					"created": unix_time_millis(comment.create_date) if comment.create_date else comment.create_date,
 					"comment": comment.comment
 				}
 				# SINCE WE ARE USING ROW ID, WE DO NOT NEED A QUERY, ON A FILTER AT THE TABLE LEVEL
