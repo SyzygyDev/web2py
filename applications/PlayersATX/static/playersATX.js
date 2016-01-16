@@ -153,8 +153,9 @@ playersATX.factory("playersATXService",
 				});
 			},
 
-			getCurrentAttendance: function(dateStamp) {
-				params = dateStamp ? {"date_stamp": dateStamp} : false
+			getCurrentAttendance: function(dateStamp, attendyToRemove) {
+				params = dateStamp ? {"date_stamp": dateStamp} : false;
+				params = attendyToRemove ? {"attendance_id": attendyToRemove} : false;
 				return apiGet('api_admin/get_attendance_info', params).then(function(response) {
 					return response.data;
 				});

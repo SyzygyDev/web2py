@@ -375,6 +375,7 @@ class Members:
 							"gender": gender.gender_label if gender else False,
 							"name": "",
 							"staffID": result.staff_id,
+							"attendID": result.id,
 							"staffName": ""
 						}
 

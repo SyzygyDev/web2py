@@ -117,6 +117,9 @@ def get_staff_logs():
 @auth.requires_membership('Staff')
 def get_attendance_info():
 	date = request.vars.date_stamp or None
+	idToRemove = request.vars.attendance_id or None
+	if idToRemove:
+		del db.attendance[int(idToRemove)]
 	# if date:
 	# 	from datetime import datetime, timedelta
 	# 	date = datetime.fromtimestamp(int(date)) - timedelta(hours=9)

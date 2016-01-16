@@ -50,11 +50,13 @@
                 			<th>
                 				Name:
                 			</th>
-                			<th>
-                				Gender:
-                			</th>
+                            <th>
+                                Gender:
+                            </th>
                             <th ng-if="isAdmin">
                                 Checked in by:
+                            </th>
+                            <th>
                             </th>
                 		</tr>
                 	</thead>
@@ -71,6 +73,13 @@
                 			</td>
                             <td ng-if="isAdmin">
                                 <span ng-if="attendy.staffName">{!attendy.staffName!}</span>
+                            </td>
+                            <td>
+                                <span>
+                                    <button class="btn btn-sm btn-default" style="margin-top: -5px;margin-bottom: -4px;" ng-click="removeAttendy(attendy)">
+                                        <i class="fa fa-trash-o text-danger"></i>
+                                    </button>
+                                </span>
                             </td>
                 		</tr>
                 	</tbody>

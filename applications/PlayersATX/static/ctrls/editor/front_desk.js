@@ -213,11 +213,22 @@ playersATX.controller('PATXfront_desk',
 			$scope.imSaving = false;
 		}
 
+		function getCurrentAttendance(attendyToRemove) {
+			playersATXService.getCurrentAttendance(false, attendyToRemove).then(function(results) {
+				$scope.attendance = results.attendance;
+				if (attendyToRemove) {
+					getExecVpList();
+				}
+			});
+		}
+
 		getExecVpList();
 		getRecentPurchases();
-		playersATXService.getCurrentAttendance().then(function(results) {
-			$scope.attendance = results.attendance;
-		});
+		getCurrentAttendance();
+
+		$scope.removeAttendy = function(attendy) {
+			getCurrentAttendance(attendy.attendID);
+		};
 
 		$scope.thisViewPane = function(paneLabel) {
 			$scope.viewPane = paneLabel;
@@ -331,9 +342,7 @@ playersATX.controller('PATXfront_desk',
 				$scope.execVps = result.execVps;
 				$scope.imSaving = false;
 				if (member) {
-					playersATXService.getCurrentAttendance().then(function(results) {
-						$scope.attendance = results.attendance;
-					});
+					getCurrentAttendance();
 				}
 			});
         }
