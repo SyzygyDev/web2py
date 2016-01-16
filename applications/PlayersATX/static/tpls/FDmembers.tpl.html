@@ -172,7 +172,7 @@
                 <textarea class="form-control" ng-model="newComment.comment" ng-change="commentFormChanged()"></textarea>
                 <br>
             </div>
-            <div class="checkbox" ng-if="currentMember.showCommentForm">
+            <div class="checkbox" ng-if="currentMember.showCommentForm && currentMember.status != 'Revoked'">
                 <label>
                     <input type="checkbox" ng-model="newComment.revoke"> Revoke Membership
                 </label>
