@@ -151,6 +151,7 @@ playersATX.controller('PATXfront_desk',
 					}
 					if ($scope.newComment.revoke) {
 						member.status = 'Revoked';
+						member.memberType = 'Revoked';
 					}
 					setNewComment();
 					member.showCommentForm = false;
