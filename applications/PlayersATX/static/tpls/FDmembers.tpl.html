@@ -171,17 +171,24 @@
                 <label>Comment:</label>
                 <textarea class="form-control" ng-model="newComment.comment" ng-change="commentFormChanged()"></textarea>
                 <br>
-                <button class="btn btn-sm btn-success pull-right" ng-disabled="!commentFormChanged('check')" ng-click="saveComment(currentMember)" ng-if="currentMember.showCommentForm">
+            </div>
+            <div class="checkbox" ng-if="currentMember.showCommentForm">
+                <label>
+                    <input type="checkbox" ng-model="newComment.revoke"> Revoke Membership
+                </label>
+            </div>
+            <div class="clearfix" ng-if="currentMember.showCommentForm">
+                <button class="btn btn-sm btn-success pull-right" ng-disabled="!commentFormChanged('check')" ng-click="saveComment(currentMember)">
                     Save Comment
                 </button>
             </div>
             <hr ng-if="currentMember.showCommentForm">
             <div ng-repeat="comment in currentMember.comments | orderBy:'created':true" ng-if="currentMember.comments">
                 <div class="clearfix">
-                    <span class="pull-right">Made by {!comment.made_by!}</span>
-                    <textarea disabled>{!comment.comment!}</textarea>
+                    <textarea disabled style="width:100%">{!comment.comment!}</textarea>
                     <br>
-                    <span class="text-muted">on {!comment.created!}</span>
+                    <span>Made by {!comment.made_by!}</span>
+                    <span class="text-muted">on {!comment.created | date:'medium'!}</span>
                     <hr ng-if="!$last">
                 </div>
             </div>
