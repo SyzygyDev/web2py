@@ -26,6 +26,9 @@ def test_api():
 
     return api_response(weGotThese=varString)
 
+def test_api_too():
+    return api_response(cadeCares=True)
+
 
 def api_response(**kwargs):
     resp = dict(**kwargs)

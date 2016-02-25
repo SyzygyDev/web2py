@@ -124,6 +124,10 @@ def purchase_event():
 
     return api_response(thisPurchase=purchaseOrder)
 
+def members_export():
+    from Members import Members
+    thisReturn = Members(db).member_export()
+    return api_response(members = thisReturn
 
 
 def api_response(**kwargs):

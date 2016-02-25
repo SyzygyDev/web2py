@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!=': '!=',
 '!langcode!': 'it',
@@ -84,6 +84,7 @@
 'Email and SMS': 'Email e SMS',
 'Email non valida': 'Email non valida',
 'enter a number between %(min)g and %(max)g': 'enter a number between %(min)g and %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'inserisci un intero tra %(min)g e %(max)g',
 'Errors': 'Errori',
 'Errors in form, please check it out.': 'Errori nel form, ricontrollalo',
@@ -238,6 +239,7 @@
 'View': 'Vista',
 'Welcome': 'Benvenuto',
 'Welcome %s': 'Benvenuto %s',
+'Welcome to Syzygy!': 'Welcome to Syzygy!',
 'Welcome to web2py': 'Benvenuto su web2py',
 'Welcome to web2py!': 'Benvenuto in web2py!',
 'Which called the function %s located in the file %s': 'che ha chiamato la funzione %s presente nel file %s',

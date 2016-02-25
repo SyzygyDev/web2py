@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!=': '!=',
 '!langcode!': 'ro',
@@ -134,7 +134,9 @@
 'Editing file': 'Editare fișier',
 'Editing file "%s"': 'Editare fișier "%s"',
 'Email and SMS': 'E-mail și SMS',
+'Enter a number between %(min)g and %(max)g': 'Enter a number between %(min)g and %(max)g',
 'enter a number between %(min)g and %(max)g': 'introduceți un număr între %(min)g și %(max)g',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'introduceți un întreg între %(min)g și %(max)g',
 'Error logs for "%(app)s"': 'Log erori pentru "%(app)s"',
 'errors': 'erori',
@@ -316,6 +318,7 @@
 'There are no views': 'Nu există vederi',
 'these files are served without processing, your images go here': 'aceste fișiere sunt servite fără procesare, imaginea se plasează acolo',
 'This App': 'Această aplicație',
+'This email already has an account': 'This email already has an account',
 'This is a copy of the scaffolding application': 'Aceasta este o copie a aplicației schelet',
 'This is the %(filename)s template': 'Aceasta este șablonul fișierului %(filename)s',
 'Ticket': 'Tichet',

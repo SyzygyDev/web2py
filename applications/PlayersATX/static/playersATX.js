@@ -155,7 +155,7 @@ playersATX.factory("playersATXService",
 
 			getCurrentAttendance: function(dateStamp, attendyToRemove) {
 				params = dateStamp ? {"date_stamp": dateStamp} : false;
-				params = attendyToRemove ? {"attendance_id": attendyToRemove} : false;
+				params = attendyToRemove ? angular.extend(params, {"attendance_id": attendyToRemove}) : params;
 				return apiGet('api_admin/get_attendance_info', params).then(function(response) {
 					return response.data;
 				});
