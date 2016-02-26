@@ -50,4 +50,12 @@ sessions
 cache
 databases
 environment.txt
+languages
 uploads
+tmp
+logs
+progress.log
+httpserver.log
+httpserver.pid
+parameters_*.py
+*.log

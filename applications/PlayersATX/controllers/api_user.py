@@ -125,9 +125,67 @@ def purchase_event():
     return api_response(thisPurchase=purchaseOrder)
 
 def members_export():
+    mailSent = False
     from Members import Members
-    thisReturn = Members(db).member_export()
-    return api_response(members = thisReturn
+    exportData = Members(db).export_members()
+    if exportData["memberExport"]:
+        import cStringIO
+        import csv
+        stream = cStringIO.StringIO()
+
+        fieldNames = [
+            'Member Number',
+            'Member Type',
+            'Expiration',
+            'His Last Name',
+            'His First Name',
+            'His Email',
+            'His DoB',
+            'His DL',
+            'Her Last Name',
+            'Her First Name',
+            'Her Email',
+            'Her DoB',
+            'Her DL',
+            'Address',
+            'City',
+            'State',
+            'Zip',
+            'Phone'
+        ]
+
+        csv_writer = csv.writer(stream)
+        csv_writer.writerow(fieldNames)
+        for member in exportData["memberExport"]:
+            currentRow = (
+                member['member_number'],
+                member['member_type'],
+                member['expiration'],
+                member['his_lName'],
+                member['his_fName'],
+                member['his_email'],
+                member['his_dob'],
+                member['his_dl'],
+                member['her_lName'],
+                member['her_fName'],
+                member['her_email'],
+                member['her_dob'],
+                member['her_dl'],
+                member['address'],
+                member['city'],
+                member['state'],
+                member['zip'],
+                member['phone']
+            )
+            csv_writer.writerow(currentRow)
+
+        stream.seek(0)
+        mailSent = mail.send(to=['admin@playersatx.club', 'syzygywebbed@gmail.com'],
+            subject= str(exportData["exportDate"]) + " Member List",
+            message= "Here is the members list as of " + str(exportData["exportDate"]) + "\n\nThis is an automated email.",
+            attachments = mail.Attachment(stream, filename='memberDatabase.csv')
+        )
+    return api_response(Mail_sent=mailSent)
 
 
 def api_response(**kwargs):
