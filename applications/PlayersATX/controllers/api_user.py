@@ -180,7 +180,7 @@ def members_export():
             csv_writer.writerow(currentRow)
 
         stream.seek(0)
-        mailSent = mail.send(to=['admin@playersatx.club', 'syzygywebbed@gmail.com'],
+        mailSent = mail.send(to=['admin@playersatx.club','syzygywebbed@gmail.com'],
             subject= str(exportData["exportDate"]) + " Member List",
             message= "Here is the members list as of " + str(exportData["exportDate"]) + "\n\nThis is an automated email.",
             attachments = mail.Attachment(stream, filename='memberDatabase.csv')

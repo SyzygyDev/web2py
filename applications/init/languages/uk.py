@@ -1,4 +1,4 @@
-# coding: utf8
+# -*- coding: utf-8 -*-
 {
 '!langcode!': 'uk',
 '!langname!': 'Українська',
@@ -84,6 +84,7 @@
 'Edit Page': 'Редагувати сторінку',
 'Email and SMS': 'Ел.пошта та SMS',
 'enter a value': 'введіть значення',
+'Enter an integer between %(min)g and %(max)g': 'Enter an integer between %(min)g and %(max)g',
 'enter an integer between %(min)g and %(max)g': 'введіть ціле число між %(min)g та %(max)g',
 'Error!': 'Помилка!',
 'Errors': 'Помилки',
@@ -218,6 +219,7 @@
 'Videos': 'Відео',
 'View': 'Відображення (View)',
 'Welcome': 'Ласкаво просимо',
+'Welcome to Syzygy!': 'Welcome to Syzygy!',
 'Welcome to web2py!': 'Ласкаво просимо до web2py!',
 'Which called the function %s located in the file %s': 'Управління передалось функції %s, яка розташована у файлі %s',
 'Working...': 'Працюємо...',
