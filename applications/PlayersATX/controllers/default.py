@@ -292,7 +292,7 @@ def _get_reservable_spaces():
 		{"label":"Table 18", "group":"10 top left of entrance by bar"},
 		{"label":"Table 19", "group":"10 top left of entrance by VIP stairs"},
 		{"label":"Table 20", "group":"10 top center of spinning pole"},
-		{"label":"Table 21", "group":"10 top closest pool table"},				
+		{"label":"Table 21", "group":"10 top closest pool table"}				
 	]
 
 def make_dup_list():
