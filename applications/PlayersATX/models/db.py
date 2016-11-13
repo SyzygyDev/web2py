@@ -36,6 +36,10 @@ auth = Auth(db)
 crud, service, plugins = Crud(db), Service(), PluginManager()
 
 ## create all tables needed by auth if not custom tables
+## additonal fields
+auth.settings.extra_fields['auth_user']= [
+	Field('deleted', 'datetime')
+]
 auth.define_tables(username=False, signature=False)
 
 ## configure email
