@@ -10,6 +10,8 @@ eventDAL = Events(db)
 
 THISPAGE = basics.get_my_page()
 THISPAGE['pageSetting'] = request.vars.page_id or None
+if session.auth.user.deleted:
+	redirect(URL('default', 'user', args='logout'))
 
 @auth.requires_login()
 @auth.requires_membership('Staff')
