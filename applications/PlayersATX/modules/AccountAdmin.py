@@ -18,7 +18,8 @@ class AccountAdmin:
     
     def get_accounts(self, sessionRole=4):
         accounts = False
-        results = self.db(self.db.auth_user.id > 0).select() 
+        query = (self.db.auth_user.id > 0) & (self.db.auth_user.deleted == None)
+        results = self.db(query).select() 
         for result in results:
             account = self._extract_account(result, sessionRole)
             if account:

@@ -480,6 +480,7 @@ def member_map():
 def admin():
 	sapID = request.vars.sap_id or 1
 	userID = request.vars.user_id or None
+	deleteUser = request.vars.delete_user or None
 	sapID = int(sapID)
 	sessionRole = 3
 	if auth.has_membership('Super User'):
@@ -528,10 +529,15 @@ def admin():
 			query = db.auth_user(db.auth_user.id == int(userID))
 			form = SQLFORM(db.auth_user, query,
 				submit_button='Update',
-				deletable=True,
 				showid=False,
+				fields=['first_name','last_name','email','password'],
 				formstyle="bootstrap")
 			if form.process().accepted:
+				redirect(URL('editor', 'admin', vars=dict(sap_id="4")))
+			if deleteUser:
+				from datetime import datetime
+				now = datetime.now()
+				db.auth_user(int(userID)).update_record(deleted=now)
 				redirect(URL('editor', 'admin', vars=dict(sap_id="4")))
 
 	return dict(thisPage=THISPAGE, sapPages=sapPages, form=form, angularData=angularData)
